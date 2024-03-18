@@ -43,7 +43,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
         /// Create user document in Firestore
         await createUserInFirestore(user,phoneNumber: phoneNumber);
-        emit(SuccessRegisterState());
+        emit(SuccessRegisterState(user!.uid));
 
       } else {
         print("Facebook login failed. Status: ${result.status}");
@@ -110,7 +110,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
 
       await storeUserDataInFirestore(user,phoneNumber: phoneNumber);
-      emit(SuccessRegisterState());
+      emit(SuccessRegisterState(user!.uid));
 
       return userCredential;
     } catch (e) {

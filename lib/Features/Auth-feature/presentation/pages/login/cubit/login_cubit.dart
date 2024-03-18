@@ -58,11 +58,11 @@ class LoginCubit extends Cubit<LoginState> {
       final userSnapshot = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
       if (!userSnapshot.exists) {
         print('User not registered. Please register.');
-        emit(UsernotRegister()); // Assuming you're using Bloc and emitting this state
-        // You can handle the state emission according to your Bloc setup
+        emit(UsernotRegister());
+
       }else{
 
-        emit(SuccessGoogleLoginState());
+        emit(SuccessGoogleLoginState(user.uid));
       }
 
       return userCredential;
@@ -98,7 +98,7 @@ class LoginCubit extends Cubit<LoginState> {
           return;
         }
 
-        emit(SuccessFaceLoginState());
+        emit(SuccessFaceLoginState(user.uid));
       } else {
         emit(ErrorLoginState());
         print("Facebook login failed. Status: ${result.status}");
@@ -164,7 +164,7 @@ emit(PhoneNotRegisterstate());
         print('User logged in: ${_firebaseUser.toString()}');
         print(authRes.user!.uid);
         print('uiiiiiiiiiiiid');
-        emit(SuccessLoginState());
+        emit(SuccessLoginState(authRes.user!.uid));
       });
 
     } catch (e) {

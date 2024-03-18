@@ -6,6 +6,10 @@ class LoadingLoginState extends LoginState {}
 
 class SuccessLoginState extends LoginState {
 
+  final String uId;
+  SuccessLoginState(
+      this.uId
+      );
 
 }
 class PhoneNotRegisterstate extends LoginState {}
@@ -14,10 +18,18 @@ class PhoneRegisterState extends LoginState {}
 
 
 class SuccessGoogleLoginState extends LoginState {
+ final String uId;
+  SuccessGoogleLoginState(
+     this. uId
+      );
 
 
 }
 class SuccessFaceLoginState extends LoginState {
+  final String uId;
+  SuccessFaceLoginState(
+      this.uId
+      );
 
 
 }

@@ -13,6 +13,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:pinput/pinput.dart';
 
+import '../../../../../core/helper/cache/cache_helper.dart';
 import '../../../../../core/helper/component/component.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../Home-feature/view/layout.dart';
@@ -81,7 +82,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
 ) async {
     try {
-      // Retrieve verification ID from local storage
+
       String? storedVerificationId = await getVerificationId();
       if (storedVerificationId != null) {
         String smsCode = pinController.text;
@@ -142,6 +143,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 message: 'Verification success',
               ),
             );
+            CacheHelper.saveData(key: 'uId', value:state.uId);
             navigatorTo(context, LayoutScreen());
           }
           if (state is ErrorRegisterState) {

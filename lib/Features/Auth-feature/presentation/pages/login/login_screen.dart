@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:sell_4_u/core/constant.dart';
+import 'package:sell_4_u/core/helper/cache/cache_helper.dart';
 
 import 'package:sell_4_u/generated/l10n.dart';
 
@@ -39,6 +40,8 @@ class LoginScreen extends StatelessWidget {
                 message: 'Login success',
               ),
             );
+
+            CacheHelper.saveData(key: 'uId', value:state.uId);
             navigatorTo(context, const LayoutScreen());
           }
           if (state is SuccessLoginState) {
@@ -48,6 +51,7 @@ class LoginScreen extends StatelessWidget {
                 message: 'Login success',
               ),
             );
+            CacheHelper.saveData(key: 'uId', value:state.uId);
             navigatorTo(context, const LayoutScreen());
           }
           if (state is SuccessFaceLoginState) {
@@ -57,6 +61,7 @@ class LoginScreen extends StatelessWidget {
                 message: 'Login success',
               ),
             );
+            CacheHelper.saveData(key: 'uId', value:state.uId);
             navigatorTo(context, const LayoutScreen());
           }
           if (state is UsernotRegister) {

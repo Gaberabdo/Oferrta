@@ -63,6 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 message: 'Register success',
               ),
             );
+            CacheHelper.saveData(key: 'uId', value:state.uId);
             navigatorTo(context, const LayoutScreen());
           }
           if (state is ErrorVerifyState) {
@@ -385,6 +386,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         color: Colors.grey.shade300),
+
                                     child: const Center(
                                         child: FaIcon(
                                       FontAwesomeIcons.google,

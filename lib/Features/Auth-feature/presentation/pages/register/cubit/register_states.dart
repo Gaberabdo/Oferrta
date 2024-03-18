@@ -3,7 +3,12 @@ abstract class RegisterState {}
 
 class LoadingRegisterState extends RegisterState {}
 class RegisterInitialState extends RegisterState {}
-class SuccessRegisterState extends RegisterState {}
+class SuccessRegisterState extends RegisterState {
+  final String uId;
+  SuccessRegisterState(
+      this.uId
+      );
+}
 class ErrorRegisterState extends RegisterState {}
 class SuccessVerisyState extends RegisterState {}
 
