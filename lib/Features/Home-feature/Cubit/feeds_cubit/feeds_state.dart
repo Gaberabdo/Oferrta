@@ -5,6 +5,7 @@ class FeedsInitial extends FeedsState {}
 
 class GetCategoryLoading extends FeedsState {}
 class GetCategorySuccess extends FeedsState {}
+class GetCategoryDetailsSuccess extends FeedsState {}
 class GetCategoryError extends FeedsState {}
 
 class GetMostPopularLoading extends FeedsState {}

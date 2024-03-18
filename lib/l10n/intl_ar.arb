@@ -32,6 +32,7 @@
   "postAd": "انشر إعلانا",
   "resendOtp" : "اعادة الارسال",
   "reasonAdd": "الرجاء كتابة سبب العرض...",
-  "createPost" : " Create Ad"
+  "createPost" : " Create Ad",
+  "catDetails" : "تفاصيل المنتجات"
 
 }

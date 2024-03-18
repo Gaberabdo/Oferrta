@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:sell_4_u/core/constant.dart';
 
 import 'package:sell_4_u/generated/l10n.dart';
 
@@ -13,10 +14,6 @@ import 'package:sell_4_u/Features/Home-feature/view/layout.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-
-
-
-
 import '../../../../../core/helper/component/component.dart';
 import '../../../../../generated/l10n.dart';
 import '../register/register_screen.dart';
@@ -29,77 +26,68 @@ class LoginScreen extends StatelessWidget {
   var passwordController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
-
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          if(state is SuccessGoogleLoginState){
+          if (state is SuccessGoogleLoginState) {
             showTopSnackBar(
               Overlay.of(context),
-              CustomSnackBar.success(
-                message:'Login success',
+              const CustomSnackBar.success(
+                message: 'Login success',
               ),
             );
-            navigatorTo(context, LayoutScreen());
-
+            navigatorTo(context, const LayoutScreen());
           }
-          if(state is SuccessLoginState){
+          if (state is SuccessLoginState) {
             showTopSnackBar(
               Overlay.of(context),
-              CustomSnackBar.success(
-                message:'Login success',
+              const CustomSnackBar.success(
+                message: 'Login success',
               ),
             );
-            navigatorTo(context, LayoutScreen());
-
+            navigatorTo(context, const LayoutScreen());
           }
-          if(state is SuccessFaceLoginState){
+          if (state is SuccessFaceLoginState) {
             showTopSnackBar(
               Overlay.of(context),
-              CustomSnackBar.success(
-                message:'Login success',
+              const CustomSnackBar.success(
+                message: 'Login success',
               ),
             );
-            navigatorTo(context, LayoutScreen());
-
+            navigatorTo(context, const LayoutScreen());
           }
-          if(state is UsernotRegister){
+          if (state is UsernotRegister) {
             showTopSnackBar(
               Overlay.of(context),
-              CustomSnackBar.error(
-                message:'Please Register',
+              const CustomSnackBar.error(
+                message: 'Please Register',
               ),
             );
-            Navigator.push(context, MaterialPageRoute(builder: (context){
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
               return PhoneScreen();
             }));
-
           }
-          if(state is PhoneNotRegisterstate){
+          if (state is PhoneNotRegisterstate) {
             showTopSnackBar(
               Overlay.of(context),
-              CustomSnackBar.error(
-                message:'Please Register',
+              const CustomSnackBar.error(
+                message: 'Please Register',
               ),
             );
-          Navigator.push(context, MaterialPageRoute(builder: (context){
-            return PhoneScreen();
-          }));
-
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return PhoneScreen();
+            }));
           }
-          if(state is ErrorLoginState){
+          if (state is ErrorLoginState) {
             showTopSnackBar(
               Overlay.of(context),
-              CustomSnackBar.error(
-                message:'Login Error',
+              const CustomSnackBar.error(
+                message: 'Login Error',
               ),
             );
-
-
           }
         },
         builder: (context, state) {
@@ -109,12 +97,13 @@ class LoginScreen extends StatelessWidget {
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Colors.transparent,
-              title: Text( S.of(context).signIn,
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
+              title: Text(
+                S.of(context).signIn,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-              ) ,
               centerTitle: true,
             ),
             body: SafeArea(
@@ -122,57 +111,62 @@ class LoginScreen extends StatelessWidget {
                 child: Form(
                   key: formKey,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
 
                       Padding(
                         padding: const EdgeInsets.all(20.0),
+                        child: Text(
+                          S.of(context).homeWelcome,
+                          maxLines: 2,
+                          style: GoogleFonts.poppins(
+                            fontSize: 27,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
                         child: Column(
                           children: [
-
-
-                          TextFormField(
-                          controller: emailController,
-                          keyboardType: TextInputType.phone,
-                          obscureText: false,
-                          validator: (String? value) {
-                            if (value!.isEmpty) {
-                              return S.of(context).pleasePhone;
-                            }
-                            return null;
-                          },
-                          keyboardAppearance: Brightness.dark,
-                          decoration: InputDecoration(
-
-                            labelText: S.of(context).Phone,
-                            labelStyle: GoogleFonts.eduNswActFoundation(
-                              fontSize: 20,
-                              color: Colors.grey,
-                            ),
-                            prefixIcon: const Icon(
-                              Icons.phone,
-                              color: Colors.grey,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), // Set the border radius
-                              borderSide: BorderSide.none, // Remove the border
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-
-                          )
-                        ),
-
-
-
-                        const SizedBox(
+                            TextFormField(
+                                controller: emailController,
+                                keyboardType: TextInputType.phone,
+                                obscureText: false,
+                                validator: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return S.of(context).pleasePhone;
+                                  }
+                                  return null;
+                                },
+                                keyboardAppearance: Brightness.dark,
+                                decoration: InputDecoration(
+                                  labelText: S.of(context).Phone,
+                                  labelStyle: GoogleFonts.tajawal(
+                                    fontSize: 20,
+                                    color: Colors.grey,
+                                  ),
+                                  prefixIcon: const Icon(
+                                    Icons.phone,
+                                    color: Colors.grey,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    // Set the border radius
+                                    borderSide:
+                                        BorderSide.none, // Remove the border
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey.shade200,
+                                )),
+                            const SizedBox(
                               height: 15,
                             ),
                             TextFormField(
-
                               controller: passwordController,
                               keyboardType: TextInputType.emailAddress,
                               obscureText: cubit.isPassword,
-
                               validator: (String? value) {
                                 if (value!.isEmpty) {
                                   return S.of(context).pleasePassword;
@@ -181,32 +175,32 @@ class LoginScreen extends StatelessWidget {
                               },
                               keyboardAppearance: Brightness.dark,
                               decoration: InputDecoration(
-
-                                  labelText: S.of(context).Password,
-                                  labelStyle: GoogleFonts.eduNswActFoundation(
-                                      fontSize: 20, color: Colors.grey),
-                                  suffixIcon: IconButton(
-                                    onPressed: () {
-                                      cubit.changePasswordVisibility();
-                                    },
-                                    icon: Icon(
-                                      cubit.suffix,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  prefixIcon: const Icon(
-                                    Icons.lock_outline,
+                                labelText: S.of(context).Password,
+                                labelStyle: GoogleFonts.tajawal(
+                                    fontSize: 20, color: Colors.grey),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    cubit.changePasswordVisibility();
+                                  },
+                                  icon: Icon(
+                                    cubit.suffix,
                                     color: Colors.grey,
                                   ),
+                                ),
+                                prefixIcon: const Icon(
+                                  Icons.lock_outline,
+                                  color: Colors.grey,
+                                ),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12), // Set the border radius
-                                  borderSide: BorderSide.none, // Remove the border
+                                  borderRadius: BorderRadius.circular(12),
+                                  // Set the border radius
+                                  borderSide:
+                                      BorderSide.none, // Remove the border
                                 ),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
                               ),
                             ),
-
                             const SizedBox(
                               height: 40,
                             ),
@@ -216,19 +210,17 @@ class LoginScreen extends StatelessWidget {
                                 height: 45,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  color: Colors.blue.shade200,
-                                  borderRadius: BorderRadius.circular(12)
-                                ),
+                                    color: ColorStyle.primaryColor,
+                                    borderRadius: BorderRadius.circular(12)),
                                 child: MaterialButton(
-                                
-                                  onPressed: () async{
-
+                                  onPressed: () async {
                                     if (formKey.currentState!.validate()) {
-                                      cubit.login2('${emailController.text}@gmail.com', passwordController.text);
-
+                                      cubit.login2(
+                                          '${emailController.text}@gmail.com',
+                                          passwordController.text);
                                     }
 
-                                    if(state is SuccessLoginState){
+                                    if (state is SuccessLoginState) {
                                       print('donnnnnnnnnnnnne');
                                     }
                                   },
@@ -242,7 +234,7 @@ class LoginScreen extends StatelessWidget {
                                 ),
                               ),
                               fallback: (context) {
-                                return  Center(
+                                return Center(
                                   child: CircularProgressIndicator(
                                     color: Colors.green.shade700,
                                   ),
@@ -254,72 +246,69 @@ class LoginScreen extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                Expanded(
+                                const Expanded(
                                   child: Divider(
                                     height: 1,
-
                                     color: Colors.grey,
                                   ),
                                 ),
-                                Text(S.of(context).Or,
-                                  style: TextStyle(
-                                      fontSize: 16
-
-                                  ),
+                                Text(
+                                  S.of(context).Or,
+                                  style: const TextStyle(fontSize: 16),
                                 ),
-                                Expanded(
+                                const Expanded(
                                   child: Divider(
                                     height: 1,
-
                                     color: Colors.grey,
                                   ),
                                 ),
                               ],
                             ),
-
-
                             const SizedBox(
                               height: 15,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-
                               children: [
-
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     cubit.signInWithFacebook();
                                   },
                                   child: Container(
                                     height: 55,
                                     width: 55,
-                                    padding: EdgeInsets.all(8),
+                                    padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
-                                        color: Colors.grey.shade300
-                                    ),
-                                    child: Center(child: FaIcon(FontAwesomeIcons.facebook,size: 35,)),
+                                        color: Colors.grey.shade300),
+                                    child: const Center(
+                                        child: FaIcon(
+                                      FontAwesomeIcons.facebook,
+                                      size: 35,
+                                    )),
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 100,
                                 ),
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     cubit.signInWithGoogle();
                                   },
                                   child: Container(
                                     height: 55,
                                     width: 55,
-                                    padding: EdgeInsets.all(8),
+                                    padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
-                                        color: Colors.grey.shade300
-                                    ),
-                                    child: Center(child: FaIcon(FontAwesomeIcons.google,size: 30,)),
+                                        color: Colors.grey.shade300),
+                                    child: const Center(
+                                        child: FaIcon(
+                                      FontAwesomeIcons.google,
+                                      size: 30,
+                                    )),
                                   ),
                                 ),
-
                               ],
                             ),
                             const SizedBox(
@@ -328,34 +317,26 @@ class LoginScreen extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                    S.of(context).donthave,
+                                Text(S.of(context).donthave,
                                     style: GoogleFonts.poppins(
                                       fontSize: 14,
-
-                                    )
-                                ),
+                                    )),
                                 TextButton(
-                                  onPressed: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
                                       return PhoneScreen();
                                     }));
                                   },
-                                  child: Text(
-                                      S.of(context).CreateAccount,
+                                  child: Text(S.of(context).CreateAccount,
                                       style: GoogleFonts.tajawal(
                                         fontSize: 14,
                                         color: Colors.black,
-                                        fontWeight: FontWeight.bold
-
-                                      )
-                                  ),
+                                        fontWeight: FontWeight.bold,
+                                      )),
                                 )
                               ],
                             ),
-
-
-
                           ],
                         ),
                       ),

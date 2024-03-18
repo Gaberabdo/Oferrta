@@ -26,20 +26,24 @@ class FeedsCubit extends Cubit<FeedsState> {
   List<String> catModelIdes = [];
   List<String> catModelDetailsIdes = [];
 
+  bool isGetCategoryLoading = false;
+
   Future<void> getCategory() async {
     emit(GetCategoryLoading());
-    fireStore.collection("categories").snapshots().listen((event) {
+    fireStore.collection("categories").get().then((event) {
       catModel.clear();
       catModelIdes.clear();
       for (var element in event.docs) {
         catModel.add(CategoryModel.fromJson(element.data()));
         catModelIdes.add(element.id);
       }
+      isGetCategoryLoading = true;
       emit(GetCategorySuccess());
-    }).onError((handleError) {
+    }).catchError((handleError) {
       emit(GetCategoryError());
     });
   }
+
   List<ProductModel> getCategoryDetailsModel = [];
 
   Future<void> getCategoryDetails(String id) async {
@@ -48,24 +52,18 @@ class FeedsCubit extends Cubit<FeedsState> {
         .collection("categories")
         .doc(id)
         .collection('products')
-        .snapshots()
-        .listen((event) {
-      catModel.clear();
-      catModelIdes.clear();
+        .get()
+        .then((event) {
+      getCategoryDetailsModel.clear();
+      catModelDetailsIdes.clear();
       for (var element in event.docs) {
         getCategoryDetailsModel.add(ProductModel.fromJson(element.data()));
         catModelDetailsIdes.add(element.id);
       }
-      emit(GetCategorySuccess());
-    }).onError((handleError) {
+      emit(GetCategoryDetailsSuccess());
+    }).catchError((handleError) {
       emit(GetCategoryError());
     });
-  }
-
-  bool isChoose = false;
- changeState() async {
-
-    emit(ChoosePlans());
   }
 
   List<ProductModel> mostPopularModel = [];
@@ -109,7 +107,7 @@ class FeedsCubit extends Cubit<FeedsState> {
   }
 
   void openWhatsApp({required String phone}) async {
-    final url = 'https://wa.me/+2$phone';
+    final url = 'https://wa.me/$phone';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -159,7 +157,9 @@ class FeedsCubit extends Cubit<FeedsState> {
           .child('catImage/${Uri.file(image.path).pathSegments.last}');
       await ref.putFile(image).then((p0) {
         p0.ref.getDownloadURL().then((value) {
+          print(value);
           postListOfImage.add(value);
+          print(postListOfImage);
           emit(ImageUploadToFireSuccess());
         });
       });
@@ -181,6 +181,7 @@ class FeedsCubit extends Cubit<FeedsState> {
   Future<void> requestPostToFire({
     required String uId,
   }) async {
+    print(postListOfImage);
     String formattedDate =
         DateFormat('E MMM d y HH:mm:ss \'GMT\'Z (z)').format(DateTime.now());
     ProductModel model = ProductModel(
@@ -201,32 +202,38 @@ class FeedsCubit extends Cubit<FeedsState> {
     print(model.toMap());
 
     emit(RequestPostToFireLoading());
-    fireStore.collection('products').add(model.toMap()).then((value) {
-      fireStore
-          .collection('users')
-          .doc(uId)
-          .collection('products')
-          .add(model.toMap())
-          .then((value) {
+    Future.delayed(Duration(seconds: 2), () async {
+      await fireStore.collection('products').add(model.toMap()).then((value) {
         fireStore
-            .collection('categories')
-            .doc(catIdString!)
+            .collection('users')
+            .doc(uId)
             .collection('products')
             .add(model.toMap())
             .then((value) {
-          isLoading = false;
-          emit(RequestPostToFireSuccess());
-        }).catchError((onError) {
-          print('product to cat $onError');
+          print(model.toMap());
+
+          fireStore
+              .collection('categories')
+              .doc(catIdString!)
+              .collection('products')
+              .add(model.toMap())
+              .then((value) {
+            print(model.toMap());
+
+            isLoading = false;
+            emit(RequestPostToFireSuccess());
+          }).catchError((onError) {
+            print('product to cat $onError');
+            emit(RequestPostToFireError());
+          });
+        }).catchError((value) {
+          print('product to user $value');
           emit(RequestPostToFireError());
         });
-      }).catchError((value) {
-        print('product to user $value');
+      }).catchError((onError) {
+        print('product to product $onError');
         emit(RequestPostToFireError());
       });
-    }).catchError((onError) {
-      print('product to product $onError');
-      emit(RequestPostToFireError());
     });
   }
 
@@ -337,6 +344,33 @@ class FeedsCubit extends Cubit<FeedsState> {
   TextEditingController priceController = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
-
   bool isLoading = false;
+
+  void updateValue({
+    required ProductModel value,
+    required bool isCat,
+    String? catIdString,
+    String? productId,
+  }) {
+    print(value.toMap());
+    print(isCat);
+    print(catIdString);
+    print(productId);
+    if (isCat) {
+      fireStore
+          .collection('categories')
+          .doc(catIdString)
+          .collection('products')
+          .doc(productId)
+          .update({
+        "view": value.view! + 1,
+      });
+      emit(GetLocationSuccess());
+    } else {
+      fireStore.collection('products').doc(productId).update({
+        "view": value.view! + 1,
+      });
+      emit(GetLocationSuccess());
+    }
+  }
 }

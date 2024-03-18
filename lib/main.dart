@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_4_u/Features/Home-feature/view/layout.dart';
-import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dart';
 import 'package:sell_4_u/core/constant.dart';
 
 import 'core/helper/bloc_observe/observe.dart';
 import 'core/helper/cache/cache_helper.dart';
-import 'core/helper/dio-helper.dart';
 import 'generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -21,8 +19,6 @@ void main() async {
     options: Constant.options,
   );
 
-  await CacheHelper.init();
-  DioHelper.init();
   await CacheHelper.init();
 
   runApp(const MyApp());

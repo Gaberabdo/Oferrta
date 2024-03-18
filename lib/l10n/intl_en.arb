@@ -33,5 +33,6 @@
   "reasonAdd": "Please write reason to offer...",
   "verfyEmail" : " Verify Phone",
   "resendOtp" : " Resend Otp",
-  "createPost" : " Create Ad"
+  "createPost" : " Create Ad",
+  "catDetails" : "Category details"
 }

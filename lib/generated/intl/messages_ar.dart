@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل"),
         "callMe": MessageLookupByLibrary.simpleMessage("أتصل الان"),
+        "catDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المنتجات"),
         "categories": MessageLookupByLibrary.simpleMessage("فئات"),
         "completeSignUp": MessageLookupByLibrary.simpleMessage("اكمال التسجيل"),
         "continueB": MessageLookupByLibrary.simpleMessage("اكمل تصفح"),

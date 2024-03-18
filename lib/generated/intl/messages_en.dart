@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("Already have an account"),
         "callMe": MessageLookupByLibrary.simpleMessage("Call now"),
+        "catDetails": MessageLookupByLibrary.simpleMessage("Category details"),
         "categories": MessageLookupByLibrary.simpleMessage("Categories"),
         "completeSignUp":
             MessageLookupByLibrary.simpleMessage("Complete Sign Up"),
