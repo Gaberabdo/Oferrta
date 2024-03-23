@@ -15,6 +15,7 @@ class Constant {
     projectId: "sales-b43bd",
     storageBucket: 'sales-b43bd.appspot.com',
   );
+  static String notImage ='AAAA7L99OVw:APA91bH0dydqpbaMW7TQ5YO1-ROFlnwaNqrtnPle3s1MOSEUrvzFNu_-a7g5siX4QOfNbVjUuiHWBTEVsIsQUd38_0MKS-KUzQQ5fDii8IBCxQ2HTBHJvkU0zDEw0rKwgwq6kh_GMGDH';
   static String imageNotFound =    'https://firebasestorage.googleapis.com/v0/b/sales-b43bd.appspot.com/o/9170823.jpg?alt=media&token=a8c3ca95-99ce-4c07-9997-e770b22b7c8e';
 }
 

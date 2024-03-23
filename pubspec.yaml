@@ -68,12 +68,13 @@ dependencies:
   provider:
   pay:
   icons_plus:
-  firebase_auth: ^4.17.9
-  firebase_analytics: ^10.8.10
-  cloud_firestore: ^4.15.9
-  firebase_storage: ^11.6.10
-  intl_phone_number_input: ^0.7.4
-
+  firebase_auth:
+  firebase_analytics:
+  cloud_firestore:
+  firebase_storage:
+  intl_phone_number_input:
+  firebase_messaging:
+  dio:
 
 dev_dependencies:
   flutter_test:

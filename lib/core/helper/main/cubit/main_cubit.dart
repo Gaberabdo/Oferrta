@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../constant.dart';
 import '../../cache/cache_helper.dart';
 import 'main_state.dart';
 
@@ -31,5 +36,25 @@ class MainCubit extends Cubit<MainState> {
         emit(AppChangeModeState());
       });
     }
+  }
+
+  void subscribeToAdminTopic() {
+    FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    FirebaseMessaging.instance.subscribeToTopic('Admin').then((value)  {
+      emit(AdminTopicState());
+
+    }).catchError((onError){
+      print('*************************');
+      print(onError.toString());
+      print('*************************');
+    });
   }
 }

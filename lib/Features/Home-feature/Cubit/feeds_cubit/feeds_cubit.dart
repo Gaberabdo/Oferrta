@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +14,7 @@ import 'package:sell_4_u/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import '../../../../core/constant.dart';
 import '../../../../core/helper/cache/cache_helper.dart';
 import 'feeds_state.dart';
 import 'package:intl/intl.dart';
@@ -237,6 +241,7 @@ class FeedsCubit extends Cubit<FeedsState> {
             print(model.toMap());
 
             isLoading = false;
+            sendNot();
             emit(RequestPostToFireSuccess());
           }).catchError((onError) {
             print('product to cat $onError');
@@ -402,5 +407,35 @@ class FeedsCubit extends Cubit<FeedsState> {
   void updateValueFavBool() {
     isFav = !isFav;
     emit(GetLocationSuccess());
+  }
+
+  Future<void> sendNot() async {
+    final data = {
+      'to': '/topics/Admin',
+      'notification': {
+        'body': 'Notification Form 4Sales',
+        'title': 'Come to know what\'s new ads ',
+      }
+    };
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'key=${Constant.notImage}'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://fcm.googleapis.com/fcm/send',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+    } else {
+      print(response.statusMessage);
+    }
   }
 }

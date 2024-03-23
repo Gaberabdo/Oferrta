@@ -13,6 +13,13 @@ import 'core/helper/main/cubit/main_cubit.dart';
 import 'generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
@@ -24,6 +31,15 @@ void main() async {
 
   await CacheHelper.init();
   CacheHelper.getData(key: 'uId');
+
+  FirebaseMessaging.onMessage.listen((event) {
+    print(event.data.toString());
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print(event.data.toString());
+  });
+
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   runApp(MyApp(
     language: CacheHelper.getData(key: 'language') ?? 'en',
@@ -38,7 +54,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MainCubit()..changeAppLang(fromSharedLang: language),
+      create: (context) => MainCubit()
+        ..changeAppLang(fromSharedLang: language)
+        ..subscribeToAdminTopic(),
       child: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -70,7 +88,7 @@ class MyApp extends StatelessWidget {
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
                 )),
-            home:  LayoutScreen(),
+            home: LayoutScreen(),
             locale: cubit.language == 'en'
                 ? const Locale('en')
                 : const Locale('ar'),
@@ -80,7 +98,6 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-
             supportedLocales: S.delegate.supportedLocales,
           );
         },
