@@ -30,46 +30,75 @@ class BannerCat extends StatelessWidget {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 60,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () {
-                              print(cubit.catIdString);
+                  (cubit.catModel.isNotEmpty)
+                      ? SizedBox(
+                          height: 60,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    print(cubit.catIdString);
 
-                              cubit.getCategoryDetails(
-                                  cubit.catModelIdes[index]);
-                              cubit.catIdString = cubit.catModelIdes[index];
-                            },
-                            child: Container(
-                              height: 20,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: ColorStyle.primaryColor,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  cubit.catModel[index].categoryName!,
-                                  style: FontStyleThame.textStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 16,
-                                    fontColor: Colors.white,
+                                    cubit.getCategoryDetails(
+                                        cubit.catModelIdes[index]);
+                                    cubit.catIdString =
+                                        cubit.catModelIdes[index];
+                                  },
+                                  child: Container(
+                                    height: 20,
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          style: BorderStyle.solid,
+                                          color: Colors.black,
+                                          width: 1,
+                                        )),
+                                    child: Center(
+                                      child: Text(
+                                        cubit.catModel[index].categoryName!,
+                                        style: FontStyleThame.textStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 16,
+                                          fontColor: Colors.black,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
+                            itemCount: cubit.catModel.length,
                           ),
-                        );
-                      },
-                      itemCount: cubit.catModel.length,
-                    ),
-                  ),
+                        )
+                      : SizedBox(
+                          height: 40,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: FadeIn(
+                                  duration: const Duration(milliseconds: 400),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.grey.shade500,
+                                    child: Container(
+                                      height: 20,
+                                      width: 120,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: 10,
+                          ),
+                        ),
                   const SizedBox(
                     height: 12,
                   ),
@@ -92,8 +121,8 @@ class BannerCat extends StatelessWidget {
                               child: FadeIn(
                                 duration: const Duration(milliseconds: 400),
                                 child: Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade700,
-                                  highlightColor: Colors.grey.shade600,
+                                  baseColor: Colors.grey.shade300,
+                                  highlightColor: Colors.grey.shade500,
                                   child: Card(
                                     elevation: 3,
                                     shape: OutlineInputBorder(
@@ -113,55 +142,81 @@ class BannerCat extends StatelessWidget {
                           },
                           itemCount: 10,
                         )
-                      : GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithMaxCrossAxisExtent(
-                            mainAxisExtent: 250.0,
-                            maxCrossAxisExtent:
-                                MediaQuery.of(context).size.width / 2,
-                            crossAxisSpacing: 8,
-                            mainAxisSpacing: 8,
-                          ),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return HomeFeedsDetails(
-                                        model: cubit.getCategoryDetailsModel[index],
-                                        productId: cubit.catModelDetailsIdes[index],
-                                        catIdString: cubit.catIdString!,
-                                        isCat: true,
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromRGBO(242, 242, 242, 1),
-                                    borderRadius: BorderRadius.circular(12),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                        cubit.getCategoryDetailsModel[index]
-                                            .images!.first!,
+                      : cubit.getCategoryDetailsModel.isNotEmpty
+                          ? GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithMaxCrossAxisExtent(
+                                mainAxisExtent: 250.0,
+                                maxCrossAxisExtent:
+                                    MediaQuery.of(context).size.width / 2,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 8,
+                              ),
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation,
+                                            secondaryAnimation) {
+                                          return HomeFeedsDetails(
+                                            productId: cubit
+                                                .catModelDetailsIdes[index],
+                                            value: cubit
+                                                .getCategoryDetailsModel[index]
+                                                .view,
+                                            uid: cubit
+                                                .getCategoryDetailsModel[index]
+                                                .uId!,
+                                          );
+                                        },
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          var begin = const Offset(1.0, 0.0);
+                                          var end = Offset.zero;
+                                          var curve = Curves.ease;
+                                          var tween = Tween(
+                                                  begin: begin, end: end)
+                                              .chain(CurveTween(curve: curve));
+                                          var offsetAnimation =
+                                              animation.drive(tween);
+                                          return SlideTransition(
+                                            position: offsetAnimation,
+                                            child: child,
+                                          );
+                                        },
+                                        transitionDuration:
+                                            const Duration(milliseconds: 500),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromRGBO(
+                                            242, 242, 242, 1),
+                                        borderRadius: BorderRadius.circular(12),
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            cubit.getCategoryDetailsModel[index]
+                                                .images!.first,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            );
-                          },
-                          itemCount: cubit.getCategoryDetailsModel.length,
-                        ),
+                                );
+                              },
+                              itemCount: cubit.getCategoryDetailsModel.length,
+                            )
+                          : Center(
+                              child: Image.network(Constant.imageNotFound),
+                            ),
                 ],
               ),
             ),

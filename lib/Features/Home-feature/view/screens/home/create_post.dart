@@ -5,7 +5,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
+import 'package:sell_4_u/Features/Home-feature/view/layout.dart';
 import 'package:sell_4_u/core/constant.dart';
+import 'package:sell_4_u/core/helper/cache/cache_helper.dart';
 import 'package:sell_4_u/core/helper/component/component.dart';
 
 import '../../../../../generated/l10n.dart';
@@ -20,7 +22,46 @@ class CreatePost extends StatelessWidget {
       create: (context) => FeedsCubit()..getCategory(),
       child: BlocConsumer<FeedsCubit, FeedsState>(
         listener: (context, state) {
-          // TODO: implement listener
+          var cubit = FeedsCubit.get(context);
+
+          if (cubit.isLoading == false) {
+
+            List<TextEditingController> controllers = [
+              cubit.reasonController,
+              cubit.detailController,
+              cubit.descController,
+              cubit.imageController,
+              cubit.catController,
+              cubit.locationController,
+              cubit.priceController,
+            ];
+
+            for (var controller in controllers) {
+              controller.clear();
+            }
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  return LayoutScreen();
+                },
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  var begin = const Offset(1.0, 0.0);
+                  var end = Offset.zero;
+                  var curve = Curves.ease;
+                  var tween = Tween(begin: begin, end: end)
+                      .chain(CurveTween(curve: curve));
+                  var offsetAnimation = animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 500),
+              ),
+            );
+          }
         },
         builder: (context, state) {
           var cubit = FeedsCubit.get(context);
@@ -455,10 +496,10 @@ class CreatePost extends StatelessWidget {
                               const SizedBox(
                                 width: 15,
                               ),
-                              cubit.isLoading
+                              cubit.isLoading == true
                                   ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
+                                      color: Colors.white,
+                                    )
                                   : Text(
                                       S.of(context).createPost,
                                     ),
@@ -892,7 +933,7 @@ class _PlanChooseState extends State<PlanChoose> {
           ),
           ElevatedButton(
             onPressed: () {
-              widget.cubit.uploadImages(uId: '6fwI8nI8wMTBUT0FZguOKnfGhEh1');
+              widget.cubit.uploadImages(uId: CacheHelper.getData(key: 'uId'));
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(

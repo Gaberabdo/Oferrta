@@ -1,31 +1,39 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/setting/Cubit/setting_cubit.dart';
 import 'package:sell_4_u/Features/setting/Cubit/setting_state.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/constant.dart';
+import '../../../../core/helper/component/component.dart';
 import '../../../../generated/l10n.dart';
 import '../../../Home-feature/view/screens/home/feeds_details.dart';
 import '../../../Home-feature/view/widget/all_most_popular_widget/all_most_popular_widget.dart';
 
-class InBoxList extends StatelessWidget {
-  const InBoxList({Key? key}) : super(key: key);
+class SearchScreen extends StatelessWidget {
+  SearchScreen({Key? key}) : super(key: key);
+
+  final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SettingCubit()..getList(),
+      create: (context) => SettingCubit()..getListSearch(),
       child: BlocConsumer<SettingCubit, SettingState>(
         listener: (context, state) {
           // TODO: implement listener
         },
         builder: (context, state) {
-          var cubit = SettingCubit.get(context);
+          final settingCubit = BlocProvider.of<SettingCubit>(context);
 
           return Scaffold(
             appBar: AppBar(
+              title: Text(
+                S.of(context).search,
+                style: FontStyleThame.textStyle(),
+              ),
               elevation: 0,
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,
@@ -42,53 +50,38 @@ class InBoxList extends StatelessWidget {
                   size: 16,
                 ),
               ),
-              title: Text(
-                S.of(context).my_listings,
-                style: FontStyleThame.textStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
             ),
-            body: (state is LoadingGetListData)
-                ? GridView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                      mainAxisExtent: 240.0,
-                      maxCrossAxisExtent: 240.0,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    TextFormWidget(
+                      emailController: searchController,
+                      prefixIcon: const Icon(
+                        IconlyLight.search,
+                        size: 15,
+                      ),
+                      onChanged: (value) {
+                        settingCubit.searchInList(value); // Trigger search
+                      },
+                      hintText: S.of(context).search,
+                      validator: '',
+                      obscureText: false,
+                      icon: false,
+                      enabled: true,
                     ),
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: FadeIn(
-                          duration: const Duration(milliseconds: 400),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey.shade300,
-                            highlightColor: Colors.grey.shade500,
-                            child: Card(
-                              elevation: 3,
-                              shape: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(14),
-                                borderSide: const BorderSide(
-                                  style: BorderStyle.none,
-                                ),
-                              ),
-                              child: const SizedBox(
-                                height: 150,
-                                width: double.infinity,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    itemCount: 12,
-                  )
-                : cubit.listModel.isNotEmpty
-                    ? GridView.builder(
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (state is LoadingGetCategoriesData)
+                      const LinearProgressIndicator(),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    if (state is SuccessGetCategoriesData)
+                      GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                           mainAxisExtent: 240.0,
@@ -100,11 +93,12 @@ class InBoxList extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) {
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) {
                                     return HomeFeedsDetails(
-                                      uid: cubit.listModel[index].uId!,
-                                      value: cubit.listModel[index].view,
-                                      productId: cubit.mostPopularIdes[index],
+                                      value: state.categoriesModel[index].view,
+                                      uid: state.categoriesModel[index].uId!,
+                                      productId: settingCubit.searchIdes[index],
                                     );
                                   },
                                   transitionsBuilder: (context, animation,
@@ -128,16 +122,21 @@ class InBoxList extends StatelessWidget {
                             },
                             borderRadius: BorderRadius.circular(8),
                             child: MostPopular(
-                              model: cubit.listModel[index],
+                              model: state.categoriesModel[index],
                             ),
                           );
                         },
-                        itemCount: cubit.listModel.length,
-                      )
-                    : Center(
-                        child: Image.network(
-                            Constant.imageNotFound),
+                        shrinkWrap: true,
+                        itemCount: state.categoriesModel.length,
                       ),
+                    if (state is ErrorGetCategoriesData)
+                      Center(
+                        child: Image.network(Constant.imageNotFound),
+                      ),
+                  ],
+                ),
+              ),
+            ),
           );
         },
       ),

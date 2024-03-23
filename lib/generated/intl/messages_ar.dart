@@ -28,21 +28,35 @@ class MessageLookup extends MessageLookupByLibrary {
         "Or": MessageLookupByLibrary.simpleMessage("او"),
         "Password": MessageLookupByLibrary.simpleMessage("باسورد"),
         "Phone": MessageLookupByLibrary.simpleMessage("تليفون"),
+        "account": MessageLookupByLibrary.simpleMessage("حسابي"),
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل"),
+        "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
         "callMe": MessageLookupByLibrary.simpleMessage("أتصل الان"),
         "catDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المنتجات"),
         "categories": MessageLookupByLibrary.simpleMessage("فئات"),
+        "commercials": MessageLookupByLibrary.simpleMessage("تجاري"),
         "completeSignUp": MessageLookupByLibrary.simpleMessage("اكمال التسجيل"),
         "continueB": MessageLookupByLibrary.simpleMessage("اكمل تصفح"),
-        "createPost": MessageLookupByLibrary.simpleMessage(" Create Ad"),
+        "createPost": MessageLookupByLibrary.simpleMessage(" انشاء الاعلان"),
         "description": MessageLookupByLibrary.simpleMessage("الوصف"),
         "details": MessageLookupByLibrary.simpleMessage("أضف بياناتك"),
         "donthave": MessageLookupByLibrary.simpleMessage("ليس لديك حساب??"),
+        "editProfile":
+            MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
+        "edit_profile":
+            MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
+        "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
         "forgetPassword":
             MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور"),
+        "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
         "homeWelcome": MessageLookupByLibrary.simpleMessage("مرحبا بك"),
+        "language": MessageLookupByLibrary.simpleMessage("اللغة"),
+        "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "mostP": MessageLookupByLibrary.simpleMessage("الأكثر شعبية"),
+        "myAccount": MessageLookupByLibrary.simpleMessage("حسابى"),
+        "my_favorites": MessageLookupByLibrary.simpleMessage("المفضلة لدي"),
+        "my_listings": MessageLookupByLibrary.simpleMessage("قائمة إعلاناتي"),
         "nearYou": MessageLookupByLibrary.simpleMessage("بالقرب منك"),
         "pleaseEmail":
             MessageLookupByLibrary.simpleMessage("من فضلك ادخل ايميلك"),
@@ -52,18 +66,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleasePhone":
             MessageLookupByLibrary.simpleMessage("من فضلك ادخل تليفونك"),
         "postAd": MessageLookupByLibrary.simpleMessage("انشر إعلانا"),
+        "post_an_ad": MessageLookupByLibrary.simpleMessage("أضف إعلانات"),
         "reasonAdd":
             MessageLookupByLibrary.simpleMessage("الرجاء كتابة سبب العرض..."),
         "resendOtp": MessageLookupByLibrary.simpleMessage("اعادة الارسال"),
         "search": MessageLookupByLibrary.simpleMessage("البحث اي شئ"),
         "seeAll": MessageLookupByLibrary.simpleMessage("اظهار الكل"),
+        "setting": MessageLookupByLibrary.simpleMessage("الإعدادات"),
         "sign": MessageLookupByLibrary.simpleMessage("تسجيل  "),
         "signIn": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "signWithFace": MessageLookupByLibrary.simpleMessage(
             "تسجيل الدخول بأستخدام فيس بوك "),
         "signWithgoogle":
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول بأستخدام جوجل "),
-        "verfyEmail": MessageLookupByLibrary.simpleMessage("تفعيل الايميل"),
+        "verfyEmail": MessageLookupByLibrary.simpleMessage("تفعيل التليفون"),
         "whatsapp": MessageLookupByLibrary.simpleMessage("واتس اب")
       };
 }

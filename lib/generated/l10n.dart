@@ -400,11 +400,151 @@ class S {
     );
   }
 
+  /// `Edit Profile`
+  String get edit_profile {
+    return Intl.message(
+      'Edit Profile',
+      name: 'edit_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Listings`
+  String get my_listings {
+    return Intl.message(
+      'My Listings',
+      name: 'my_listings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Favorites`
+  String get my_favorites {
+    return Intl.message(
+      'My Favorites',
+      name: 'my_favorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language`
+  String get language {
+    return Intl.message(
+      'Language',
+      name: 'language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Arabic`
+  String get arabic {
+    return Intl.message(
+      'Arabic',
+      name: 'arabic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `English`
+  String get english {
+    return Intl.message(
+      'English',
+      name: 'english',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get setting {
+    return Intl.message(
+      'Settings',
+      name: 'setting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Profile`
+  String get editProfile {
+    return Intl.message(
+      'Edit Profile',
+      name: 'editProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `myAccount`
+  String get myAccount {
+    return Intl.message(
+      'myAccount',
+      name: 'myAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Category details`
   String get catDetails {
     return Intl.message(
       'Category details',
       name: 'catDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Commercials`
+  String get commercials {
+    return Intl.message(
+      'Commercials',
+      name: 'commercials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Post an Ad`
+  String get post_an_ad {
+    return Intl.message(
+      'Post an Ad',
+      name: 'post_an_ad',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account`
+  String get account {
+    return Intl.message(
+      'Account',
+      name: 'account',
       desc: '',
       args: [],
     );

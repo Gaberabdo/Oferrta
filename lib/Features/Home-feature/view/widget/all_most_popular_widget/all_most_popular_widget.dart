@@ -10,30 +10,45 @@ class MostPopular extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: ShapeDecoration(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        shadows: const [
+          BoxShadow(
+            color: Color(0x14000000),
+            blurRadius: 10,
+            offset: Offset(0, 0),
+            spreadRadius: 0,
+          )
+        ],
+      ),
+
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(8),
-              topRight: Radius.circular(8),
-            ),
-            child: Image(
-              height: 100,
-              width: double.infinity,
-              fit: BoxFit.fill,
-              image: NetworkImage(
-                (model.images!.isEmpty)
-                    ? "https://via.placeholder.com/700"
-                    : model.images!.first,
-                scale: 1,
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: ClipRRect(
+              borderRadius:  BorderRadius.circular(12),
+              child: Image(
+                height: 135,
+                width: double.infinity,
+                fit: BoxFit.fill,
+                image: NetworkImage(
+                  (model.images!.isEmpty)
+                      ? "https://via.placeholder.com/700"
+                      : model.images!.first,
+                  scale: 1,
+                ),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: Text(
               model.cat!,
               maxLines: 1,
@@ -41,25 +56,28 @@ class MostPopular extends StatelessWidget {
               style: FontStyleThame.textStyle(
                 fontWeight: FontWeight.w600,
                 fontColor: ColorStyle.primaryColor,
-                fontSize: 14,
+                fontSize: 20,
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: Text(
               model.reasonOfOffer!,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: FontStyleThame.textStyle(
                 fontWeight: FontWeight.w600,
-                fontColor: ColorStyle.gray,
+                fontColor: Colors.black,
                 fontSize: 14,
               ),
             ),
           ),
+
+
+
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -106,7 +124,7 @@ class MostPopular extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: FontStyleThame.textStyle(
                       fontWeight: FontWeight.w600,
-                      fontColor: Colors.black,
+                      fontColor: ColorStyle.primaryColor,
                       fontSize: 14,
                     ),
                   ),

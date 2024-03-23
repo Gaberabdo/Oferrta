@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sell_4_u/Features/Auth-feature/presentation/pages/register/cubit/register_states.dart';
+import 'package:sell_4_u/core/constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -15,15 +15,19 @@ import 'package:pinput/pinput.dart';
 
 import '../../../../../core/helper/cache/cache_helper.dart';
 import '../../../../../core/helper/component/component.dart';
+import '../../../../../core/responsive_screen.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../Home-feature/view/layout.dart';
 import '../../../manger/model/user_model.dart';
 import 'cubit/register_cubit.dart';
 
-
-
 class OtpScreen extends StatefulWidget {
-  OtpScreen({required this.phoneNumber, required this.email, required this.name,required this.password});
+  OtpScreen({
+    required this.phoneNumber,
+    required this.email,
+    required this.name,
+    required this.password,
+  });
 
   String phoneNumber;
   String name;
@@ -77,24 +81,22 @@ class _OtpScreenState extends State<OtpScreen> {
     return prefs.getString('verificationId');
   }
 
-  Future<void> sendOtp(
-     BuildContext context
-
-) async {
+  Future<void> sendOtp(BuildContext context) async {
     try {
-
       String? storedVerificationId = await getVerificationId();
       if (storedVerificationId != null) {
         String smsCode = pinController.text;
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: storedVerificationId, smsCode: smsCode);
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(
+            verificationId: storedVerificationId, smsCode: smsCode);
         await FirebaseAuth.instance.signInWithCredential(credential);
-      RegisterCubit.get(context).registerWithEmailPassword(context: context,email:widget.email,
-          name:widget. name,
-          password:widget. password,
-          phone: widget.phoneNumber);
+        RegisterCubit.get(context).registerWithEmailPassword(
+            context: context,
+            email: widget.email,
+            name: widget.name,
+            password: widget.password,
+            phone: widget.phoneNumber);
       } else {
-        // Handle the case where verification ID is not found
-        // This might happen if the app is reopened after a long time
+
         showTopSnackBar(
           Overlay.of(context),
           CustomSnackBar.error(
@@ -111,8 +113,6 @@ class _OtpScreenState extends State<OtpScreen> {
       );
     }
   }
-
-
 
   void resendOtp() async {
     phoneVerify();
@@ -143,7 +143,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 message: 'Verification success',
               ),
             );
-            CacheHelper.saveData(key: 'uId', value:state.uId);
+            CacheHelper.saveData(key: 'uId', value: state.uId);
             navigatorTo(context, LayoutScreen());
           }
           if (state is ErrorRegisterState) {
@@ -157,135 +157,298 @@ class _OtpScreenState extends State<OtpScreen> {
         },
         builder: (context, state) {
           var cubit = RegisterCubit.get(context);
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                S.of(context).verfyEmail,
-                style: GoogleFonts.tajawal(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
+
+          return ResponsiveScreen(
+            mobileScreen:Scaffold(
+              appBar: AppBar(
+                elevation: 0,
+                title: Text(
+                  S.of(context).verfyEmail,
+                  style: GoogleFonts.tajawal(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
+                centerTitle: true,
               ),
-              centerTitle: true,
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: Pinput(
-                      length: 6,
-                      controller: pinController,
-                      androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
-                      listenForMultipleSmsOnAndroid: true,
-                      defaultPinTheme: PinTheme(
-                        width: 56,
-                        height: 56,
-                        textStyle: TextStyle(
-                          fontSize: 22,
-                          color: Color.fromRGBO(30, 60, 87, 1),
+              body: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Pinput(
+                        length: 6,
+                        controller: pinController,
+                        androidSmsAutofillMethod:
+                        AndroidSmsAutofillMethod.smsUserConsentApi,
+                        listenForMultipleSmsOnAndroid: true,
+                        defaultPinTheme: PinTheme(
+                          width: 56,
+                          height: 56,
+                          textStyle: TextStyle(
+                            fontSize: 22,
+                            color: Color.fromRGBO(30, 60, 87, 1),
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey),
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(19),
-                          border: Border.all(color: Colors.grey),
+                        separatorBuilder: (index) => SizedBox(width: 8),
+                        hapticFeedbackType: HapticFeedbackType.lightImpact,
+                        onCompleted: (pin) {
+                          debugPrint('onCompleted: $pin');
+                        },
+                        onChanged: (value) {
+                          debugPrint('onChanged: $value');
+                        },
+                        cursor: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 9),
+                              width: 22,
+                              height: 1,
+                              color: Colors.blue,
+                            ),
+                          ],
+                        ),
+                        focusedPinTheme: PinTheme(
+                          width: 56,
+                          height: 56,
+                          textStyle: TextStyle(
+                            fontSize: 22,
+                            color: Color.fromRGBO(30, 60, 87, 1),
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(19),
+                            border: Border.all(color: Colors.blue),
+                          ),
+                        ),
+                        submittedPinTheme: PinTheme(
+                          width: 56,
+                          height: 56,
+                          textStyle: TextStyle(
+                            fontSize: 22,
+                            color: Color.fromRGBO(30, 60, 87, 1),
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(19),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                        ),
+                        errorPinTheme: PinTheme(
+                          width: 56,
+                          height: 56,
+                          textStyle: TextStyle(
+                            fontSize: 22,
+                            color: Colors.redAccent,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(19),
+                            border: Border.all(color: Colors.redAccent),
+                          ),
                         ),
                       ),
-                      separatorBuilder: (index) => SizedBox(width: 8),
-                      hapticFeedbackType: HapticFeedbackType.lightImpact,
-                      onCompleted: (pin) {
-                        debugPrint('onCompleted: $pin');
-                      },
-                      onChanged: (value) {
-                        debugPrint('onChanged: $value');
-                      },
-                      cursor: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            resendOtp();
+                          },
+                          child: Text(
+                            S.of(context).resendOtp,
+                            style: GoogleFonts.tajawal(
+                                color: ColorStyle.secondColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30),
+                    Container(
+                      height: 45,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: ColorStyle.primaryColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: MaterialButton(
+                        onPressed: () {
+                          String otp = pinController.text;
+                          print('Entered OTP: $otp');
+                          sendOtp(context);
+                        },
+                        child: Text(
+                          S.of(context).verfyEmail,
+                          style: GoogleFonts.tajawal(
+                              fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            desktopScreen: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                elevation: 0,
+                title: Text(
+                  S.of(context).verfyEmail,
+                  style: GoogleFonts.tajawal(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                centerTitle: true,
+              ),
+              body: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child:Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: Pinput(
+                              length: 6,
+                              controller: pinController,
+                              androidSmsAutofillMethod:
+                              AndroidSmsAutofillMethod.smsUserConsentApi,
+                              listenForMultipleSmsOnAndroid: true,
+                              defaultPinTheme: PinTheme(
+                                width: 56,
+                                height: 56,
+                                textStyle: TextStyle(
+                                  fontSize: 22,
+                                  color: Color.fromRGBO(30, 60, 87, 1),
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                              ),
+                              separatorBuilder: (index) => SizedBox(width: 8),
+                              hapticFeedbackType: HapticFeedbackType.lightImpact,
+                              onCompleted: (pin) {
+                                debugPrint('onCompleted: $pin');
+                              },
+                              onChanged: (value) {
+                                debugPrint('onChanged: $value');
+                              },
+                              cursor: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 9),
+                                    width: 22,
+                                    height: 1,
+                                    color: Colors.blue,
+                                  ),
+                                ],
+                              ),
+                              focusedPinTheme: PinTheme(
+                                width: 56,
+                                height: 56,
+                                textStyle: TextStyle(
+                                  fontSize: 22,
+                                  color: Color.fromRGBO(30, 60, 87, 1),
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(19),
+                                  border: Border.all(color: Colors.blue),
+                                ),
+                              ),
+                              submittedPinTheme: PinTheme(
+                                width: 56,
+                                height: 56,
+                                textStyle: TextStyle(
+                                  fontSize: 22,
+                                  color: Color.fromRGBO(30, 60, 87, 1),
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(19),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                              ),
+                              errorPinTheme: PinTheme(
+                                width: 56,
+                                height: 56,
+                                textStyle: TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.redAccent,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(19),
+                                  border: Border.all(color: Colors.redAccent),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  resendOtp();
+                                },
+                                child: Text(
+                                  S.of(context).resendOtp,
+                                  style: GoogleFonts.tajawal(
+                                      color: ColorStyle.secondColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 30),
                           Container(
-                            margin: const EdgeInsets.only(bottom: 9),
-                            width: 22,
-                            height: 1,
-                            color: Colors.blue,
+                            height: 45,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: ColorStyle.primaryColor,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: MaterialButton(
+                              onPressed: () {
+                                String otp = pinController.text;
+                                print('Entered OTP: $otp');
+                                sendOtp(context);
+                              },
+                              child: Text(
+                                S.of(context).verfyEmail,
+                                style: GoogleFonts.tajawal(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      focusedPinTheme: PinTheme(
-                        width: 56,
-                        height: 56,
-                        textStyle: TextStyle(
-                          fontSize: 22,
-                          color: Color.fromRGBO(30, 60, 87, 1),
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(19),
-                          border: Border.all(color: Colors.blue),
-                        ),
-                      ),
-                      submittedPinTheme: PinTheme(
-                        width: 56,
-                        height: 56,
-                        textStyle: TextStyle(
-                          fontSize: 22,
-                          color: Color.fromRGBO(30, 60, 87, 1),
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(19),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                      ),
-                      errorPinTheme: PinTheme(
-                        width: 56,
-                        height: 56,
-                        textStyle: TextStyle(
-                          fontSize: 22,
-                          color: Colors.redAccent,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(19),
-                          border: Border.all(color: Colors.redAccent),
-                        ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Center(
+                      child: Image(
+                        image: NetworkImage(
+                            'https://img.freepik.com/free-vector/two-factor-authentication-concept-illustration_114360-5488.jpg?t=st=1710854824~exp=1710858424~hmac=7ad125566b9172e16081985e4ee22fb51122d2b89fa0b1896dce05e8a6d19edd&w=740'),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          resendOtp();
-                        },
-                        child: Text(
-                          S.of(context).resendOtp,
-                          style: GoogleFonts.tajawal(color: Colors.green,fontSize: 16,fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  Container(
-                    height: 45,
-                    width: 340,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade200,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: MaterialButton(
-                      onPressed: () {
-                        String otp = pinController.text;
-                        print('Entered OTP: $otp');
-                        sendOtp(context);
-                      },
-                      child: Text(
-                        S.of(context).verfyEmail,
-                        style: GoogleFonts.tajawal(fontSize: 16, color: Colors.white),
-                      ),
-                    ),
-                  ),
-
                 ],
               ),
             ),
@@ -295,4 +458,3 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 }
-

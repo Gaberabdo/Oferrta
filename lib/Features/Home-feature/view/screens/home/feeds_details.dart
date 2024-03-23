@@ -13,27 +13,23 @@ import '../../../../../generated/l10n.dart';
 class HomeFeedsDetails extends StatelessWidget {
   const HomeFeedsDetails({
     super.key,
-    required this.model,
-    required this.isCat,
-    this.catIdString = '',
-    this.productId = '',
+    required this.productId,
+    required this.uid,
+    required this.value,
   });
 
-  final ProductModel model;
+  final String uid;
   final String productId;
-  final bool isCat;
-  final String catIdString;
+  final dynamic value;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => FeedsCubit()
-        ..getUserData(id: model.uId!)
-        ..updateValue(
-          value: model,
-          isCat: isCat,
-          catIdString: catIdString,
-          productId: productId,
+        ..getUserData(id: uid)
+        ..updateValue(productId: productId, value: value)
+        ..getDetailsProData(
+          id: productId,
         ),
       child: BlocConsumer<FeedsCubit, FeedsState>(
         listener: (context, state) {
@@ -41,454 +37,454 @@ class HomeFeedsDetails extends StatelessWidget {
         },
         builder: (context, state) {
           var cubit = FeedsCubit.get(context);
+          ProductModel modelDetails = cubit.modelDetails;
           return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              centerTitle: true,
-              automaticallyImplyLeading: true,
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(
-                    context,
-                  );
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios_rounded,
-                  size: 16,
-                ),
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    IconlyLight.heart,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.share,
-                  ),
-                )
-              ],
-            ),
-            body: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CarouselSlider(
-                      items: model!.images!.asMap().entries.map(
-                        (e) {
-                          final index = e.key;
-                          final imageUrl = e.value;
-                          return Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(242, 242, 242, 1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Stack(
-                              alignment: AlignmentDirectional.bottomStart,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image(
-                                    image: NetworkImage(imageUrl),
-                                    fit: BoxFit.cover,
-                                    height: 200,
-                                    width: double.infinity,
+                    Stack(
+                      alignment: AlignmentDirectional.topCenter,
+                      children: [
+                        if (modelDetails.images != null)
+                          CarouselSlider(
+                            items: modelDetails.images!.asMap().entries.map(
+                              (e) {
+                                final index = e.key;
+                                final imageUrl = e.value;
+                                return Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromRGBO(242, 242, 242, 1),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: 50,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: ColorStyle.gray,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(1.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const Icon(Icons.image),
-                                          Text(
-                                              '${index + 1}/${cubit.imageList.length}')
-                                        ],
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.bottomStart,
+                                    children: [
+                                      Image(
+                                        image: NetworkImage(imageUrl),
+                                        fit: BoxFit.cover,
+                                        height: 300,
+                                        width: double.infinity,
                                       ),
-                                    ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 50,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: ColorStyle.gray,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(1.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                const Icon(Icons.image),
+                                                Text(
+                                                    '${index + 1}/${modelDetails.images!.length}')
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
+                                );
+                              },
+                            ).toList(),
+                            options: CarouselOptions(
+                              height: 300,
+                              viewportFraction: 1.0,
+                              enlargeCenterPage: false,
+                              initialPage: 0,
+                              enableInfiniteScroll: true,
+                              reverse: false,
+                              autoPlay: false,
+                              autoPlayInterval: const Duration(seconds: 3),
+                              autoPlayAnimationDuration:
+                                  const Duration(seconds: 1),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              scrollDirection: Axis.horizontal,
                             ),
-                          );
-                        },
-                      ).toList(),
-                      options: CarouselOptions(
-                        height: 200,
-                        viewportFraction: 1.0,
-                        enlargeCenterPage: false,
-                        initialPage: 0,
-                        enableInfiniteScroll: true,
-                        reverse: false,
-                        autoPlay: false,
-                        autoPlayInterval: const Duration(seconds: 3),
-                        autoPlayAnimationDuration: const Duration(seconds: 1),
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        scrollDirection: Axis.horizontal,
-                      ),
+                          ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pop(
+                                  context,
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back_ios_rounded,
+                                size: 16,
+                              ),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              onPressed: () {
+                                cubit.updateValueFavBool();
+                                cubit.updateValueFav(
+                                    value: modelDetails, productId: productId);
+                              },
+                              icon: Icon(
+                                cubit.isFav == true
+                                    ? IconlyBold.heart
+                                    : IconlyLight.heart,
+                                color: cubit.isFav == true
+                                    ? Colors.red
+                                    : Colors.black,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                     const SizedBox(
                       height: 12,
                     ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(242, 242, 242, 1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  Icons.visibility_outlined,
-                                  size: 18,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  model.view.toString(),
-                                  style: FontStyleThame.textStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  'Views',
-                                  style: FontStyleThame.textStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Container(
-                                  height: 22,
-                                  width: 1,
-                                  color: Colors.black38,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                const Icon(
-                                  Icons.timelapse_outlined,
-                                  size: 18,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  transform(model.time!),
-                                  style: FontStyleThame.textStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Container(
-                                  height: 22,
-                                  width: 1,
-                                  color: Colors.black38,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  model.cat!,
-                                  style: FontStyleThame.textStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    fontColor: ColorStyle.primaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Text(
-                              model.reasonOfOffer!,
-                              style: FontStyleThame.textStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                fontColor: ColorStyle.primaryColor,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Text(
-                              model.price,
-                              style: FontStyleThame.textStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                fontColor: ColorStyle.primaryColor,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  IconlyLight.location,
-                                  size: 18,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  model.location.toString(),
-                                  style: FontStyleThame.textStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        modelDetails.cat ?? 'category',
+                        style: FontStyleThame.textStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.normal,
+                          fontColor: Colors.black,
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(242, 242, 242, 1),
-                        borderRadius: BorderRadius.circular(8),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            value.toString(),
+                            style: FontStyleThame.textStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'Views',
+                            style: FontStyleThame.textStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          const Icon(
+                            Icons.timelapse_outlined,
+                            size: 14,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            transform(modelDetails.time ??
+                                'Tue Mar 29 2024 16:25:43 GMT+0530 (IST)'),
+                            style: FontStyleThame.textStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                        ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              S.of(context).description,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            IconlyLight.location,
+                            size: 14,
+                            color: ColorStyle.primaryColor,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(
+                            child: Text(
+                              modelDetails.location ?? 'location',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: FontStyleThame.textStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                fontColor: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
-                            SizedBox(
-                              height: 100,
-                              width: double.infinity,
-                              child: Text(
-                                model.description!,
-                                overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            ',',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: FontStyleThame.textStyle(
+                              fontWeight: FontWeight.w600,
+                              fontColor: ColorStyle.gray,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Icon(
+                            Icons.bar_chart,
+                            size: 14,
+                            color: ColorStyle.primaryColor,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(
+                            child: Text(
+                              modelDetails.reasonOfOffer ?? 'reason',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: FontStyleThame.textStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            ',',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: FontStyleThame.textStyle(
+                              fontWeight: FontWeight.w600,
+                              fontColor: ColorStyle.gray,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Icon(
+                            Icons.attach_money,
+                            size: 14,
+                            color: ColorStyle.primaryColor,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(
+                            child: Text(
+                              modelDetails.price ?? 'price',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: FontStyleThame.textStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundImage: NetworkImage(cubit.userModel ==
+                                    null
+                                ? "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=740&t=st=1710334520~exp=1710335120~hmac=f053daa6a74128973e2f7512cd8b6eaae51a0716ece0866a6b355e1c900a61e6"
+                                : cubit.userModel!.image!),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                cubit.userModel == null
+                                    ? "user"
+                                    : cubit.userModel!.name!,
                                 style: FontStyleThame.textStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                  fontColor: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                "Owner",
+                                style: FontStyleThame.textStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
                                   fontColor: Colors.black38,
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(242, 242, 242, 1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(cubit.userModel ==
-                                      null
-                                  ? "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=740&t=st=1710334520~exp=1710335120~hmac=f053daa6a74128973e2f7512cd8b6eaae51a0716ece0866a6b355e1c900a61e6"
-                                  : cubit.userModel!.image!),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  cubit.userModel == null
-                                      ? "user"
-                                      : cubit.userModel!.name!,
-                                  style: FontStyleThame.textStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    fontColor: Colors.black,
-                                  ),
-                                ),
-                                Text(
-                                  cubit.userModel == null
-                                      ? "9988545"
-                                      : cubit.userModel!.phone!,
-                                  style: FontStyleThame.textStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    fontColor: Colors.black38,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                      height: 170,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(242, 242, 242, 1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          zoom: 10,
-                          target: LatLng(
-                            model.lan!,
-                            model.lat!,
+                            ],
                           ),
-                        ),
-                        buildingsEnabled: true,
-                        compassEnabled: true,
-                        myLocationEnabled: true,
-                        indoorViewEnabled: true,
-                        mapToolbarEnabled: true,
-                        myLocationButtonEnabled: true,
-
-                        onMapCreated: (controller) {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: SizedBox(
-                      height: 44,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorStyle.primaryColor,
-                          foregroundColor: Colors.white,
-                          elevation: 3,
-                          shape: (RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                        ),
-                        onPressed: () {
-                          cubit.makePhoneCall(phone: cubit.userModel!.phone!);
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () {
+                              cubit.makePhoneCall(
+                                  phone: cubit.userModel!.phone!);
+                            },
+                            color: ColorStyle.primaryColor,
+                            icon: const Icon(
                               IconlyLight.call,
                             ),
-                            const SizedBox(
-                              width: 15,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              cubit.openWhatsApp(
+                                  phone: cubit.userModel!.phone!);
+                            },
+                            color: const Color.fromRGBO(37, 211, 102, 1),
+                            icon: const Icon(
+                              IconlyLight.chat,
                             ),
-                            Text(
-                              S.of(context).callMe,
-                            ),
-                          ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        S.of(context).description,
+                        style: FontStyleThame.textStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                          fontColor: Colors.black,
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: SizedBox(
-                      height: 44,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(37, 211, 102, 1),
-                          foregroundColor: Colors.white,
-                          elevation: 3,
-                          shape: (RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                        ),
-                        onPressed: () {
-                          cubit.openWhatsApp(phone: cubit.userModel!.phone!);
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          final textSpan = TextSpan(
+                            text: modelDetails.description ?? 'description',
+                            style: FontStyleThame.textStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              fontColor: Colors.black38,
+                            ),
+                          );
+                          final textPainter = TextPainter(
+                            text: textSpan,
+                            textDirection: TextDirection.ltr,
+                            maxLines: 3,
+                          );
+                          textPainter.layout(maxWidth: constraints.maxWidth);
+                          final isTextOverflowing =
+                              textPainter.didExceedMaxLines;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text.rich(
+                                textSpan,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                                textAlign: TextAlign.left,
+                              ),
+                              if (isTextOverflowing) // Add message if text exceeds three lines
+                                const Text(
+                                  '...',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black38,
+                                  ),
+                                ),
+                            ],
+                          );
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Image(
-                              height: 25,
-                              width: 25,
-                              fit: BoxFit.contain,
-                              color: Colors.white,
-                              image: NetworkImage(
-                                  'https://firebasestorage.googleapis.com/v0/b/sales-b43bd.appspot.com/o/image-removebg-preview%20(1).png?alt=media&token=750dc901-f549-4782-b22d-3d21b97a8666'),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              S.of(context).whatsapp,
-                            ),
-                          ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        "Location",
+                        style: FontStyleThame.textStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                          fontColor: Colors.black,
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    if (modelDetails.lan != null && modelDetails.lat != null)
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SizedBox(
+                          height: 300,
+                          child: ClipRRect(
+                            borderRadius: BorderRadiusDirectional.circular(12),
+                            child: GoogleMap(
+                              mapType: MapType.hybrid,
+                              initialCameraPosition: CameraPosition(
+                                zoom: 10,
+                                target: LatLng(
+                                  modelDetails.lan!,
+                                  modelDetails.lat!,
+                                ),
+                              ),
+                              buildingsEnabled: true,
+                              compassEnabled: true,
+                              myLocationEnabled: true,
+                              indoorViewEnabled: true,
+                              mapToolbarEnabled: true,
+                              myLocationButtonEnabled: true,
+                              onMapCreated: (controller) {},
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (modelDetails.lan == null && modelDetails.lat == null)
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SizedBox(
+                          height: 300,
+                          child: ClipRRect(
+                            borderRadius: BorderRadiusDirectional.circular(12),
+                            child: GoogleMap(
+                              mapType: MapType.hybrid,
+                              initialCameraPosition: const CameraPosition(
+                                zoom: 10,
+                                target: LatLng(
+                                  30,
+                                  20,
+                                ),
+                              ),
+                              buildingsEnabled: true,
+                              compassEnabled: true,
+                              myLocationEnabled: true,
+                              indoorViewEnabled: true,
+                              mapToolbarEnabled: true,
+                              myLocationButtonEnabled: true,
+                              onMapCreated: (controller) {},
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           );

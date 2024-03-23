@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dart';
@@ -8,6 +9,8 @@ import 'package:sell_4_u/Features/setting/view/screens/profile_screen.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:iconly/iconly.dart';
 
+import '../../../../core/helper/cache/cache_helper.dart';
+import '../../../setting/model/user_model.dart';
 import 'home-state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -22,28 +25,25 @@ class HomeCubit extends Cubit<HomeState> {
     const ProfileScreen(),
   ];
   int selectedIndex = 0;
-  List<BottomNavigationBarItem> item = [
-    BottomNavigationBarItem(
-      icon: const Icon(IconlyLight.home),
-      label: isArabic() ? 'الرئيسية' : 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: const Icon(Icons.sell_outlined),
-      label: isArabic() ? 'تجاري' : 'Commercials',
-    ),
-    BottomNavigationBarItem(
-      icon: const Icon(Icons.add_to_photos_outlined),
-      label: isArabic() ? 'أضف إعلانات' : 'Post an Ad',
-    ),
-
-    BottomNavigationBarItem(
-      icon: const Icon(Icons.account_circle_outlined),
-      label: isArabic() ? 'حسابي' : 'Account',
-    ),
-  ];
 
   void onItemTapped(int index) {
     selectedIndex = index;
     emit(ChangeItemIndex());
+  }
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  UserModel model = UserModel();
+
+  Future<void> getUser() async {
+    fireStore.collection('users')
+        .doc(CacheHelper.getData(key: 'uId'))
+        .snapshots()
+        .listen((value) {
+      model = UserModel.fromJson(value.data()!);
+      emit(GetUserdataSuccess());
+    }).onError((handleError) {
+      emit(ErrorGetUserdata());
+    });
+    emit(LoadingGetUserdata());
   }
 }

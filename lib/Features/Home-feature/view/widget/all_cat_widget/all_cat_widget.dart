@@ -29,6 +29,9 @@ class AllCategory extends StatelessWidget {
                   image: NetworkImage(
                     model.image!,
                     scale: 1,
+                    headers: {
+                      'Access-Control-Allow-Origin': 'gs://sales-b43bd.appspot.com',
+                    },
                   ),
                 ),
               ),

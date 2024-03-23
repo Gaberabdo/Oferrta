@@ -15,6 +15,7 @@ class Constant {
     projectId: "sales-b43bd",
     storageBucket: 'sales-b43bd.appspot.com',
   );
+  static String imageNotFound =    'https://firebasestorage.googleapis.com/v0/b/sales-b43bd.appspot.com/o/9170823.jpg?alt=media&token=a8c3ca95-99ce-4c07-9997-e770b22b7c8e';
 }
 
 bool isArabic() {
@@ -31,7 +32,7 @@ class FontStyleThame {
   static TextStyle textStyle({
     double fontSize = 20,
     Color? fontColor,
-    FontWeight fontWeight = FontWeight.w600,
+    FontWeight fontWeight = FontWeight.w400,
   }) {
     return GoogleFonts.tajawal(
       color: fontColor,

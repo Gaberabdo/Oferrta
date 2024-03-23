@@ -36,7 +36,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<UserCredential> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn(scopes: ['email']).signIn();
 
       if (googleUser == null) {
         throw Exception('Google sign-in failed');
@@ -59,9 +59,7 @@ class LoginCubit extends Cubit<LoginState> {
       if (!userSnapshot.exists) {
         print('User not registered. Please register.');
         emit(UsernotRegister());
-
-      }else{
-
+      } else {
         emit(SuccessGoogleLoginState(user.uid));
       }
 

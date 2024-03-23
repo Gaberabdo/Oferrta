@@ -22,6 +22,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
 
   UserModel ?userModel;
+  ///sign up with facebook
 
   Future<void> signInWithFacebook({required String phoneNumber}) async {
     try {
@@ -64,7 +65,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           email: user.email,
           phone: phoneNumber,
           uId: user.uid,
-          image: 'https://www.freepik.com/free-vector/illustration-user-avatar-icon_2606572.htm#fromView=search&page=1&position=47&uuid=ea28f8ef-cff6-485a-8f1a-efde5332f9a1'
+          image: 'https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=740&t=st=1710879319~exp=1710879919~hmac=f348274212b6bb318e8e8b2b379ea323d7b4f8e9c3566eb4307985931de47209'
         );
 
 
@@ -132,7 +133,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         email: user.email,
         phone: phoneNumber,
         uId: user.uid,
-        image: 'https://www.freepik.com/free-vector/illustration-user-avatar-icon_2606572.htm#fromView=search&page=1&position=47&uuid=ea28f8ef-cff6-485a-8f1a-efde5332f9a1'
+        image: 'https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=740&t=st=1710879319~exp=1710879919~hmac=f348274212b6bb318e8e8b2b379ea323d7b4f8e9c3566eb4307985931de47209'
       );
 
       await users.doc(user.uid).set(model.toMap());
@@ -156,12 +157,13 @@ class RegisterCubit extends Cubit<RegisterState> {
         name: name,
         email: email,
         phone: phoneNumber,
-        image: 'https://www.freepik.com/free-vector/illustration-user-avatar-icon_2606572.htm#fromView=search&page=1&position=47&uuid=ea28f8ef-cff6-485a-8f1a-efde5332f9a1',
+        image: 'https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?w=740&t=st=1710879319~exp=1710879919~hmac=f348274212b6bb318e8e8b2b379ea323d7b4f8e9c3566eb4307985931de47209',
         uId: FirebaseAuth.instance.currentUser!.uid,
       );
       await users.doc(model.uId).set(model.toMap());
 
       print('User data stored in Firestore');
+      emit(SuccessRegisterState( FirebaseAuth.instance.currentUser!.uid));
       showTopSnackBar(
         Overlay.of(context),
         CustomSnackBar.success(
@@ -170,12 +172,13 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
       navigatorTo(context, LayoutScreen());
     } catch (e) {
+      emit(ErrorRegisterState());
       print('Error storing user data in Firestore: $e');
     }
   }
 
   ///
-  User ?_firebaseUser;
+  User ?firebaseUser;
   FirebaseAuth _auth = FirebaseAuth.instance;
   Future<void> registerWithEmailPassword({
     required String email,required String password,required String name,required BuildContext context,
@@ -189,13 +192,15 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
 
 
-      _firebaseUser = userCredential.user;
+      firebaseUser = userCredential.user;
 
       storeUserDataInFirestorephone(password: password,name: name,email: email,phoneNumber: phone,context: context);
-      print('User registered with email: ${_firebaseUser!.email}');
+      print('User registered with email: ${firebaseUser!.email}');
+      emit(SuccessRegisterState( FirebaseAuth.instance.currentUser!.uid));
     } catch (e) {
       // Handle registration errors
       print('Error registering user: ${e.toString()}');
+      emit(ErrorRegisterState());
     }
   }
 

@@ -33,7 +33,7 @@ void navigatorTo(context, Widget) {
       MaterialPageRoute(
         builder: (context) => Widget,
       ),
-          (route) => false);
+      (route) => false);
 }
 
 dynamic uId = '';
@@ -48,12 +48,15 @@ class TextFormWidget extends StatefulWidget {
     required this.obscureText,
     required this.icon,
     this.maxLines,
+    this.onChanged,
     this.suffixIcon,
     this.enabled,
     this.keyboardType,
   });
 
   final TextEditingController emailController;
+  final ValueChanged<String>? onChanged;
+
   final Widget prefixIcon;
   final String hintText;
   final String validator;
@@ -80,6 +83,7 @@ class _TextFormWidgetState extends State<TextFormWidget> {
       child: TextFormField(
         cursorColor: Colors.blue,
         enabled: widget.enabled,
+        onChanged: widget.onChanged,
         maxLines: widget.maxLines,
         controller: widget.emailController,
         keyboardType: widget.keyboardType ?? TextInputType.emailAddress,
@@ -100,15 +104,15 @@ class _TextFormWidgetState extends State<TextFormWidget> {
               fontSize: 14, fontWeight: FontWeight.w400),
           suffixIcon: widget.icon
               ? IconButton(
-            onPressed: () {
-              setState(() {
-                widget.obscureText = !widget.obscureText;
-              });
-            },
-            icon: widget.obscureText
-                ? const Icon(Icons.remove_red_eye)
-                : const Icon(Icons.visibility_off_outlined),
-          )
+                  onPressed: () {
+                    setState(() {
+                      widget.obscureText = !widget.obscureText;
+                    });
+                  },
+                  icon: widget.obscureText
+                      ? const Icon(Icons.remove_red_eye)
+                      : const Icon(Icons.visibility_off_outlined),
+                )
               : null,
           errorMaxLines: widget.maxLines,
           enabledBorder: InputBorder.none,

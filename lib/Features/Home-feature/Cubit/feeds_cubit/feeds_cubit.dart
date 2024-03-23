@@ -11,6 +11,7 @@ import 'package:sell_4_u/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import '../../../../core/helper/cache/cache_helper.dart';
 import 'feeds_state.dart';
 import 'package:intl/intl.dart';
 import 'package:geocoding/geocoding.dart';
@@ -97,19 +98,32 @@ class FeedsCubit extends Cubit<FeedsState> {
     });
   }
 
+  ProductModel modelDetails = ProductModel();
+
+  Future<void> getDetailsProData({required String id}) async {
+    emit(GetMostPopularLoading());
+    fireStore.collection("products").doc(id).snapshots().listen((event) {
+      modelDetails = ProductModel.fromJson(event.data()!);
+      emit(GetUserSuccess());
+    }).onError((handleError) {
+      emit(GetUserError());
+    });
+  }
+
   void makePhoneCall({required String phone}) async {
-    final url = 'tel:$phone';
-    if (await canLaunch(url)) {
-      await launch(url);
+    final url = Uri.parse('tel:$phone');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }
   }
 
   void openWhatsApp({required String phone}) async {
-    final url = 'https://wa.me/$phone';
-    if (await canLaunch(url)) {
-      await launch(url);
+    final url = Uri.parse('https://wa.me/$phone');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.inAppWebView);
     } else {
       throw 'Could not launch $url';
     }
@@ -182,8 +196,8 @@ class FeedsCubit extends Cubit<FeedsState> {
     required String uId,
   }) async {
     print(postListOfImage);
-    String formattedDate =
-        DateFormat('E MMM d y HH:mm:ss \'GMT\'Z (z)').format(DateTime.now());
+    String formattedDate = DateFormat('E MMM d y HH:mm:ss \'GMT\'Z (z)', 'en')
+        .format(DateTime.now());
     ProductModel model = ProductModel(
       cat: catController.text,
       images: postListOfImage,
@@ -202,13 +216,14 @@ class FeedsCubit extends Cubit<FeedsState> {
     print(model.toMap());
 
     emit(RequestPostToFireLoading());
-    Future.delayed(Duration(seconds: 2), () async {
-      await fireStore.collection('products').add(model.toMap()).then((value) {
+    Future.delayed(const Duration(seconds: 2), () async {
+      await fireStore.collection('products').add(model.toMap()).then((event) {
         fireStore
             .collection('users')
             .doc(uId)
             .collection('products')
-            .add(model.toMap())
+            .doc(event.id)
+            .set(model.toMap())
             .then((value) {
           print(model.toMap());
 
@@ -216,7 +231,8 @@ class FeedsCubit extends Cubit<FeedsState> {
               .collection('categories')
               .doc(catIdString!)
               .collection('products')
-              .add(model.toMap())
+              .doc(event.id)
+              .set(model.toMap())
               .then((value) {
             print(model.toMap());
 
@@ -344,33 +360,47 @@ class FeedsCubit extends Cubit<FeedsState> {
   TextEditingController priceController = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
-  bool isLoading = false;
+  bool? isLoading;
 
   void updateValue({
-    required ProductModel value,
-    required bool isCat,
-    String? catIdString,
-    String? productId,
+    required dynamic value,
+    required dynamic productId,
   }) {
-    print(value.toMap());
-    print(isCat);
-    print(catIdString);
-    print(productId);
-    if (isCat) {
-      fireStore
-          .collection('categories')
-          .doc(catIdString)
-          .collection('products')
-          .doc(productId)
-          .update({
-        "view": value.view! + 1,
-      });
-      emit(GetLocationSuccess());
-    } else {
+    {
       fireStore.collection('products').doc(productId).update({
-        "view": value.view! + 1,
+        "view": value + 1,
       });
       emit(GetLocationSuccess());
     }
+  }
+
+  void updateValueFav({
+    required ProductModel value,
+    required String productId,
+  }) {
+    if (isFav) {
+      fireStore
+          .collection('users')
+          .doc(CacheHelper.getData(key: 'uId'))
+          .collection('fave')
+          .doc(productId)
+          .set(value.toMap());
+    } else {
+      fireStore
+          .collection('users')
+          .doc(CacheHelper.getData(key: 'uId'))
+          .collection('fave')
+          .doc(productId)
+          .delete();
+    }
+
+    emit(GetLocationSuccess());
+  }
+
+  bool isFav = false;
+
+  void updateValueFavBool() {
+    isFav = !isFav;
+    emit(GetLocationSuccess());
   }
 }

@@ -28,11 +28,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "Or": MessageLookupByLibrary.simpleMessage("OR"),
         "Password": MessageLookupByLibrary.simpleMessage("Password"),
         "Phone": MessageLookupByLibrary.simpleMessage("Phone"),
+        "account": MessageLookupByLibrary.simpleMessage("Account"),
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("Already have an account"),
+        "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
         "callMe": MessageLookupByLibrary.simpleMessage("Call now"),
         "catDetails": MessageLookupByLibrary.simpleMessage("Category details"),
         "categories": MessageLookupByLibrary.simpleMessage("Categories"),
+        "commercials": MessageLookupByLibrary.simpleMessage("Commercials"),
         "completeSignUp":
             MessageLookupByLibrary.simpleMessage("Complete Sign Up"),
         "continueB": MessageLookupByLibrary.simpleMessage("Continue Browsing"),
@@ -44,10 +47,19 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please write your details..."),
         "donthave":
             MessageLookupByLibrary.simpleMessage("Don\\\'t have an accounat?"),
+        "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
+        "edit_profile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
+        "english": MessageLookupByLibrary.simpleMessage("English"),
         "forgetPassword":
             MessageLookupByLibrary.simpleMessage("Forget Password"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "homeWelcome": MessageLookupByLibrary.simpleMessage("Welcome"),
+        "language": MessageLookupByLibrary.simpleMessage("Language"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "mostP": MessageLookupByLibrary.simpleMessage("Most Popular"),
+        "myAccount": MessageLookupByLibrary.simpleMessage("myAccount"),
+        "my_favorites": MessageLookupByLibrary.simpleMessage("My Favorites"),
+        "my_listings": MessageLookupByLibrary.simpleMessage("My Listings"),
         "nearYou": MessageLookupByLibrary.simpleMessage("Near you"),
         "pleaseEmail": MessageLookupByLibrary.simpleMessage(
             "please enter your email address"),
@@ -58,11 +70,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleasePhone":
             MessageLookupByLibrary.simpleMessage("please enter your phone"),
         "postAd": MessageLookupByLibrary.simpleMessage("Post an Ad"),
+        "post_an_ad": MessageLookupByLibrary.simpleMessage("Post an Ad"),
         "reasonAdd": MessageLookupByLibrary.simpleMessage(
             "Please write reason to offer..."),
         "resendOtp": MessageLookupByLibrary.simpleMessage(" Resend Otp"),
         "search": MessageLookupByLibrary.simpleMessage("Search for anything"),
         "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
+        "setting": MessageLookupByLibrary.simpleMessage("Settings"),
         "sign": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
         "signWithFace":

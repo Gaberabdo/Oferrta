@@ -54,8 +54,8 @@ class FeedsScreen extends StatelessWidget {
                               return FadeIn(
                                 duration: const Duration(milliseconds: 400),
                                 child: Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade700,
-                                  highlightColor: Colors.grey.shade600,
+                                  baseColor: Colors.grey.shade300,
+                                  highlightColor: Colors.grey.shade500,
                                   child: Card(
                                     elevation: 3,
                                     shape: OutlineInputBorder(
@@ -89,14 +89,32 @@ class FeedsScreen extends StatelessWidget {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                          secondaryAnimation) {
                                         return CatDetails(
                                           categoryModel: cubit.catModel[index],
                                           catModelIds:
                                               cubit.catModelIdes[index],
                                         );
                                       },
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        var begin = const Offset(1.0, 0.0);
+                                        var end = Offset.zero;
+                                        var curve = Curves.ease;
+                                        var tween = Tween(
+                                                begin: begin, end: end)
+                                            .chain(CurveTween(curve: curve));
+                                        var offsetAnimation =
+                                            animation.drive(tween);
+                                        return SlideTransition(
+                                          position: offsetAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                      transitionDuration:
+                                          const Duration(milliseconds: 500),
                                     ),
                                   );
                                 },
@@ -228,8 +246,8 @@ class FeedsScreen extends StatelessWidget {
                                 child: FadeIn(
                                   duration: const Duration(milliseconds: 400),
                                   child: Shimmer.fromColors(
-                                    baseColor: Colors.grey.shade700,
-                                    highlightColor: Colors.grey.shade600,
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.grey.shade500,
                                     child: Card(
                                       elevation: 3,
                                       shape: OutlineInputBorder(
@@ -260,17 +278,36 @@ class FeedsScreen extends StatelessWidget {
                               return InkWell(
                                 onTap: () {
                                   print(cubit.mostPopularModel[index].images);
+
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                          secondaryAnimation) {
                                         return HomeFeedsDetails(
-                                          model: cubit.mostPopularModel[index],
-                                          isCat: false,
-                                          productId:
-                                              cubit.mostPopularIdes[index],
+                                          uid: cubit.mostPopularModel[index].uId!,
+                                          value:  cubit.mostPopularModel[index].view,
+
+                                          productId: cubit.mostPopularIdes[index],
                                         );
                                       },
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        var begin = const Offset(1.0, 0.0);
+                                        var end = Offset.zero;
+                                        var curve = Curves.ease;
+                                        var tween = Tween(
+                                                begin: begin, end: end)
+                                            .chain(CurveTween(curve: curve));
+                                        var offsetAnimation =
+                                            animation.drive(tween);
+                                        return SlideTransition(
+                                          position: offsetAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                      transitionDuration:
+                                          const Duration(milliseconds: 500),
                                     ),
                                   );
                                 },
