@@ -48,10 +48,9 @@ class MainCubit extends Cubit<MainState> {
       provisional: false,
       sound: true,
     );
-    FirebaseMessaging.instance.subscribeToTopic('Admin').then((value)  {
+    FirebaseMessaging.instance.subscribeToTopic('Admin').then((value) {
       emit(AdminTopicState());
-
-    }).catchError((onError){
+    }).catchError((onError) {
       print('*************************');
       print(onError.toString());
       print('*************************');
