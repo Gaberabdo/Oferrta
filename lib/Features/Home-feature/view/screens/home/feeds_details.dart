@@ -6,9 +6,12 @@ import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
 import 'package:sell_4_u/Features/Home-feature/models/product_model.dart';
+import 'package:sell_4_u/Features/comment/controller/Commet_cubit/comment_cubit.dart';
 import 'package:sell_4_u/core/constant.dart';
 
+import '../../../../../core/helper/cache/cache_helper.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../comment/view/screens/get_comment.dart';
 
 class HomeFeedsDetails extends StatelessWidget {
   const HomeFeedsDetails({
@@ -24,13 +27,20 @@ class HomeFeedsDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FeedsCubit()
-        ..getUserData(id: uid)
-        ..updateValue(productId: productId, value: value)
-        ..getDetailsProData(
-          id: productId,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => FeedsCubit()
+            ..getUserData(id: uid)
+            ..updateValue(productId: productId, value: value)
+            ..getDetailsProData(
+              id: productId,
+            ),
         ),
+        BlocProvider(
+          create: (context) => CommentCubit()..getComment(productId: productId),
+        ),
+      ],
       child: BlocConsumer<FeedsCubit, FeedsState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -483,6 +493,233 @@ class HomeFeedsDetails extends StatelessWidget {
                           ),
                         ),
                       ),
+                    BlocConsumer<CommentCubit, CommentState>(
+                      listener: (context, state) {
+                        // TODO: implement listener
+                      },
+                      builder: (context, state) {
+                        var cubit = CommentCubit.get(context).commentPost;
+                        return Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: (cubit.isEmpty)
+                              ? InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                      secondaryAnimation) {
+                                    return GetComment(
+                                      productId: productId,
+                                    );
+                                  },
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    var begin = const Offset(1.0, 0.0);
+                                    var end = Offset.zero;
+                                    var curve = Curves.ease;
+                                    var tween = Tween(
+                                        begin: begin, end: end)
+                                        .chain(CurveTween(curve: curve));
+                                    var offsetAnimation =
+                                    animation.drive(tween);
+                                    return SlideTransition(
+                                      position: offsetAnimation,
+                                      child: child,
+                                    );
+                                  },
+                                  transitionDuration:
+                                  const Duration(milliseconds: 500),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'No Offers',
+                                  style: FontStyleThame.textStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                    fontColor: Colors.black38,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  'Send One',
+                                  style: FontStyleThame.textStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.normal,
+                                    fontColor: ColorStyle.primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                              : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation,
+                                            secondaryAnimation) {
+                                          return GetComment(
+                                            productId: productId,
+                                          );
+                                        },
+                                        transitionsBuilder: (context,
+                                            animation,
+                                            secondaryAnimation,
+                                            child) {
+                                          var begin =
+                                          const Offset(1.0, 0.0);
+                                          var end = Offset.zero;
+                                          var curve = Curves.ease;
+                                          var tween = Tween(
+                                              begin: begin, end: end)
+                                              .chain(
+                                              CurveTween(curve: curve));
+                                          var offsetAnimation =
+                                          animation.drive(tween);
+                                          return SlideTransition(
+                                            position: offsetAnimation,
+                                            child: child,
+                                          );
+                                        },
+                                        transitionDuration: const Duration(
+                                            milliseconds: 500),
+                                      ),
+                                    );
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Offers',
+                                        style: FontStyleThame.textStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          fontColor: Colors.black38,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Text(
+                                        'See all',
+                                        style: FontStyleThame.textStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          fontColor:
+                                          ColorStyle.primaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                      cubit.first.image!,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        cubit.first.name!,
+                                        style: FontStyleThame.textStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          fontColor: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Owner",
+                                        style: FontStyleThame.textStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          fontColor: Colors.black38,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Text(
+                                    cubit.first.price.toString() + r' $',
+                                    style: FontStyleThame.textStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      fontColor: ColorStyle.primaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 0,
+                                  right: 0,
+                                  top: 10,
+                                  bottom: 10,
+                                ),
+                                child: Text(
+                                  cubit.first.text!,
+                                  style: FontStyleThame.textStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                    fontColor: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 5,
+                                  right: 5,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      transform(cubit.first.dataTime!),
+                                      style: FontStyleThame.textStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                        fontColor: ColorStyle.primaryColor,
+                                      ),
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: 5,
+                                          right: 5,
+                                          left: 5
+                                      ),
+                                      child: Icon(Icons.timelapse,size: 13,),
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
