@@ -72,6 +72,7 @@ dependencies:
   firebase_analytics:
   cloud_firestore:
   firebase_storage:
+  fl_chart:
   intl_phone_number_input:
   firebase_messaging:
   dio:

@@ -1,24 +1,79 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'core/app_export.dart';
+
+var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Future.wait([
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]),
+    PrefUtils().init()
+  ]).then((value) {
+    runApp(MyApp());
+  });
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return BlocProvider(
+          create: (context) => ThemeBloc(
+            ThemeState(
+              themeType: PrefUtils().getThemeData(),
+            ),
+          ),
+          child: BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, state) {
+              return MaterialApp(
+                theme: theme,
+                title: 'help_me',
+                navigatorKey: NavigatorService.navigatorKey,
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: [
+                  AppLocalizationDelegate(),
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  Locale(
+                    'en',
+                    '',
+                  ),
+                ],
+                initialRoute: AppRoutes.initialRoute,
+                routes: AppRoutes.routes,
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_4_u/Features/Home-feature/view/layout.dart';
+import 'package:sell_4_u/Features/dashboard/constants.dart';
+import 'package:sell_4_u/Features/dashboard/controllers/MenuAppController.dart';
+import 'package:sell_4_u/Features/dashboard/screens/main/main_screen.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:sell_4_u/core/helper/main/cubit/main_state.dart';
-
 import 'core/helper/bloc_observe/observe.dart';
 import 'core/helper/cache/cache_helper.dart';
 import 'core/helper/main/cubit/main_cubit.dart';
 import 'generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
-
-@pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,16 +86,6 @@ void main() async {
 
   await CacheHelper.init();
   CacheHelper.getData(key: 'uId');
-
-  FirebaseMessaging.onMessage.listen((event) {
-    print(event.data.toString());
-  });
-  FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    print(event.data.toString());
-  });
-
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-
   runApp(MyApp(
     language: CacheHelper.getData(key: 'language') ?? 'en',
   ));
@@ -54,9 +99,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MainCubit()
-        ..changeAppLang(fromSharedLang: language)
-        ..subscribeToAdminTopic(),
+      create: (context) => MainCubit(),
       child: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -64,41 +107,22 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           var cubit = MainCubit.get(context);
           return MaterialApp(
-            title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-                bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                  elevation: 3,
-                  backgroundColor: Colors.white,
-                  selectedItemColor: ColorStyle.primaryColor,
-                  selectedLabelStyle: FontStyleThame.textStyle(
-                      fontSize: 10, fontWeight: FontWeight.w400),
-                  unselectedLabelStyle: FontStyleThame.textStyle(
-                      fontSize: 10, fontWeight: FontWeight.w400),
-                  unselectedItemColor: const Color.fromRGBO(207, 207, 206, 1),
-                  selectedIconTheme: const IconThemeData(
-                    size: 16,
-                  ),
-                  unselectedIconTheme: const IconThemeData(
-                    size: 16,
-                  ),
+            title: 'Flutter Admin Panel',
+            theme: ThemeData.light().copyWith(
+              scaffoldBackgroundColor: Colors.white,
+              textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+                  .apply(bodyColor: Colors.white),
+              canvasColor: secondaryColor,
+            ),
+            home: MultiProvider(
+              providers: [
+                ChangeNotifierProvider(
+                  create: (context) => MenuAppController(),
                 ),
-                scaffoldBackgroundColor: Colors.white,
-                appBarTheme: const AppBarTheme(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                )),
-            home: LayoutScreen(),
-            locale: cubit.language == 'en'
-                ? const Locale('en')
-                : const Locale('ar'),
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
+              ],
+              child: MainScreen(),
+            ),
           );
         },
       ),
