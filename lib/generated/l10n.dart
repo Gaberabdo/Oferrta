@@ -549,6 +549,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Block User`
+  String get block {
+    return Intl.message(
+      'Block User',
+      name: 'block',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` Un Block`
+  String get unblock {
+    return Intl.message(
+      ' Un Block',
+      name: 'unblock',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("Already have an account"),
         "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
+        "block": MessageLookupByLibrary.simpleMessage("Block User"),
         "callMe": MessageLookupByLibrary.simpleMessage("Call now"),
         "catDetails": MessageLookupByLibrary.simpleMessage("Category details"),
         "categories": MessageLookupByLibrary.simpleMessage("Categories"),
@@ -83,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sign in With Facebook"),
         "signWithgoogle":
             MessageLookupByLibrary.simpleMessage("Sign in With Google"),
+        "unblock": MessageLookupByLibrary.simpleMessage(" Un Block"),
         "verfyEmail": MessageLookupByLibrary.simpleMessage(" Verify Phone"),
         "whatsapp": MessageLookupByLibrary.simpleMessage("What\'s app")
       };

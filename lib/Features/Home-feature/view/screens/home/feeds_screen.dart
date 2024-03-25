@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
 
@@ -9,6 +10,8 @@ import 'package:sell_4_u/generated/l10n.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../../core/constant.dart';
+import '../../../../../core/helper/component/component.dart';
+import '../../../../setting/view/screens/search_screen.dart';
 import '../../widget/all_cat_widget/all_cat_widget.dart';
 import '../../widget/all_most_popular_widget/all_most_popular_widget.dart';
 import 'feeds_details.dart';
@@ -29,7 +32,54 @@ class FeedsScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = FeedsCubit.get(context);
           return Scaffold(
+
             backgroundColor: Colors.white,
+            appBar: AppBar(
+              elevation: 1,
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              title:  InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder:
+                          (context, animation, secondaryAnimation) {
+                        return SearchScreen();
+                      },
+                      transitionsBuilder: (context, animation,
+                          secondaryAnimation, child) {
+                        var begin = const Offset(1.0, 0.0);
+                        var end = Offset.zero;
+                        var curve = Curves.ease;
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
+                        var offsetAnimation = animation.drive(tween);
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration:
+                      const Duration(milliseconds: 500),
+                    ),
+                  );
+                },
+                child: TextFormWidget(
+                  emailController: TextEditingController(),
+                  prefixIcon: const Icon(
+                    IconlyLight.search,
+                    size: 15,
+                  ),
+                  hintText: S.of(context).search,
+                  validator: '',
+                  obscureText: false,
+                  icon: false,
+                  enabled: false,
+                ),
+              ),
+            ),
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
@@ -204,23 +254,9 @@ class FeedsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+
                     const SizedBox(
-                      height: 12.0,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        height: 88,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(242, 242, 242, 1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12.0,
+                      height: 14.0,
                     ),
                     Text(
                       S.of(context).mostP,
@@ -238,6 +274,7 @@ class FeedsScreen extends StatelessWidget {
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
                               mainAxisExtent: 240.0,
                               maxCrossAxisExtent: 240.0,
+
                             ),
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
@@ -273,6 +310,8 @@ class FeedsScreen extends StatelessWidget {
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
                               mainAxisExtent: 240.0,
                               maxCrossAxisExtent: 240.0,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12
                             ),
                             itemBuilder: (context, index) {
                               return InkWell(

@@ -1,11 +1,15 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../../core/helper/component/component.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../../setting/view/screens/search_screen.dart';
 import 'feeds_details.dart';
 
 class BannerCat extends StatelessWidget {
@@ -27,6 +31,52 @@ class BannerCat extends StatelessWidget {
         builder: (context, state) {
           var cubit = FeedsCubit.get(context);
           return Scaffold(
+            appBar: AppBar(
+              elevation: 1,
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              title:  InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder:
+                          (context, animation, secondaryAnimation) {
+                        return SearchScreen();
+                      },
+                      transitionsBuilder: (context, animation,
+                          secondaryAnimation, child) {
+                        var begin = const Offset(1.0, 0.0);
+                        var end = Offset.zero;
+                        var curve = Curves.ease;
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
+                        var offsetAnimation = animation.drive(tween);
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration:
+                      const Duration(milliseconds: 500),
+                    ),
+                  );
+                },
+                child: TextFormWidget(
+                  emailController: TextEditingController(),
+                  prefixIcon: const Icon(
+                    IconlyLight.search,
+                    size: 15,
+                  ),
+                  hintText: S.of(context).search,
+                  validator: '',
+                  obscureText: false,
+                  icon: false,
+                  enabled: false,
+                ),
+              ),
+            ),
             body: SingleChildScrollView(
               child: Column(
                 children: [

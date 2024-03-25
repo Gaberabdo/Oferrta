@@ -35,54 +35,7 @@ class LayoutScreen extends StatelessWidget {
           var userModel = cubit.model!;
           return ResponsiveScreen(
             mobileScreen: Scaffold(
-              appBar: AppBar(
-                elevation: 1,
-                backgroundColor: Colors.white,
-                centerTitle: true,
-                automaticallyImplyLeading: false,
-                title: cubit.selectedIndex == 4
-                    ? null
-                    : InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                return SearchScreen();
-                              },
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                var begin = const Offset(1.0, 0.0);
-                                var end = Offset.zero;
-                                var curve = Curves.ease;
-                                var tween = Tween(begin: begin, end: end)
-                                    .chain(CurveTween(curve: curve));
-                                var offsetAnimation = animation.drive(tween);
-                                return SlideTransition(
-                                  position: offsetAnimation,
-                                  child: child,
-                                );
-                              },
-                              transitionDuration:
-                                  const Duration(milliseconds: 500),
-                            ),
-                          );
-                        },
-                        child: TextFormWidget(
-                          emailController: TextEditingController(),
-                          prefixIcon: const Icon(
-                            IconlyLight.search,
-                            size: 15,
-                          ),
-                          hintText: S.of(context).search,
-                          validator: '',
-                          obscureText: false,
-                          icon: false,
-                          enabled: false,
-                        ),
-                      ),
-              ),
+
               bottomNavigationBar: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 currentIndex: cubit.selectedIndex,

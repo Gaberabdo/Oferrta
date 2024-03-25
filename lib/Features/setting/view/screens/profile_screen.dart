@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:sell_4_u/Features/Auth-feature/presentation/pages/login/login_screen.dart';
 import 'package:sell_4_u/Features/setting/Cubit/setting_state.dart';
 import 'package:sell_4_u/Features/setting/view/screens/edit_profile.dart';
 import 'package:sell_4_u/Features/setting/view/screens/recently_viewed.dart';
 import 'package:sell_4_u/core/constant.dart';
+import 'package:sell_4_u/core/helper/component/component.dart';
 import 'package:sell_4_u/core/helper/main/cubit/main_cubit.dart';
 
 import '../../../../core/helper/cache/cache_helper.dart';
@@ -29,6 +31,7 @@ class ProfileScreen extends StatelessWidget {
           var cubit = SettingCubit.get(context);
           var userModel = cubit.model!;
           return Scaffold(
+
             body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -36,36 +39,41 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
-                      height: 14,
+                      height: 25,
                     ),
                     if (CacheHelper.getData(key: "uId") == null ||
                         cubit.model.image == null)
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const CircleAvatar(
-                            radius: 40,
-                            backgroundImage: NetworkImage(
-                              'https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg',
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const CircleAvatar(
+                              radius: 40,
+                              backgroundImage: NetworkImage(
+                                'https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg',
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "User name",
-                                style: FontStyleThame.textStyle(),
-                              ),
-                              Text(
-                                'login to buy and sell anything',
-                                style: FontStyleThame.textStyle(),
-                              ),
-                            ],
-                          ),
-                        ],
+
+                          Container(
+                            decoration: BoxDecoration(
+                              color: ColorStyle.primaryColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: MaterialButton(onPressed: (){
+                              navigatorTo(context, LoginScreen());
+                            },
+                              child: Text(S.of(context).signIn,style: GoogleFonts.tajawal(
+                                color:Colors.white,
+                                fontSize:16,
+                                fontWeight:FontWeight.bold
+                              ),),
+
+                            ),
+                          )
+                          ],
+                        ),
                       )
                     else
                       Row(

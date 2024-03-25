@@ -1,22 +1,25 @@
-
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_4_u/Features/Home-feature/view/layout.dart';
-import 'package:sell_4_u/Features/dashboard/constants.dart';
-import 'package:sell_4_u/Features/dashboard/controllers/MenuAppController.dart';
-import 'package:sell_4_u/Features/dashboard/screens/main/main_screen.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:sell_4_u/core/helper/main/cubit/main_state.dart';
+
+import 'Admin/Features/Block-user-feature/view/screens/Block-user-Screen.dart';
 import 'core/helper/bloc_observe/observe.dart';
 import 'core/helper/cache/cache_helper.dart';
 import 'core/helper/main/cubit/main_cubit.dart';
 import 'generated/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +32,16 @@ void main() async {
 
   await CacheHelper.init();
   CacheHelper.getData(key: 'uId');
+
+  FirebaseMessaging.onMessage.listen((event) {
+    print(event.data.toString());
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print(event.data.toString());
+  });
+
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
   runApp(MyApp(
     language: CacheHelper.getData(key: 'language') ?? 'en',
   ));
@@ -42,7 +55,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MainCubit(),
+      create: (context) => MainCubit()
+        ..changeAppLang(fromSharedLang: language)
+        ..subscribeToAdminTopic(),
       child: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
           // TODO: implement listener
@@ -50,22 +65,41 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           var cubit = MainCubit.get(context);
           return MaterialApp(
+            title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Admin Panel',
-            theme: ThemeData.light().copyWith(
-              scaffoldBackgroundColor: Colors.white,
-              textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-                  .apply(bodyColor: Colors.white),
-              canvasColor: secondaryColor,
-            ),
-            home: MultiProvider(
-              providers: [
-                ChangeNotifierProvider(
-                  create: (context) => MenuAppController(),
+            theme: ThemeData(
+                bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                  elevation: 3,
+                  backgroundColor: Colors.white,
+                  selectedItemColor: ColorStyle.primaryColor,
+                  selectedLabelStyle: FontStyleThame.textStyle(
+                      fontSize: 10, fontWeight: FontWeight.w400),
+                  unselectedLabelStyle: FontStyleThame.textStyle(
+                      fontSize: 10, fontWeight: FontWeight.w400),
+                  unselectedItemColor: const Color.fromRGBO(207, 207, 206, 1),
+                  selectedIconTheme: const IconThemeData(
+                    size: 16,
+                  ),
+                  unselectedIconTheme: const IconThemeData(
+                    size: 16,
+                  ),
                 ),
-              ],
-              child: MainScreen(),
-            ),
+                scaffoldBackgroundColor: Colors.white,
+                appBarTheme: const AppBarTheme(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                )),
+            home: BlockUserScreen(),
+            locale: cubit.language == 'en'
+                ? const Locale('en')
+                : const Locale('ar'),
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
           );
         },
       ),

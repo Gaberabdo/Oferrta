@@ -23,5 +23,7 @@
   "setting": "Settings",  "editProfile": "Edit Profile",
   "myAccount" : "myAccount",  "catDetails" : "Category details",
   "home": "Home",  "commercials": "Commercials",
-  "post_an_ad": "Post an Ad",  "account": "Account"
+  "post_an_ad": "Post an Ad",  "account": "Account",
+  "block": "Block User",
+  "unblock": " Un Block"
 }

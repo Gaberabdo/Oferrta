@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل"),
         "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
+        "block": MessageLookupByLibrary.simpleMessage("بلوك"),
         "callMe": MessageLookupByLibrary.simpleMessage("أتصل الان"),
         "catDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المنتجات"),
         "categories": MessageLookupByLibrary.simpleMessage("فئات"),
@@ -79,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "تسجيل الدخول بأستخدام فيس بوك "),
         "signWithgoogle":
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول بأستخدام جوجل "),
+        "unblock": MessageLookupByLibrary.simpleMessage("رفع البلوك"),
         "verfyEmail": MessageLookupByLibrary.simpleMessage("تفعيل التليفون"),
         "whatsapp": MessageLookupByLibrary.simpleMessage("واتس اب")
       };

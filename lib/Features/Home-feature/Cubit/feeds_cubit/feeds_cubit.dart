@@ -220,43 +220,37 @@ class FeedsCubit extends Cubit<FeedsState> {
     print(model.toMap());
 
     emit(RequestPostToFireLoading());
-    Future.delayed(const Duration(seconds: 2), () async {
-      await fireStore.collection('products').add(model.toMap()).then((event) {
-        fireStore
-            .collection('users')
-            .doc(uId)
-            .collection('products')
-            .doc(event.id)
-            .set(model.toMap())
-            .then((value) {
-          print(model.toMap());
 
-          fireStore
-              .collection('categories')
-              .doc(catIdString!)
-              .collection('products')
-              .doc(event.id)
-              .set(model.toMap())
-              .then((value) {
-            print(model.toMap());
+    try {
+      DocumentReference productRef =
+      await fireStore.collection('products').add(model.toMap());
+      String productId = productRef.id;
 
-            isLoading = false;
-            sendNot();
-            emit(RequestPostToFireSuccess());
-          }).catchError((onError) {
-            print('product to cat $onError');
-            emit(RequestPostToFireError());
-          });
-        }).catchError((value) {
-          print('product to user $value');
-          emit(RequestPostToFireError());
-        });
-      }).catchError((onError) {
-        print('product to product $onError');
-        emit(RequestPostToFireError());
-      });
-    });
+
+      await fireStore
+          .collection('users')
+          .doc(uId)
+          .collection('products')
+          .doc(productId)
+          .set(model.toMap());
+
+
+      await fireStore
+          .collection('categories')
+          .doc(catIdString!)
+          .collection('products')
+          .doc(productId)
+          .set(model.toMap());
+
+      isLoading = false;
+      sendNot();
+      emit(RequestPostToFireSuccess());
+    } catch (error) {
+      print('Error adding product: $error');
+      emit(RequestPostToFireError());
+    }
   }
+
 
   void deleteImage({
     required File value,

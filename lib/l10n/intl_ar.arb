@@ -47,5 +47,7 @@
   "home": "الرئيسية",
   "commercials": "تجاري",
   "post_an_ad": "أضف إعلانات",
-  "account": "حسابي"
+  "account": "حسابي",
+  "block": "بلوك",
+  "unblock": "رفع البلوك"
 }
