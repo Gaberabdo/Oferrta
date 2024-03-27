@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/view/screens/search-admin-screen.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/view/screens/update-user-screen.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/view/screens/user-action-screen.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/view/widget/all-user-widget.dart';
 
@@ -23,7 +24,12 @@ class BlockUserScreen extends StatelessWidget {
       create: (context) => BlockUserCubit()..getAllUserData(),
       child: BlocBuilder<BlockUserCubit, BlockUserStates>(
         builder: (context, state) {
+
           var cubit = BlocProvider.of<BlockUserCubit>(context);
+          if (state is DeleteSuccessUserDataState) {
+
+            BlocProvider.of<BlockUserCubit>(context).getAllUserData();
+          }
           return  Scaffold(
             appBar: AppBar(
               title: InkWell(
@@ -128,7 +134,9 @@ class BlockUserScreen extends StatelessWidget {
                                   ),
                                   child: MaterialButton(
                                     onPressed: () {
-                                      cubit.block(user.uId!);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return EditProfileAdmin(model:user);
+                                    }));
                                     },
                                     child: Text('Update User',
                                       style: GoogleFonts.tajawal(
@@ -151,7 +159,7 @@ class BlockUserScreen extends StatelessWidget {
                                   ),
                                   child: MaterialButton(
                                     onPressed: () {
-                                      cubit.block(user.uId!);
+cubit.deleteUser(uid: user.uId!);
                                     },
                                     child: Text('Delete User',
                                       style: GoogleFonts.tajawal(

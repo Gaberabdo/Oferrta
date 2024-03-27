@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/constant.dart';
+import '../../../Auth-feature/manger/model/user_model.dart';
 import '../../model/comment_model.dart';
 
 part 'comment_state.dart';

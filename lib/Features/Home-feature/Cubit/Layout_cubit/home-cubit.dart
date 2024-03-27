@@ -10,6 +10,7 @@ import 'package:sell_4_u/core/constant.dart';
 import 'package:iconly/iconly.dart';
 
 import '../../../../core/helper/cache/cache_helper.dart';
+import '../../../Auth-feature/manger/model/user_model.dart';
 import '../../../setting/model/user_model.dart';
 import 'home-state.dart';
 

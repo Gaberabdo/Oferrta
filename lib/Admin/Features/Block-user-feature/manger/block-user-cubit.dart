@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 
 class BlockUserCubit extends Cubit<BlockUserStates> {
@@ -78,8 +82,6 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     }
   }
   ///search
-  List<UserModel> searchList = [];
-
   void searchUsers(String query) async {
     emit(UserSearchLoading());
     try {
@@ -90,12 +92,100 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       final users = snapshot.docs
           .map((doc) => UserModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
-      searchList = users;
-      print(searchList.length);
-      print('searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-      emit(UserSearchSuccess());
+      emit(UserSearchSuccess( users));
     } catch (e) {
       emit(UserSearchFailure());
+    }
+  }
+
+
+
+  ///update user
+  File? profileImage;
+
+  bool isUpload = false;
+  List<String> categoriesIdes = [];
+
+  Future<void> pickImagesAdd() async {
+    final picker = ImagePicker();
+    final pickedImages = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImages != null) {
+      profileImage = File(pickedImages.path);
+      emit(ImageUploadSuccess());
+    } else {
+      emit(ImageUploadFailed());
+    }
+  }
+
+  Future<void> uploadImage({
+    required String name,
+    required String uid,
+    required String phone,
+  }) async {
+    isUpload = true;
+    emit(ImageUploadLoading());
+    final ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('catImage/${Uri.file(profileImage!.path).pathSegments.last}');
+    await ref.putFile(profileImage!).then((p0) {
+      p0.ref.getDownloadURL().then((value) {
+        updateUser(
+          name: name,
+          uid: uid,
+          phone: phone,
+          image: value,
+        );
+        emit(ImageUploadSuccess());
+      });
+    });
+  }
+
+  Future<void> updateUser({
+    required String name,
+    String? phone,
+    required String image,
+    required String uid,
+  }) async {
+    isUpload = true;
+
+    emit(UpdateLoadingUserDataState());
+    await firestore
+        .collection('users')
+        .doc(uid)
+        .update({
+      'name': name,
+      'image': image,
+      'phone':phone,
+    }).then((value) {
+      emit(UpdateSuccessUserDataState());
+      isUpload = false;
+    }).catchError((error) {
+      emit(UpdateErrorUserDataState());
+    });
+  }
+///delete user
+  Future<void> deleteUser({
+    required String uid,
+}) async {
+    try {
+
+      emit(DeleteLoadingUserDataState());
+
+
+      await firestore
+          .collection('users')
+          .doc(uid)
+          .delete();
+
+
+      emit(DeleteSuccessUserDataState());
+    } catch (error) {
+
+      emit(DeleteErrorUserDataState());
+
+
+      print('Error deleting user data: $error');
     }
   }
 

@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
                 )),
-            home: LayoutScreen(),
+            home: BlockUserScreen(),
             locale: cubit.language == 'en'
                 ? const Locale('en')
                 : const Locale('ar'),

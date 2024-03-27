@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/view/screens/update-user-screen.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/view/screens/user-action-screen.dart';
 import 'package:sell_4_u/Features/setting/Cubit/setting_cubit.dart';
 import 'package:sell_4_u/Features/setting/Cubit/setting_state.dart';
@@ -23,11 +24,9 @@ class SearchAdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BlockUserCubit()..searchUsers(searchController.text),
+      create: (context) => BlockUserCubit(),
       child: BlocConsumer<BlockUserCubit, BlockUserStates>(
-        listener: (context, state) {
-
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           final cubit = BlocProvider.of<BlockUserCubit>(context);
 
@@ -44,9 +43,7 @@ class SearchAdminScreen extends StatelessWidget {
               automaticallyImplyLeading: true,
               leading: IconButton(
                 onPressed: () {
-                  Navigator.pop(
-                    context,
-                  );
+                  Navigator.pop(context);
                 },
                 icon: const Icon(
                   Icons.arrow_back_ios_rounded,
@@ -66,7 +63,7 @@ class SearchAdminScreen extends StatelessWidget {
                         size: 15,
                       ),
                       onChanged: (value) {
-                       cubit.searchUsers(value); // Trigger search
+                        cubit.searchUsers(value); // Trigger search
                       },
                       hintText: S.of(context).search,
                       validator: '',
@@ -77,16 +74,13 @@ class SearchAdminScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (state is LoadingGetCategoriesData)
+                    if (state is UserSearchLoading)
                       const LinearProgressIndicator(),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    if (state is SuccessGetCategoriesData)
+                    if (state is UserSearchSuccess)
                       ListView.builder(
-                        itemCount: cubit.searchList.length,
+                        itemCount: state.users.length,
                         itemBuilder: (context, index) {
-                          final user = cubit.searchList[index];
+                          final user = state.users[index];
                           return Padding(
                             padding: EdgeInsets.all(8), // Adjust padding here
                             child: Column(
@@ -141,7 +135,9 @@ class SearchAdminScreen extends StatelessWidget {
                                             ),
                                             child: MaterialButton(
                                               onPressed: () {
-                                                cubit.block(user.uId!);
+                                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                  return EditProfileAdmin(model:user);
+                                                }));
                                               },
                                               child: Text('Update User',
                                                 style: GoogleFonts.tajawal(
@@ -164,7 +160,7 @@ class SearchAdminScreen extends StatelessWidget {
                                             ),
                                             child: MaterialButton(
                                               onPressed: () {
-                                                cubit.block(user.uId!);
+                                                cubit.deleteUser(uid: user.uId!);
                                               },
                                               child: Text('Delete User',
                                                 style: GoogleFonts.tajawal(
@@ -235,8 +231,10 @@ class SearchAdminScreen extends StatelessWidget {
                             ),
                           );
                         },
+                        shrinkWrap: true,
                       ),
-                    if (state is ErrorGetCategoriesData)
+
+                    if (state is UserSearchFailure)
                       Center(
                         child: Image.network(Constant.imageNotFound),
                       ),
@@ -250,3 +248,4 @@ class SearchAdminScreen extends StatelessWidget {
     );
   }
 }
+

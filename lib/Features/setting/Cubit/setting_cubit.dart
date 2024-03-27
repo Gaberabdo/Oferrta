@@ -9,6 +9,7 @@ import 'package:sell_4_u/Features/setting/Cubit/setting_state.dart';
 import 'package:sell_4_u/Features/setting/model/user_model.dart';
 import 'package:sell_4_u/core/helper/cache/cache_helper.dart';
 
+import '../../Auth-feature/manger/model/user_model.dart';
 import '../../Home-feature/models/category_model.dart';
 import '../../Home-feature/models/product_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -147,6 +148,7 @@ class SettingCubit extends Cubit<SettingState> {
 
   Future<void> updateUser({
     required String name,
+    String? phone,
     required String image,
   }) async {
     isUpload = true;
@@ -158,6 +160,7 @@ class SettingCubit extends Cubit<SettingState> {
         .update({
       'name': name,
       'image': image,
+      'phone':phone,
     }).then((value) {
       emit(UpdateSuccessUserDataState());
       isUpload = false;

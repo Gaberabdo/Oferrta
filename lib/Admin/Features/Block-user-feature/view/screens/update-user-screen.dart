@@ -1,34 +1,43 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sell_4_u/Features/setting/Cubit/setting_cubit.dart';
-import 'package:sell_4_u/Features/setting/Cubit/setting_state.dart';
-import 'package:sell_4_u/Features/setting/model/user_model.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/view/screens/Block-user-Screen.dart';
+
+
 import 'package:sell_4_u/core/constant.dart';
 import 'package:sell_4_u/core/helper/component/component.dart';
 
-import '../../../../generated/l10n.dart';
-import '../../../Auth-feature/manger/model/user_model.dart';
+import '../../../../../Features/Auth-feature/manger/model/user_model.dart';
+import '../../../../../generated/l10n.dart';
 
-class EditProfile extends StatelessWidget {
-  EditProfile({Key? key, required this.model}) : super(key: key);
+
+
+class EditProfileAdmin extends StatelessWidget {
+  EditProfileAdmin({Key? key, required this.model}) : super(key: key);
 
   final UserModel model;
   final nameController = TextEditingController();
+  final phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SettingCubit(),
-      child: BlocConsumer<SettingCubit, SettingState>(
+      create: (context) => BlockUserCubit(),
+      child: BlocConsumer<BlockUserCubit, BlockUserStates>(
         listener: (context, state) {
           if (state is UpdateSuccessUserDataState) {
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+
+              return BlockUserScreen();
+            }), (route) => false);
           }
         },
         builder: (context, state) {
-          var cubit = SettingCubit.get(context);
+          var cubit = BlockUserCubit.get(context);
           nameController.text = model.name!;
+          phoneController.text = model.phone!;
           return Scaffold(
             appBar: AppBar(
               elevation: 0,
@@ -66,8 +75,8 @@ class EditProfile extends StatelessWidget {
                           radius: 50,
                           backgroundImage: cubit.profileImage == null
                               ? NetworkImage(
-                                  '${model.image}',
-                                ) as ImageProvider
+                            '${model.image}',
+                          ) as ImageProvider
                               : FileImage(cubit.profileImage!),
                         ),
                         Padding(
@@ -88,23 +97,39 @@ class EditProfile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 44,
-                      child: TextFormWidget(
-                        maxLines: 2,
-                        emailController: nameController,
-                        prefixIcon: const Icon(
-                          Icons.person,
-                          size: 15,
-                        ),
-                        hintText: 'Please write your name',
-                        validator: '',
-                        obscureText: false,
-                        icon: false,
-                        enabled: true,
+                  SizedBox(
+                    height: 50,
+                    child: TextFormWidget(
+                      maxLines: 2,
+                      emailController: nameController,
+                      prefixIcon: const Icon(
+                        Icons.person,
+                        size: 15,
                       ),
+                      hintText: 'Please write your name',
+                      validator: '',
+                      obscureText: false,
+                      icon: false,
+                      enabled: true,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    child: TextFormWidget(
+                      maxLines: 2,
+                      emailController: phoneController,
+                      prefixIcon: const Icon(
+                        Icons.person,
+                        size: 15,
+                      ),
+                      hintText: 'Please write your phone',
+                      validator: '',
+                      obscureText: false,
+                      icon: false,
+                      enabled: true,
                     ),
                   ),
                   Spacer(),
@@ -122,9 +147,15 @@ class EditProfile extends StatelessWidget {
                             cubit.updateUser(
                               name: nameController.text,
                               image: model.image!,
+                               uid: model.uId!,
+                              phone: model.phone,
                             );
                           } else {
-                            cubit.uploadImage(name: nameController.text);
+                            cubit.uploadImage(name: nameController.text,
+                              phone: phoneController.text,
+                              uid: model.uId!
+
+                            );
                           }
                         },
                         child: Text(
