@@ -44,18 +44,7 @@ class EditProfileAdmin extends StatelessWidget {
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,
               centerTitle: true,
-              automaticallyImplyLeading: true,
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(
-                    context,
-                  );
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios_rounded,
-                  size: 16,
-                ),
-              ),
+              automaticallyImplyLeading: false,
               title: Text(
                 S.of(context).edit_profile,
                 style: FontStyleThame.textStyle(
@@ -97,6 +86,10 @@ class EditProfileAdmin extends StatelessWidget {
                       ],
                     ),
                   ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
                   SizedBox(
                     height: 50,
                     child: TextFormWidget(
@@ -122,7 +115,7 @@ class EditProfileAdmin extends StatelessWidget {
                       maxLines: 2,
                       emailController: phoneController,
                       prefixIcon: const Icon(
-                        Icons.person,
+                        Icons.call,
                         size: 15,
                       ),
                       hintText: 'Please write your phone',

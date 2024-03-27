@@ -159,7 +159,7 @@ class BlockUserScreen extends StatelessWidget {
                                   ),
                                   child: MaterialButton(
                                     onPressed: () {
-cubit.deleteUser(uid: user.uId!);
+                                        cubit.deleteUser(uid: user.uId!);
                                     },
                                     child: Text('Delete User',
                                       style: GoogleFonts.tajawal(

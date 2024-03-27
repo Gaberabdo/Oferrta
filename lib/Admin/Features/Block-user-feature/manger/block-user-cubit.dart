@@ -7,7 +7,6 @@ import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-sta
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-
 class BlockUserCubit extends Cubit<BlockUserStates> {
   BlockUserCubit() : super(BlockInitialState());
 
@@ -17,13 +16,19 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   List<UserModel> allUser = [];
+  List<UserModel> filteredUser = [];
+  UserModel activeUser = UserModel();
 
   void getAllUserData() {
     emit(GetAllUserLoadingHomePageStates());
     FirebaseFirestore.instance.collection('users').snapshots().listen((value) {
       allUser.clear();
       for (var element in value.docs) {
-        allUser.add(UserModel.fromJson(element.data()));
+        if (element.id != "BKpnvWWfQme8PoAaOpdCVOWijbl2") {
+          allUser.add(UserModel.fromJson(element.data()));
+        } else {
+          activeUser = UserModel.fromJson(element.data());
+        }
       }
       print(allUser.length);
       print('lenttttttttttttttttttth');
@@ -34,14 +39,24 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     });
   }
 
+  void filterUsers(String query) {
+    if (query.isEmpty) {
+      filteredUser = List.from(allUser);
+    } else {
+      filteredUser = allUser.where((user) {
+        return user.name!.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
+    // Emit state to update UI
+    emit(FilterUsersSuccess());
+  }
+
   void block(String uId) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(uId).update({
         'blocked': true,
         'blockTimestamp': Timestamp.now(), // Set the current timestamp
       });
-
-
     } catch (error) {
       // Handle error
     }
@@ -53,15 +68,17 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
         'blocked': false,
         'blockTimestamp': null, // Reset the block timestamp
       });
-
     } catch (error) {
       // Handle error
     }
   }
-  Duration difference=Duration();
+
+  Duration difference = Duration();
+
   Future<bool> isBlockedForTwentyDays(String uId) async {
     try {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uId).get();
       if (!snapshot.exists) return false;
 
       Map<String, dynamic>? userData = snapshot.data() as Map<String, dynamic>?;
@@ -71,7 +88,8 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
         Timestamp? blockTimestamp = userData['blockTimestamp'];
 
         if (blocked == true && blockTimestamp != null) {
-           difference = Timestamp.now().toDate().difference(blockTimestamp.toDate());
+          difference =
+              Timestamp.now().toDate().difference(blockTimestamp.toDate());
           return difference.inDays >= 20;
         }
       }
@@ -81,6 +99,7 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       return false;
     }
   }
+
   ///search
   void searchUsers(String query) async {
     emit(UserSearchLoading());
@@ -92,13 +111,11 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       final users = snapshot.docs
           .map((doc) => UserModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
-      emit(UserSearchSuccess( users));
+      emit(UserSearchSuccess(users));
     } catch (e) {
       emit(UserSearchFailure());
     }
   }
-
-
 
   ///update user
   File? profileImage;
@@ -150,13 +167,10 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     isUpload = true;
 
     emit(UpdateLoadingUserDataState());
-    await firestore
-        .collection('users')
-        .doc(uid)
-        .update({
+    await firestore.collection('users').doc(uid).update({
       'name': name,
       'image': image,
-      'phone':phone,
+      'phone': phone,
     }).then((value) {
       emit(UpdateSuccessUserDataState());
       isUpload = false;
@@ -164,31 +178,21 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       emit(UpdateErrorUserDataState());
     });
   }
-///delete user
+
+  ///delete user
   Future<void> deleteUser({
     required String uid,
-}) async {
+  }) async {
     try {
-
       emit(DeleteLoadingUserDataState());
 
-
-      await firestore
-          .collection('users')
-          .doc(uid)
-          .delete();
-
+      await firestore.collection('users').doc(uid).delete();
 
       emit(DeleteSuccessUserDataState());
     } catch (error) {
-
       emit(DeleteErrorUserDataState());
-
 
       print('Error deleting user data: $error');
     }
   }
-
 }
-
-

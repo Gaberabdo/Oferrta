@@ -11,6 +11,7 @@ class BlockErorrState extends BlockUserStates {}
 class GetAllUserLoadingHomePageStates extends BlockUserStates {}
 class GetAllUserSuccessHomePageStates extends BlockUserStates {}
 class GetAllUserErrorHomePageStates extends BlockUserStates {}
+class FilterUsersSuccess extends BlockUserStates {}
 ///un block user
 class UnBlockLoadingState extends BlockUserStates {}
 class UnBlockSuccessState extends BlockUserStates {}

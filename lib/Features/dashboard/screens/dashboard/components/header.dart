@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
 import 'package:sell_4_u/Features/dashboard/controllers/MenuAppController.dart';
 import 'package:sell_4_u/Features/dashboard/responsive.dart';
+import 'package:sell_4_u/core/constant.dart';
 
+import '../../../../Auth-feature/manger/model/user_model.dart';
 import '../../../constants.dart';
 
 class Header extends StatelessWidget {
   const Header({
     Key? key,
+    required this.cubit,
   }) : super(key: key);
+  final BlockUserCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class Header extends StatelessWidget {
       children: [
         if (!Responsive.isDesktop(context))
           IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
             onPressed: context.read<MenuAppController>().controlMenu,
           ),
         if (!Responsive.isMobile(context))
@@ -26,8 +31,14 @@ class Header extends StatelessWidget {
           ),
         if (!Responsive.isMobile(context))
           Spacer(flex: Responsive.isDesktop(context) ? 2 : 1),
-        Expanded(child: SearchField()),
-        ProfileCard()
+        Expanded(
+          child: SearchField(
+            cubit: cubit,
+          ),
+        ),
+        ProfileCard(
+          cubit: cubit,
+        )
       ],
     );
   }
@@ -36,34 +47,34 @@ class Header extends StatelessWidget {
 class ProfileCard extends StatelessWidget {
   const ProfileCard({
     Key? key,
+    required this.cubit,
   }) : super(key: key);
+  final BlockUserCubit cubit;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: defaultPadding),
-      padding: EdgeInsets.symmetric(
+      margin: const EdgeInsets.only(left: defaultPadding),
+      padding: const EdgeInsets.symmetric(
         horizontal: defaultPadding,
         vertical: defaultPadding / 2,
       ),
       decoration: BoxDecoration(
-        color: secondaryColor,
+        color: ColorStyle.gray,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         border: Border.all(color: Colors.white10),
       ),
       child: Row(
         children: [
-          Image.asset(
-            "assets/images/face.png",
-            height: 38,
+          Icon(
+            Icons.person,
+            size: 35,
           ),
           if (!Responsive.isMobile(context))
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text("Ahmed Yassin"),
+              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+              child: Text(cubit.activeUser.name ?? 'Admin account'),
             ),
-          Icon(Icons.keyboard_arrow_down),
         ],
       ),
     );
@@ -73,29 +84,27 @@ class ProfileCard extends StatelessWidget {
 class SearchField extends StatelessWidget {
   const SearchField({
     Key? key,
+    required this.cubit,
   }) : super(key: key);
+  final BlockUserCubit cubit;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      decoration: InputDecoration(
+      enabled: true,
+      onChanged: (value) {
+        cubit.filterUsers(value);
+        if (value.isEmpty) {
+          cubit.filteredUser.clear();
+        }
+      },
+      decoration: const InputDecoration(
         hintText: "Search",
-       // fillColor: secondaryColor,
+        // fillColor: secondaryColor,
         filled: true,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
-        suffixIcon: InkWell(
-          onTap: () {},
-          child: Container(
-            padding: EdgeInsets.all(defaultPadding * 0.75),
-            margin: const EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-            decoration: BoxDecoration(
-           //   color: Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-            ),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
       ),
     );
