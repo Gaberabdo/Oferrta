@@ -242,24 +242,28 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
   String? uidOwner;
   dynamic value;
   int current = 0;
-
+  UserModel? activeUserChat;
   void changeCurrent({
     required int index,
     String? productIdIN,
     String? uidOwnerIN,
+    UserModel? model,
     dynamic? valueIN,
   }) {
     current = index;
+    activeUserChat = model;
     productId = productIdIN;
     uidOwner = uidOwnerIN;
     value = valueIN;
     emit(ChangeCurrentState());
   }
 
+
+
   List<String> titles = [
     'Users',
     'Products',
     'Products Details',
-    'Comments',
+    'Chats',
   ];
 }

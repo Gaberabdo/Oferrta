@@ -280,6 +280,17 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
+        Expanded(
+          child: IconButton(
+            onPressed: () {
+              cubit.changeCurrent(index: 3, model: model);
+            },
+            icon: Icon(
+              IconlyLight.chat,
+              color: ColorStyle.secondColor,
+            ),
+          ),
+        ),
       ],
     );
   }
