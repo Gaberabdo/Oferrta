@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
 import 'package:sell_4_u/core/constant.dart';
+
+import '../../../../../Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
 
 class SideMenu extends StatelessWidget {
   const SideMenu({
@@ -9,27 +13,38 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      elevation: 3,
-      child: ListView(
-        children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: ColorStyle.primaryColor),
-            child: Image.network("assets/images/logo.png"),
+    return BlocConsumer<BlockUserCubit, BlockUserStates>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        var cubit = BlockUserCubit.get(context);
+        return Drawer(
+          elevation: 3,
+          child: ListView(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(color: ColorStyle.primaryColor),
+                child: Image.network("assets/images/logo.png"),
+              ),
+              DrawerListTile(
+                title: "Users",
+                svgSrc: IconlyLight.user,
+                press: () {
+                  cubit.changeCurrent(index: 0);
+                },
+              ),
+              DrawerListTile(
+                title: "Products",
+                svgSrc: Icons.category_outlined,
+                press: () {
+                  cubit.changeCurrent(index: 1);
+                },
+              ),
+],
           ),
-          DrawerListTile(
-            title: "Users",
-            svgSrc: IconlyLight.user,
-            press: () {},
-          ),
-          DrawerListTile(
-            title: "Products",
-            svgSrc: Icons.category_outlined,
-            press: () {},
-          ),
-
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -53,8 +68,8 @@ class DrawerListTile extends StatelessWidget {
       horizontalTitleGap: 0.0,
       title: Text(
         title,
-        style: TextStyle(
-          color: Colors.black,
+        style: FontStyleThame.textStyle(
+          fontColor: Colors.black,
         ),
       ),
       leading: Icon(svgSrc),

@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
@@ -5,6 +6,7 @@ import 'package:sell_4_u/Features/dashboard/controllers/MenuAppController.dart';
 import 'package:sell_4_u/Features/dashboard/responsive.dart';
 import 'package:sell_4_u/core/constant.dart';
 
+import '../../../../../core/helper/component/component.dart';
 import '../../../../Auth-feature/manger/model/user_model.dart';
 import '../../../constants.dart';
 
@@ -26,7 +28,7 @@ class Header extends StatelessWidget {
           ),
         if (!Responsive.isMobile(context))
           Text(
-            "Dashboard",
+            cubit.titles[cubit.current],
             style: Theme.of(context).textTheme.titleLarge,
           ),
         if (!Responsive.isMobile(context))
@@ -82,31 +84,158 @@ class ProfileCard extends StatelessWidget {
 }
 
 class SearchField extends StatelessWidget {
-  const SearchField({
+  SearchField({
     Key? key,
     required this.cubit,
   }) : super(key: key);
   final BlockUserCubit cubit;
+  final titleController = TextEditingController();
+  final bodyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      enabled: true,
-      onChanged: (value) {
-        cubit.filterUsers(value);
-        if (value.isEmpty) {
-          cubit.filteredUser.clear();
-        }
-      },
-      decoration: const InputDecoration(
-        hintText: "Search",
-        // fillColor: secondaryColor,
-        filled: true,
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+    return Row(
+      children: [
+        CircleAvatar(
+          child: IconButton(
+            icon: const Icon(
+              Icons.notification_add,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Row(
+                      children: [
+                        Text(
+                          'Send notification',
+                          style: FontStyleThame.textStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                    content: SizedBox(
+                        width: 400,
+                        height: 200,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              child: TextFormWidget(
+                                maxLines: 2,
+                                emailController: titleController,
+                                prefixIcon: const Icon(
+                                  Icons.title,
+                                  size: 15,
+                                ),
+                                hintText: 'Please write your title',
+                                validator: '',
+                                obscureText: false,
+                                icon: false,
+                                enabled: true,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: TextFormWidget(
+                                maxLines: 2,
+                                emailController: bodyController,
+                                prefixIcon: const Icon(
+                                  Icons.bolt,
+                                  size: 15,
+                                ),
+                                hintText: 'Please write your body',
+                                validator: '',
+                                obscureText: false,
+                                icon: false,
+                                enabled: true,
+                              ),
+                            ),
+                            Spacer(),
+                            ConditionalBuilder(
+                              condition: !cubit.isUpload,
+                              builder: (context) => Container(
+                                height: 45,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: ColorStyle.primaryColor,
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: MaterialButton(
+                                  onPressed: () async {
+                                    cubit
+                                        .sendNot(
+                                      body: bodyController.text,
+                                      title: titleController.text,
+                                    )
+                                        .then((value) {
+                                      titleController.clear();
+                                      bodyController.clear();
+                                      Navigator.pop(context);
+                                    });
+                                  },
+                                  child: Text(
+                                    'Send notification for all users',
+                                    style: FontStyleThame.textStyle(
+                                      fontSize: 16,
+                                      fontColor: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              fallback: (context) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: ColorStyle.primaryColor,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        )),
+                  );
+                },
+              );
+            },
+          ),
         ),
-      ),
+        SizedBox(
+          width: defaultPadding,
+        ),
+        Expanded(
+          child: TextField(
+            enabled: true,
+            onChanged: (value) {
+              cubit.filterUsers(value);
+              if (value.isEmpty) {
+                cubit.filteredUser.clear();
+              }
+            },
+            decoration: const InputDecoration(
+              hintText: "Search",
+              // fillColor: secondaryColor,
+              filled: true,
+              border: OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

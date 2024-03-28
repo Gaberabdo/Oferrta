@@ -90,6 +90,16 @@ class MyTable extends StatelessWidget {
                   ),
                 ),
                 DataColumn(
+                  label: Text(
+                    'Platform',
+                    textAlign: TextAlign.center,
+                    style: FontStyleThame.textStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                DataColumn(
                   label: Padding(
                     padding: const EdgeInsetsDirectional.only(start: 50),
                     child: Text(
@@ -103,74 +113,97 @@ class MyTable extends StatelessWidget {
                   ),
                 ),
               ],
-              rows: model.map((model) {
-                return DataRow(cells: [
-                  DataCell(Text(model.name.toString())),
-                  DataCell(
-                    _buildCircleAvatar(
-                      model.image.toString(),
-                    ),
-                  ),
-                  DataCell(Text(
-                    model.email.toString(),
-                    style: FontStyleThame.textStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  )),
-                  DataCell(Text(
-                    model.phone.toString(),
-                    style: FontStyleThame.textStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  )),
-                  DataCell(model.blocked == true
-                      ? Container(
-                          width: 60,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade100,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'True',
-                              textAlign: TextAlign.center,
-                              style: FontStyleThame.textStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
+              rows: model.map(
+                (model) {
+                  return DataRow(
+                    cells: [
+                      DataCell(Text(
+                        model.name.toString(),
+                        textAlign: TextAlign.center,
+                        style: FontStyleThame.textStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )),
+                      DataCell(
+                        _buildCircleAvatar(
+                          model.image.toString(),
+                        ),
+                      ),
+                      DataCell(Text(
+                        model.email.toString(),
+                        textAlign: TextAlign.center,
+                        style: FontStyleThame.textStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )),
+                      DataCell(Text(
+                        model.phone.toString(),
+                        textAlign: TextAlign.center,
+                        style: FontStyleThame.textStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )),
+                      DataCell(model.blocked == true
+                          ? Container(
+                              width: 60,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade100,
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                            ),
-                          ),
-                        )
-                      : Container(
-                          width: 60,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.green.shade100,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'False',
-                              textAlign: TextAlign.center,
-                              style: FontStyleThame.textStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'True',
+                                  textAlign: TextAlign.center,
+                                  style: FontStyleThame.textStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )),
-                  DataCell(buildAction(
-                    context: context,
-                    model: model,
-                    cubit: cubit,
-                  )),
-                ]);
-              }).toList(),
+                            )
+                          : Container(
+                              width: 60,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade100,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'False',
+                                  textAlign: TextAlign.center,
+                                  style: FontStyleThame.textStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            )),
+                      DataCell(Text(
+                        model.platform ?? '--',
+                        textAlign: TextAlign.center,
+                        style: FontStyleThame.textStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )),
+                      DataCell(
+                        buildAction(
+                          context: context,
+                          model: model,
+                          cubit: cubit,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ).toList(),
             ),
           ),
         ),

@@ -6,6 +6,7 @@ class UserModel {
   String? phone;
   String? uId;
   String? image;
+  String? platform;
 
   bool? blocked;
   Timestamp? blockTimestamp;
@@ -17,6 +18,7 @@ class UserModel {
     this.uId,
     this.image,
     this.blocked,
+    this.platform,
     this.blockTimestamp,
   });
 
@@ -25,6 +27,7 @@ class UserModel {
     name = json['name'] ?? '';
     phone = json['phone'] ?? '';
     uId = json['uId'] ?? '';
+    platform = json['platform'] ?? 'android';
     image = json['image'] ?? '';
     blocked = json['blocked'] ?? false;
     blockTimestamp = json['blockTimestamp'] != null ? json['blockTimestamp'] : null; // Convert to Timestamp if not null
@@ -36,6 +39,7 @@ class UserModel {
       'email': email,
       'phone': phone,
       'uId': uId,
+      'platform': platform,
       'image': image,
       'blocked': blocked,
       'blockTimestamp': blockTimestamp,

@@ -30,7 +30,7 @@ class CommentCubit extends Cubit<CommentState> {
 
     fireStore
         .collection('users')
-        .doc(CacheHelper.getData(key: 'uId'))
+        .doc("7QfP0PNO6qVWVKij4jJzVNCG9sj2")
         .snapshots()
         .listen((value) {
       model = UserModel.fromJson(value.data()!);

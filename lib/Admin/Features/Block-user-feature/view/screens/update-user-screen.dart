@@ -28,10 +28,7 @@ class EditProfileAdmin extends StatelessWidget {
       child: BlocConsumer<BlockUserCubit, BlockUserStates>(
         listener: (context, state) {
           if (state is UpdateSuccessUserDataState) {
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-
-              return BlockUserScreen();
-            }), (route) => false);
+            Navigator.pop(context);
           }
         },
         builder: (context, state) {

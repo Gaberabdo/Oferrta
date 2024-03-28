@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import '../../../../core/constant.dart';
 
 class BlockUserCubit extends Cubit<BlockUserStates> {
   BlockUserCubit() : super(BlockInitialState());
@@ -24,7 +29,7 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     FirebaseFirestore.instance.collection('users').snapshots().listen((value) {
       allUser.clear();
       for (var element in value.docs) {
-        if (element.id != "BKpnvWWfQme8PoAaOpdCVOWijbl2") {
+        if (element.id != "7QfP0PNO6qVWVKij4jJzVNCG9sj2") {
           allUser.add(UserModel.fromJson(element.data()));
         } else {
           activeUser = UserModel.fromJson(element.data());
@@ -195,4 +200,66 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       print('Error deleting user data: $error');
     }
   }
+
+  Future<void> sendNot({
+    required String title,
+    required String body,
+  }) async {
+    final data = {
+      'to': '/topics/Admin',
+      'notification': {
+        'body': body,
+        'title': title,
+      }
+    };
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'key=${Constant.notImage}'
+    };
+    var dio = Dio();
+    var response = await dio.request(
+      'https://fcm.googleapis.com/fcm/send',
+      options: Options(
+        method: 'POST',
+        headers: headers,
+      ),
+      data: data,
+    );
+
+    if (response.statusCode == 200) {
+      print(json.encode(response.data));
+    } else {
+      print(response.statusMessage);
+    }
+  }
+
+  // productId: productId,
+  // uid: uid,
+  // value: value,
+
+  String? productId;
+  String? uidOwner;
+  dynamic value;
+  int current = 0;
+
+  void changeCurrent({
+    required int index,
+    String? productIdIN,
+    String? uidOwnerIN,
+    dynamic? valueIN,
+  }) {
+    current = index;
+    productId = productIdIN;
+    uidOwner = uidOwnerIN;
+    value = valueIN;
+    emit(ChangeCurrentState());
+  }
+
+  List<String> titles = [
+    'Users',
+    'Products',
+    'Products Details',
+    'Comments',
+  ];
 }

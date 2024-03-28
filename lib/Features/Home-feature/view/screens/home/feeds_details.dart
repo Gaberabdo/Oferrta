@@ -49,6 +49,7 @@ class HomeFeedsDetails extends StatelessWidget {
           var cubit = FeedsCubit.get(context);
           ProductModel modelDetails = cubit.modelDetails;
           return Scaffold(
+            backgroundColor: Colors.white,
             body: SafeArea(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),

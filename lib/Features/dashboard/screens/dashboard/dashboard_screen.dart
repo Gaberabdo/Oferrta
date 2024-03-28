@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/view/widget/my-table.dart';
 import 'package:sell_4_u/Features/dashboard/responsive.dart';
+import 'package:sell_4_u/Features/dashboard/screens/dashboard/cat_banner_dash.dart';
+import 'package:sell_4_u/Features/dashboard/screens/dashboard/components/file_info_card.dart';
+import 'package:sell_4_u/Features/dashboard/screens/dashboard/components/home_feeds_details_dash.dart';
 import 'package:sell_4_u/Features/dashboard/screens/dashboard/components/my_fields.dart';
 
 import '../../../../Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
 import '../../../../Admin/Features/Block-user-feature/manger/block-user-state.dart';
+import '../../../Home-feature/view/screens/home/panner_cat.dart';
 import '../../constants.dart';
 import 'components/header.dart';
 import 'components/storage_details.dart';
@@ -15,35 +19,40 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BlockUserCubit()..getAllUserData(),
-      child: BlocConsumer<BlockUserCubit, BlockUserStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          var cubit = BlockUserCubit.get(context);
-          var model = cubit.allUser;
-          return SafeArea(
-            child: SingleChildScrollView(
-              primary: false,
-              padding: EdgeInsets.all(defaultPadding),
-              child: Column(
-                children: [
-                  Header(
-                    cubit: cubit,
-                  ),
-                  SizedBox(height: defaultPadding),
+    return BlocConsumer<BlockUserCubit, BlockUserStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var cubit = BlockUserCubit.get(context);
+        var model = cubit.allUser;
 
-
-                  MyTable(
-                    model: (cubit.filteredUser.isEmpty) ? model : cubit.filteredUser,
-                    cubit: cubit,
-                  ),
-                ],
+        List<Widget> widgets = [
+          MyTable(
+            model: (cubit.filteredUser.isEmpty) ? model : cubit.filteredUser,
+            cubit: cubit,
+          ),
+          BannerCatDash(),
+          HomeFeedsDetailsDash(
+            productId: cubit.productId ?? '',
+            uid: cubit.uidOwner ?? '',
+            value: cubit.value,
+          ),
+        ];
+        return Padding(
+          padding: EdgeInsets.all(defaultPadding),
+          child: Column(
+            children: [
+              Header(
+                cubit: cubit,
               ),
-            ),
-          );
-        },
-      ),
+              SizedBox(height: defaultPadding),
+              SizedBox(height: defaultPadding),
+              Expanded(
+                child: widgets[cubit.current],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

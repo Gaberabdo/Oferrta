@@ -35,3 +35,4 @@ class UpdateErrorUserDataState extends BlockUserStates{}
 class DeleteLoadingUserDataState extends BlockUserStates{}
 class DeleteSuccessUserDataState extends BlockUserStates{}
 class DeleteErrorUserDataState extends BlockUserStates{}
+class ChangeCurrentState extends BlockUserStates{}
