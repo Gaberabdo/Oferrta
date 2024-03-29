@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sell_4_u/Admin/Coupon-Feature/view/coupon-screen.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/view/widget/my-table.dart';
+import 'package:sell_4_u/Admin/Features/Subscriptions-Feature/view/subscripation-screen.dart';
 import 'package:sell_4_u/Admin/chat-feature/screens/admin/chat-details-admin.dart';
 import 'package:sell_4_u/Features/dashboard/responsive.dart';
 import 'package:sell_4_u/Features/dashboard/screens/dashboard/cat_banner_dash.dart';
@@ -41,6 +43,8 @@ class DashboardScreen extends StatelessWidget {
           ChatDetailsAdmin(
             model: cubit.activeUserChat ?? UserModel(),
           ),
+          const SubscripationScreen(),
+          const CouponScreen()
         ];
         return Padding(
           padding: const EdgeInsets.all(defaultPadding),

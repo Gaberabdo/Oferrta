@@ -41,7 +41,21 @@ class SideMenu extends StatelessWidget {
                   cubit.changeCurrent(index: 1);
                 },
               ),
-],
+              DrawerListTile(
+                title: "Subscriptions",
+                svgSrc: Icons.subscriptions,
+                press: () {
+                  cubit.changeCurrent(index: 4);
+                },
+              ),
+              DrawerListTile(
+                title: "Coupon",
+                svgSrc: Icons.discount,
+                press: () {
+                  cubit.changeCurrent(index: 5);
+                },
+              ),
+            ],
           ),
         );
       },

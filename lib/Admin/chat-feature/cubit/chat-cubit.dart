@@ -40,6 +40,8 @@ class ChatCubit extends Cubit<ChatStates> {
   List<MessageModel> messages = [];
 
   void getMessage({required String receiveId}) {
+
+
     FirebaseFirestore.instance
         .collection('users')
         .doc('7QfP0PNO6qVWVKij4jJzVNCG9sj2')
@@ -49,6 +51,7 @@ class ChatCubit extends Cubit<ChatStates> {
         .orderBy('dateTime', descending: false)
         .snapshots()
         .listen((event) {
+
       messages.clear();
       for (var element in event.docs) {
         messages.add(MessageModel.fromJson(element.data()));
@@ -69,8 +72,7 @@ class ChatCubit extends Cubit<ChatStates> {
     required String receiverId,
     required String text,
   }) {
-    String formattedDate = DateFormat('E MMM d y HH:mm:ss \'GMT\'Z (z)', 'en')
-        .format(DateTime.now());
+    String formattedDate = DateFormat('E MMM d y HH:mm:ss \'GMT\'Z (z)', 'en').format(DateTime.now());
     MessageModel massageModel = MessageModel(
       message: text,
       senderId: "7QfP0PNO6qVWVKij4jJzVNCG9sj2",

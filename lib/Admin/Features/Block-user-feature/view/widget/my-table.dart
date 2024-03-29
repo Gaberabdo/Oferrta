@@ -1,9 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:sell_4_u/core/constant.dart';
 
+import '../../../../../core/helper/component/component.dart';
 import '../../manger/block-user-cubit.dart';
 import '../screens/update-user-screen.dart';
 
@@ -216,6 +218,7 @@ class MyTable extends StatelessWidget {
     required UserModel model,
     required BlockUserCubit cubit,
   }) {
+    final titleController = TextEditingController();
     return Row(
       children: [
         Expanded(
@@ -247,7 +250,7 @@ class MyTable extends StatelessWidget {
               if (model.blocked == true) {
                 cubit.unblock(model.uId!);
               } else {
-                cubit.block(model.uId!);
+                cubit.blockAlowes(model.uId!,);
               }
             },
             icon: const Icon(
@@ -288,6 +291,103 @@ class MyTable extends StatelessWidget {
             icon: Icon(
               IconlyLight.chat,
               color: ColorStyle.secondColor,
+            ),
+          ),
+        ),
+        Expanded(
+          child: IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Row(
+                      children: [
+                        Text(
+                          'Temporary block',
+                          style: FontStyleThame.textStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                    content: SizedBox(
+                        width: 400,
+                        height: 200,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              child: TextFormWidget(
+                                maxLines: 2,
+                                emailController: titleController,
+                                keyboardType: TextInputType.number,
+                                prefixIcon: const Icon(
+                                  Icons.title,
+                                  size: 15,
+                                ),
+                                hintText: 'Enter number of days',
+                                validator: '',
+                                obscureText: false,
+                                icon: false,
+                                enabled: true,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Spacer(),
+                            ConditionalBuilder(
+                              condition: !cubit.isUpload,
+                              builder: (context) => Container(
+                                height: 45,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: ColorStyle.primaryColor,
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: MaterialButton(
+                                  onPressed: () async {
+                                    cubit.block(
+                                      model.uId!,
+                                      int.parse(titleController.text),
+                                    );
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'Confirm block',
+                                    style: FontStyleThame.textStyle(
+                                      fontSize: 16,
+                                      fontColor: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              fallback: (context) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: ColorStyle.primaryColor,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        )),
+                  );
+                },
+              );
+            },
+            icon: Icon(
+              Icons.timer,
+              color: ColorStyle.primaryColor,
             ),
           ),
         ),

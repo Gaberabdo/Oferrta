@@ -5,13 +5,11 @@ import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dar
 import 'package:sell_4_u/Features/Home-feature/view/screens/home/feeds_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sell_4_u/Features/Home-feature/view/screens/home/panner_cat.dart';
-import 'package:sell_4_u/Features/setting/view/screens/profile_screen.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:iconly/iconly.dart';
 
 import '../../../../core/helper/cache/cache_helper.dart';
 import '../../../Auth-feature/manger/model/user_model.dart';
-import '../../../setting/model/user_model.dart';
 import 'home-state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -23,7 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
     const FeedsScreen(),
     const BannerCat(),
     const CreatePost(),
-    const ProfileScreen(),
+    const Column(),
   ];
   int selectedIndex = 0;
 

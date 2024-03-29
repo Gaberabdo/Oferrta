@@ -6,7 +6,6 @@ import 'package:sell_4_u/Features/Auth-feature/presentation/pages/login/login_sc
 import 'package:sell_4_u/Features/Home-feature/Cubit/Layout_cubit/home-cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/Layout_cubit/home-state.dart';
 import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dart';
-import 'package:sell_4_u/Features/setting/view/screens/search_screen.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:sell_4_u/core/helper/cache/cache_helper.dart';
 import 'package:sell_4_u/core/helper/component/component.dart';
@@ -32,7 +31,7 @@ class LayoutScreen extends StatelessWidget {
         },
         builder: (context, state) {
           var cubit = HomeCubit.get(context);
-          var userModel = cubit.model!;
+          var userModel = cubit.model;
           return ResponsiveScreen(
             mobileScreen: Scaffold(
               appBar: AppBar(
@@ -49,7 +48,7 @@ class LayoutScreen extends StatelessWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) {
-                                return SearchScreen();
+                                return Column();
                               },
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
@@ -205,7 +204,7 @@ class LayoutScreen extends StatelessWidget {
                                   CircleAvatar(
                                     radius: 30,
                                     backgroundImage:
-                                        NetworkImage(userModel!.image!),
+                                        NetworkImage(userModel.image ?? ''),
                                   ),
                                   const SizedBox(
                                     width: 8,
@@ -215,7 +214,7 @@ class LayoutScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        userModel!.name!,
+                                        userModel.name ?? '',
                                         style: FontStyleThame.textStyle(
                                           fontSize: 14,
                                           fontColor: Colors.white,
@@ -419,7 +418,7 @@ class LayoutScreen extends StatelessWidget {
                                         PageRouteBuilder(
                                           pageBuilder: (context, animation,
                                               secondaryAnimation) {
-                                            return SearchScreen();
+                                            return Column();
                                           },
                                           transitionsBuilder: (context,
                                               animation,

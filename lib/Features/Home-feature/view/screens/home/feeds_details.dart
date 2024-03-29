@@ -129,17 +129,6 @@ class HomeFeedsDetails extends StatelessWidget {
                           ),
                         Row(
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.pop(
-                                  context,
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back_ios_rounded,
-                                size: 16,
-                              ),
-                            ),
                             const Spacer(),
                             IconButton(
                               onPressed: () {

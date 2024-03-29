@@ -56,36 +56,63 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     emit(FilterUsersSuccess());
   }
 
-  void block(String uId) async {
+  Duration difference = Duration();
+
+  Future<void> block(String uId, int? numberOfDays) async {
     try {
+      DateTime now = DateTime.now(); // Get the current datetime
+      DateTime unblockDateTime = now.add(Duration(days: numberOfDays!));
+
+      Timestamp blockTimestamp = Timestamp.fromDate(unblockDateTime);
+
       await FirebaseFirestore.instance.collection('users').doc(uId).update({
         'blocked': true,
-        'blockTimestamp': Timestamp.now(), // Set the current timestamp
+        'blockTimestamp': blockTimestamp,
       });
+
+      isUserBlockedForNDays(
+        uId,
+        numberOfDays,
+      );
     } catch (error) {
-      // Handle error
+
+      print('Error blocking user: $error');
+    }
+  }
+  Future<void> blockAlowes(String uId,) async {
+    try {
+
+
+      await FirebaseFirestore.instance.collection('users').doc(uId).update({
+        'blocked': true,
+        'blockTimestamp': null,
+      });
+
+
+    } catch (error) {
+
+      print('Error blocking user: $error');
     }
   }
 
-  void unblock(String uId) async {
+  Future<void> unblock(String uId) async {
     try {
       await FirebaseFirestore.instance.collection('users').doc(uId).update({
         'blocked': false,
-        'blockTimestamp': null, // Reset the block timestamp
+        'blockTimestamp': null,
       });
     } catch (error) {
       // Handle error
+      print('Error unblocking user: $error');
     }
   }
 
-  Duration difference = Duration();
-
-  Future<bool> isBlockedForTwentyDays(String uId) async {
+  Future<bool> isUserBlockedForNDays(String uId, int numberOfDays) async {
     try {
-      DocumentSnapshot snapshot =
-          await FirebaseFirestore.instance.collection('users').doc(uId).get();
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
       if (!snapshot.exists) return false;
 
+      print(difference.inDays);
       Map<String, dynamic>? userData = snapshot.data() as Map<String, dynamic>?;
 
       if (userData != null) {
@@ -93,14 +120,17 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
         Timestamp? blockTimestamp = userData['blockTimestamp'];
 
         if (blocked == true && blockTimestamp != null) {
-          difference =
-              Timestamp.now().toDate().difference(blockTimestamp.toDate());
-          return difference.inDays >= 20;
+          difference = blockTimestamp.toDate().difference(Timestamp.now().toDate());
+          return difference.inDays >= numberOfDays;
         }
+
+        print(difference.inDays);
+
       }
       return false;
     } catch (error) {
-      print(error.toString());
+      // Handle error
+      print('Error checking if user is blocked: $error');
       return false;
     }
   }
@@ -265,5 +295,7 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     'Products',
     'Products Details',
     'Chats',
+    'Subscriptions',
+    'Coupon',
   ];
 }

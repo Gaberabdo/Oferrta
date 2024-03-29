@@ -110,110 +110,118 @@ class ChatDetailsAdmin extends StatelessWidget {
                           ],
                         ),
                       ),
-                      body: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: ListView.separated(
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              if ("7QfP0PNO6qVWVKij4jJzVNCG9sj2" ==
-                                  cubit.messages[index].senderId) {
-                                return myMessages(
-                                    cubit.messages[index], context);
-                              } else {
-                                return senderMessage(
-                                    cubit.messages[index], context);
-                              }
-                            },
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                            itemCount: cubit.messages.length),
-                      ),
-                      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-                      floatingActionButton: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (cubit.chatImage != null)
-                              Stack(
-                                children: [
-                                  Expanded(
-                                    child: Image.file(
-                                      cubit.chatImage!,
-                                      height: 200,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      cubit.removePostImage();
-                                    },
-                                    icon: const CircleAvatar(
-                                      child: Icon(Icons.close),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            Row(
+                      body: Column(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: ListView.separated(
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    if ("7QfP0PNO6qVWVKij4jJzVNCG9sj2" ==
+                                        cubit.messages[index].senderId) {
+                                      return myMessages(
+                                          cubit.messages[index], context);
+                                    } else {
+                                      return senderMessage(
+                                          cubit.messages[index], context);
+                                    }
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                  itemCount: cubit.messages.length),
+                            ),
+                          ),
+                          if(cubit.messages.isEmpty)
+                            const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 48,
-                                    decoration: BoxDecoration(
-                                        color: const Color.fromRGBO(
-                                            242, 242, 242, 1),
-                                        borderRadius: BorderRadius.circular(8)),
-                                    child: TextFormField(
-                                      cursorColor: Colors.blue,
-                                      controller: textController,
-                                      onFieldSubmitted: (value) {
-                                        cubit.sendMessage(
-                                          text: textController.text,
-                                          receiverId: model.uId!,
-                                        );
-                                        textController.clear();
-                                      },
-                                      keyboardType: TextInputType.text,
-                                      keyboardAppearance: Brightness.dark,
-                                      decoration: InputDecoration(
-                                        hintText: 'Write Message...',
-                                        hintStyle: FontStyleThame.textStyle(
-                                          fontSize: 16,
-                                          fontColor: Colors.grey,
-                                          fontWeight: FontWeight.w500,
+                                if (cubit.chatImage != null)
+                                  Stack(
+                                    children: [
+                                      Expanded(
+                                        child: Image.file(
+                                          cubit.chatImage!,
+                                          height: 200,
                                         ),
-                                        enabledBorder: InputBorder.none,
-                                        errorBorder: InputBorder.none,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          cubit.removePostImage();
+                                        },
+                                        icon: const CircleAvatar(
+                                          child: Icon(Icons.close),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        height: 48,
+                                        decoration: BoxDecoration(
+                                            color: const Color.fromRGBO(
+                                                242, 242, 242, 1),
+                                            borderRadius: BorderRadius.circular(8)),
+                                        child: TextFormField(
+                                          cursorColor: Colors.blue,
+                                          controller: textController,
+                                          onFieldSubmitted: (value) {
+                                            cubit.sendMessage(
+                                              text: textController.text,
+                                              receiverId: cubit.userModel == null ? model.uId! : cubit.userModel!.uId!,
+                                            );
+                                            textController.clear();
+                                          },
+                                          keyboardType: TextInputType.text,
+                                          keyboardAppearance: Brightness.dark,
+                                          decoration: InputDecoration(
+                                            hintText: 'Write Message...',
+                                            hintStyle: FontStyleThame.textStyle(
+                                              fontSize: 16,
+                                              fontColor: Colors.grey,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                            enabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                CircleAvatar(
-                                  radius: 28,
-                                  backgroundColor: ColorStyle.primaryColor,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      cubit.sendMessage(
-                                        text: textController.text,
-                                        receiverId: model.uId!,
-                                      );
-                                      textController.clear();
-                                    },
-                                    icon: const Icon(
-                                      IconlyLight.send,
-                                      color: Colors.white,
+                                    const SizedBox(
+                                      width: 5,
                                     ),
-                                  ),
+                                    CircleAvatar(
+                                      radius: 28,
+                                      backgroundColor: ColorStyle.primaryColor,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          cubit.sendMessage(
+                                            text: textController.text,
+                                            receiverId: cubit.userModel == null ? model.uId! : cubit.userModel!.uId!,
+                                          );
+                                          textController.clear();
+                                        },
+                                        icon: const Icon(
+                                          IconlyLight.send,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+
                     ),
                   ),
                 ),

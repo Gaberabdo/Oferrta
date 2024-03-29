@@ -54,7 +54,7 @@ dependencies:
   #fire_base
 
 
-
+#  flutter_upayments:
 
   flutter_facebook_auth:
   google_sign_in:
