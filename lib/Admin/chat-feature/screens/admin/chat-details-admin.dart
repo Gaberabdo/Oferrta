@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,26 +50,28 @@ class ChatDetailsAdmin extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: ListView.separated(
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return buildCommentItemUser(
-                                  context: context,
-                                  model: cubitTest.allUser[index],
-                                );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 10,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return buildCommentItemUser(
+                                    context: context,
+                                    model: cubitTest.allUser[index],
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  height: 10,
+                                ),
+                                itemCount: cubitTest.allUser.length,
                               ),
-                              itemCount: cubitTest.allUser.length,
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -92,7 +98,10 @@ class ChatDetailsAdmin extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CircleAvatar(
-                              backgroundImage: NetworkImage(cubit.userModel == null ? model.image! : cubit.userModel!.image!),
+                              backgroundImage: NetworkImage(
+                                  cubit.userModel == null
+                                      ? model.image!
+                                      : cubit.userModel!.image!),
                               backgroundColor: Colors.white,
                               radius: 25,
                             ),
@@ -100,7 +109,9 @@ class ChatDetailsAdmin extends StatelessWidget {
                               width: 12,
                             ),
                             Text(
-                              cubit.userModel == null ? model.name! : cubit.userModel!.name!,
+                              cubit.userModel == null
+                                  ? model.name!
+                                  : cubit.userModel!.name!,
                               style: FontStyleThame.textStyle(
                                 fontColor: Colors.black,
                                 fontWeight: FontWeight.w400,
@@ -118,6 +129,8 @@ class ChatDetailsAdmin extends StatelessWidget {
                               child: ListView.separated(
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
+                                    print('message ${cubit.messages[index].toMap()}');
+
                                     if ("7QfP0PNO6qVWVKij4jJzVNCG9sj2" ==
                                         cubit.messages[index].senderId) {
                                       return myMessages(
@@ -134,8 +147,7 @@ class ChatDetailsAdmin extends StatelessWidget {
                                   itemCount: cubit.messages.length),
                             ),
                           ),
-                          if(cubit.messages.isEmpty)
-                            const Spacer(),
+                          if (cubit.messages.isEmpty) const Spacer(),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -168,14 +180,23 @@ class ChatDetailsAdmin extends StatelessWidget {
                                         decoration: BoxDecoration(
                                             color: const Color.fromRGBO(
                                                 242, 242, 242, 1),
-                                            borderRadius: BorderRadius.circular(8)),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
                                         child: TextFormField(
                                           cursorColor: Colors.blue,
                                           controller: textController,
                                           onFieldSubmitted: (value) {
                                             cubit.sendMessage(
                                               text: textController.text,
-                                              receiverId: cubit.userModel == null ? model.uId! : cubit.userModel!.uId!,
+                                              receiverId:
+                                                  cubit.userModel == null
+                                                      ? model.uId!
+                                                      : cubit.userModel!.uId!,
+                                            );
+                                            sendNot(
+                                              token: model.token!,
+                                              title: 'Custom supplier',
+                                              body: textController.text,
                                             );
                                             textController.clear();
                                           },
@@ -204,7 +225,14 @@ class ChatDetailsAdmin extends StatelessWidget {
                                         onPressed: () {
                                           cubit.sendMessage(
                                             text: textController.text,
-                                            receiverId: cubit.userModel == null ? model.uId! : cubit.userModel!.uId!,
+                                            receiverId: cubit.userModel == null
+                                                ? model.uId!
+                                                : cubit.userModel!.uId!,
+                                          );
+                                          sendNot(
+                                            token: model.token!,
+                                            title: 'Custom supplier',
+                                            body: textController.text,
                                           );
                                           textController.clear();
                                         },
@@ -221,7 +249,6 @@ class ChatDetailsAdmin extends StatelessWidget {
                           ),
                         ],
                       ),
-
                     ),
                   ),
                 ),
@@ -321,7 +348,7 @@ Widget senderMessage(MessageModel model, context) {
                   width: 4,
                 ),
                 Text(
-                  transform(model.time!),
+                  transform(model.time ?? ""),
                   style: const TextStyle(fontSize: 12),
                 ),
                 const SizedBox(
@@ -378,12 +405,60 @@ Widget buildCommentItemUser({
             ),
             Text(
               model.name!,
-              style:
-                  FontStyleThame.textStyle(fontSize: 16, fontColor: Colors.black),
+              style: FontStyleThame.textStyle(
+                  fontSize: 16, fontColor: Colors.black),
             ),
           ],
         ),
       ),
     ),
   );
+}
+
+
+Future<void> sendNot({
+  required String token,
+  required String title,
+  required String body,
+}) async {
+  var headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'key=${Constant.notImage}'
+  };
+  var data = json.encode({
+    "to": token,
+    "notification": {
+      "title": "New message from $title",
+      "body": body,
+      "sound": "default"
+    },
+    "android": {
+      "priorite": "HIGH",
+      "notification": {
+        "notification_priorite": "PRIORITE_MAX",
+        "sound": "default",
+        "default_sound": "true",
+        "default_vibrate_timings": "true",
+        "default_ligth_setting": "true"
+      }
+    },
+  });
+  var dio = Dio();
+  var response = await dio.request(
+    'https://fcm.googleapis.com/fcm/send',
+    options: Options(
+      method: 'POST',
+      headers: headers,
+    ),
+    data: data,
+  );
+
+  if (response.statusCode == 200) {
+    print(json.encode(response.data));
+    print('s-------------------------------');
+
+  } else {
+    print('e-------------------------------');
+    print(response.statusMessage);
+  }
 }

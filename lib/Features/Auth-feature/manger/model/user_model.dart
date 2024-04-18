@@ -6,6 +6,7 @@ class UserModel {
   String? phone;
   String? uId;
   String? image;
+  String? token;
   String? platform;
 
   bool? blocked;
@@ -18,6 +19,7 @@ class UserModel {
     this.uId,
     this.image,
     this.blocked,
+    this.token,
     this.platform,
     this.blockTimestamp,
   });
@@ -26,6 +28,7 @@ class UserModel {
     email = json!['email'] ?? '';
     name = json['name'] ?? '';
     phone = json['phone'] ?? '';
+    token = json['token'] ?? '';
     uId = json['uId'] ?? '';
     platform = json['platform'] ?? 'android';
     image = json['image'] ?? '';
@@ -42,6 +45,7 @@ class UserModel {
       'platform': platform,
       'image': image,
       'blocked': blocked,
+      'token': token,
       'blockTimestamp': blockTimestamp,
     };
   }

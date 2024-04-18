@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constant.dart';
@@ -38,6 +39,7 @@ class MainCubit extends Cubit<MainState> {
     }
   }
 
+
   void subscribeToAdminTopic() {
     FirebaseMessaging.instance.requestPermission(
       alert: true,
@@ -48,12 +50,15 @@ class MainCubit extends Cubit<MainState> {
       provisional: false,
       sound: true,
     );
-    FirebaseMessaging.instance.subscribeToTopic('Admin').then((value) {
-      emit(AdminTopicState());
-    }).catchError((onError) {
-      print('*************************');
-      print(onError.toString());
-      print('*************************');
-    });
+    if(!kIsWeb){
+      FirebaseMessaging.instance.subscribeToTopic('Admin').then((value) {
+        emit(AdminTopicState());
+      }).catchError((onError) {
+        print('*************************');
+        print(onError.toString());
+        print('*************************');
+      });
+    }
+
   }
 }

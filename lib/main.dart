@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,22 @@ void main() async {
     print(event.data.toString());
   });
 
+  FirebaseMessaging.instance.getToken().then((value) {
+    print(value);
+    print(value);
+      CacheHelper.saveData(key: 'fcmToken', value: value);
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc("7QfP0PNO6qVWVKij4jJzVNCG9sj2")
+          .update(
+        {
+          'token': value,
+        },
+      );
+    print('token*********');
+  });
+
+
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   runApp(MyApp(
@@ -58,7 +75,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => MainCubit()
-        ..changeAppLang(fromSharedLang: language),
+        ..changeAppLang(fromSharedLang: language)..subscribeToAdminTopic(),
       child: BlocConsumer<MainCubit, MainState>(
         listener: (context, state) {
           // TODO: implement listener

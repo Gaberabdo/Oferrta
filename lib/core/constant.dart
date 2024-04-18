@@ -46,38 +46,72 @@ class FontStyleThame {
 }
 
 String transform(String value) {
-  List<String> parts = value.split(" ");
-  String dayOfWeek = parts[0]; // e.g., Tue
-  String month = parts[1]; // e.g., Feb
-  int day = int.parse(parts[2]); // e.g., 20
-  int year = int.parse(parts[3]); // e.g., 2024
-  String time = parts[4]; // e.g., 19:05:58
-  String timeZone = parts[6]; // e.g., (Eastern European Standard Time)
+  if (value.contains('GMT')) {
+    List<String> parts = value.split(" ");
+    String dayOfWeek = parts[0]; // e.g., Tue
+    String month = parts[1]; // e.g., Feb
+    int day = int.parse(parts[2]); // e.g., 20
+    int year = int.parse(parts[3]); // e.g., 2024
+    String time = parts[4]; // e.g., 19:05:58
+    String timeZone = parts[6]; // e.g., (Eastern European Standard Time)
 
-  List<String> timeParts = time.split(":");
-  int hours = int.parse(timeParts[0]);
-  int minutes = int.parse(timeParts[1]);
-  int seconds = int.parse(timeParts[2]);
+    List<String> timeParts = time.split(":");
+    int hours = int.parse(timeParts[0]);
+    int minutes = int.parse(timeParts[1]);
+    int seconds = int.parse(timeParts[2]);
 
-  DateTime date =
-      DateTime(year, _getMonth(month), day, hours, minutes, seconds);
+    DateTime date =
+        DateTime(year, _getMonth(month), day, hours, minutes, seconds);
 
-  DateTime now = DateTime.now();
-  int diffInSeconds =
-      ((now.millisecondsSinceEpoch - date.millisecondsSinceEpoch) / 1000)
-          .floor();
+    DateTime now = DateTime.now();
+    int diffInSeconds =
+        ((now.millisecondsSinceEpoch - date.millisecondsSinceEpoch) / 1000)
+            .floor();
 
-  if (diffInSeconds < 60) {
-    return 'Just now';
-  } else if (diffInSeconds < 3600) {
-    int minutes = (diffInSeconds / 60).floor();
-    return '$minutes ${minutes == 1 ? 'minute' : 'minutes'} ago';
-  } else if (diffInSeconds < 86400) {
-    int hours = (diffInSeconds / 3600).floor();
-    return '$hours ${hours == 1 ? 'hour' : 'hours'} ago';
+    if (diffInSeconds < 60) {
+      return 'Just now';
+    } else if (diffInSeconds < 3600) {
+      int minutes = (diffInSeconds / 60).floor();
+      return '$minutes ${minutes == 1 ? 'minute' : 'minutes'} ago';
+    } else if (diffInSeconds < 86400) {
+      int hours = (diffInSeconds / 3600).floor();
+      return '$hours ${hours == 1 ? 'hour' : 'hours'} ago';
+    } else {
+      int days = (diffInSeconds / 86400).floor();
+      return '$days ${days == 1 ? 'day' : 'days'} ago';
+    }
   } else {
-    int days = (diffInSeconds / 86400).floor();
-    return '$days ${days == 1 ? 'day' : 'days'} ago';
+    List<String> dateTimeParts = value.split(" ");
+    String datePart = dateTimeParts[0]; // e.g., 2024-04-13
+    String timePart = dateTimeParts[1]; // e.g., 22:34:24.145
+
+    List<String> dateParts = datePart.split("-");
+    int year = int.parse(dateParts[0]);
+    int month = int.parse(dateParts[1]);
+    int day = int.parse(dateParts[2]);
+
+    List<String> timeParts = timePart.split(":");
+    int hours = int.parse(timeParts[0]);
+    int minutes = int.parse(timeParts[1]);
+    int seconds = int.parse(timeParts[2].split(".")[0]); // Remove milliseconds
+
+    DateTime date = DateTime(year, month, day, hours, minutes, seconds);
+
+    DateTime now = DateTime.now();
+    Duration difference = now.difference(date);
+
+    if (difference.inSeconds < 60) {
+      return 'Just now';
+    } else if (difference.inMinutes < 60) {
+      int minutes = difference.inMinutes;
+      return '$minutes ${minutes == 1 ? 'minute' : 'minutes'} ago';
+    } else if (difference.inHours < 24) {
+      int hours = difference.inHours;
+      return '$hours ${hours == 1 ? 'hour' : 'hours'} ago';
+    } else {
+      int days = difference.inDays;
+      return '$days ${days == 1 ? 'day' : 'days'} ago';
+    }
   }
 }
 
