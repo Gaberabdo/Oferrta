@@ -26,11 +26,12 @@ class DashboardScreen extends StatelessWidget {
         var model = cubit.allUser;
 
         List<Widget> widgets = [
+          const BannerCatDash(),
+
           MyTable(
             model: (cubit.filteredUser.isEmpty) ? model : cubit.filteredUser,
             cubit: cubit,
           ),
-          const BannerCatDash(),
           HomeFeedsDetailsDash(
             productId: cubit.productId ?? '',
             uid: cubit.uidOwner ?? '',

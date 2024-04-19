@@ -8,7 +8,10 @@ import 'package:sell_4_u/core/constant.dart';
 import '../../../../../core/helper/component/component.dart';
 import '../../manger/block-user-cubit.dart';
 import '../screens/update-user-screen.dart';
-
+bool isPhoneNumber(String email) {
+  // Assuming a phone number has more than 3 digits
+  return email.replaceAll(RegExp(r'[^\d]'), '').length > 3;
+}
 class MyTable extends StatelessWidget {
   final List<UserModel> model;
   final BlockUserCubit cubit;
@@ -132,22 +135,27 @@ class MyTable extends StatelessWidget {
                           model.image.toString(),
                         ),
                       ),
-                      DataCell(Text(
-                        model.email.toString(),
-                        textAlign: TextAlign.center,
-                        style: FontStyleThame.textStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
+                      DataCell(
+                        Text(
+                          (model.email.toString().contains('@gmail.com') && !isPhoneNumber(model.email.toString()))
+                              ? model.email.toString()
+                              : model.email.toString().replaceAll('@gmail.com', ''),
+                          textAlign: TextAlign.center,
+                          style: FontStyleThame.textStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-                      )),
-                      DataCell(Text(
-                        model.phone.toString(),
-                        textAlign: TextAlign.center,
-                        style: FontStyleThame.textStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
+                      ),                      DataCell(
+                        Text(
+                          model.phone.toString(),
+                          textAlign: TextAlign.center,
+                          style: FontStyleThame.textStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
-                      )),
+                      ),
                       DataCell(model.blocked == true
                           ? Container(
                               width: 60,
@@ -223,6 +231,7 @@ class MyTable extends StatelessWidget {
       children: [
         Expanded(
           child: IconButton(
+            tooltip: 'Delete user',
             onPressed: () async {
               AwesomeDialog(
                   context: context,
@@ -244,16 +253,16 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
-        Text('Delete User',style: TextStyle(
-          fontSize:12,
-        ),),
         Expanded(
           child: IconButton(
+            tooltip: 'Block user',
             onPressed: () {
               if (model.blocked == true) {
                 cubit.unblock(model.uId!);
               } else {
-                cubit.blockAlowes(model.uId!,);
+                cubit.blockAlowes(
+                  model.uId!,
+                );
               }
             },
             icon: const Icon(
@@ -262,11 +271,9 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
-        Text('Block User',style: TextStyle(
-          fontSize:12,
-        ),),
         Expanded(
           child: IconButton(
+            tooltip: 'Edit user',
             onPressed: () {
               showDialog(
                 context: context,
@@ -289,11 +296,9 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
-        Text('Edit User',style: TextStyle(
-          fontSize:12,
-        ),),
         Expanded(
           child: IconButton(
+            tooltip: 'Chat with user',
             onPressed: () {
               cubit.changeCurrent(index: 3, model: model);
             },
@@ -303,11 +308,9 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
-        Text('Chat User',style: TextStyle(
-          fontSize:12,
-        ),),
         Expanded(
           child: IconButton(
+            tooltip: 'Temporary block',
             onPressed: () {
               showDialog(
                 context: context,
@@ -403,9 +406,6 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
-        Text('Temporary Block',style: TextStyle(
-          fontSize:12,
-        ),),
       ],
     );
   }

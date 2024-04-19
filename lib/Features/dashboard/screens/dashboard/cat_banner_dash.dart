@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
@@ -11,6 +12,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../Home-feature/view/screens/home/feeds_details.dart';
 import 'components/home_feeds_details_dash.dart';
+import 'edit_cat.dart';
 
 class BannerCatDash extends StatelessWidget {
   const BannerCatDash({super.key});
@@ -49,62 +51,120 @@ class BannerCatDash extends StatelessWidget {
                       ? GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 120,
-                            // Set the maximum width of each item
+                            maxCrossAxisExtent: 240,
                             mainAxisExtent: 50.0,
-                            // Set the height of each item
                             mainAxisSpacing: 8,
-                            // Set the spacing between items along the main axis
                             crossAxisSpacing: 8,
                           ),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: InkWell(
-                                onTap: () {
-                                  for (var element in cubit.catModel) {
-                                    element.isSelected = false;
-                                  }
-                                  cubit.catModel[index].isSelected =
-                                      !cubit.catModel[index].isSelected!;
-
-                                  cubit.getCategoryDetails(
-                                      cubit.catModelIdes[index]);
-                                  cubit.catIdString = cubit.catModelIdes[index];
-                                },
-                                child: Container(
-                                  height: 20,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                      color: cubit.catModel[index].isSelected ==
+                              child: Container(
+                                height: 20,
+                                width: 210,
+                                decoration: BoxDecoration(
+                                    color:
+                                        cubit.catModel[index].isSelected == true
+                                            ? ColorStyle.primaryColor
+                                            : Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      style: cubit.catModel[index].isSelected ==
                                               true
-                                          ? ColorStyle.primaryColor
-                                          : Colors.white,
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                        style:
-                                            cubit.catModel[index].isSelected ==
-                                                    true
-                                                ? BorderStyle.none
-                                                : BorderStyle.solid,
-                                        color: Colors.black,
-                                        width: 1,
-                                      )),
-                                  child: Center(
-                                    child: Text(
-                                      cubit.catModel[index].categoryName!,
-                                      style: FontStyleThame.textStyle(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 16,
-                                        fontColor:
-                                            cubit.catModel[index].isSelected ==
-                                                    true
-                                                ? Colors.white
-                                                : Colors.black,
+                                          ? BorderStyle.none
+                                          : BorderStyle.solid,
+                                      color: Colors.black,
+                                      width: 1,
+                                    )),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        for (var element in cubit.catModel) {
+                                          element.isSelected = false;
+                                        }
+                                        cubit.catModel[index].isSelected =
+                                            !cubit.catModel[index].isSelected!;
+
+                                        cubit.getCategoryDetails(
+                                            cubit.catModelIdes[index]);
+                                        cubit.catIdString =
+                                            cubit.catModelIdes[index];
+                                      },
+                                      child: Text(
+                                        cubit.catModel[index].categoryName!,
+                                        style: FontStyleThame.textStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 16,
+                                          fontColor: cubit.catModel[index]
+                                                      .isSelected ==
+                                                  true
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    const Spacer(),
+                                    IconButton(
+                                      tooltip: 'Delete category',
+                                      onPressed: () async {
+                                        AwesomeDialog(
+                                            context: context,
+                                            dialogType: DialogType.warning,
+                                            width: 400,
+                                            animType: AnimType.rightSlide,
+                                            title: 'Warning',
+                                            desc:
+                                                'Are You Sure To Delete This category...?',
+                                            btnCancelOnPress: () {},
+                                            btnOkOnPress: () {
+                                              cubit.deleteCategory(cubit
+                                                  .catModelIdes[index]);
+                                            }).show();
+                                      },
+                                      icon: const Icon(
+                                        IconlyBold.delete,
+                                        size: 16,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    IconButton(
+                                      tooltip: 'Edit category',
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+
+                                            return AlertDialog(
+                                                content: SizedBox(
+                                                  width: 400,
+                                                  height: 500,
+                                                  child: EditCategory(
+                                                    model: cubit.catModel[index],
+                                                    id: cubit.catModelIdes[index],
+                                                  ),
+                                                ),
+
+                                            );
+                                          },
+                                        ).then((value) {
+                                          cubit.getCategory();
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Colors.amber,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             );

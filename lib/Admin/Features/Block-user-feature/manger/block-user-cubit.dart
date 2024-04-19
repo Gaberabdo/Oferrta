@@ -3,12 +3,14 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as path;
 
 import '../../../../core/constant.dart';
 
@@ -48,9 +50,14 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     if (query.isEmpty) {
       filteredUser = List.from(allUser);
     } else {
-      filteredUser = allUser.where((user) {
-        return user.name!.toLowerCase().contains(query.toLowerCase());
-      }).toList();
+      filteredUser = allUser.where(
+        (user) {
+          // Check if name, email, or phone number contains the query
+          return user.name!.toLowerCase().contains(query.toLowerCase()) ||
+              user.email!.toLowerCase().contains(query.toLowerCase()) ||
+              user.phone!.toLowerCase().contains(query.toLowerCase());
+        },
+      ).toList();
     }
     // Emit state to update UI
     emit(FilterUsersSuccess());
@@ -75,22 +82,19 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
         numberOfDays,
       );
     } catch (error) {
-
       print('Error blocking user: $error');
     }
   }
-  Future<void> blockAlowes(String uId,) async {
+
+  Future<void> blockAlowes(
+    String uId,
+  ) async {
     try {
-
-
       await FirebaseFirestore.instance.collection('users').doc(uId).update({
         'blocked': true,
         'blockTimestamp': null,
       });
-
-
     } catch (error) {
-
       print('Error blocking user: $error');
     }
   }
@@ -109,7 +113,8 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
 
   Future<bool> isUserBlockedForNDays(String uId, int numberOfDays) async {
     try {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(uId).get();
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uId).get();
       if (!snapshot.exists) return false;
 
       print(difference.inDays);
@@ -120,12 +125,12 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
         Timestamp? blockTimestamp = userData['blockTimestamp'];
 
         if (blocked == true && blockTimestamp != null) {
-          difference = blockTimestamp.toDate().difference(Timestamp.now().toDate());
+          difference =
+              blockTimestamp.toDate().difference(Timestamp.now().toDate());
           return difference.inDays >= numberOfDays;
         }
 
         print(difference.inDays);
-
       }
       return false;
     } catch (error) {
@@ -170,6 +175,59 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     }
   }
 
+  Future<void> uploadCatIamge({
+    required String name,
+    required String uid,
+  }) async {
+    isUpload = true;
+    emit(ImageUploadLoading());
+    try {
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('catImage/$fileName');
+      UploadTask uploadTask = storageReference.putFile(profileImage!);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+      updateCategory(
+        id: uid,
+        name: name,
+        image: imageUrl,
+      );
+      isUpload = false;
+
+      emit(ImageUploadSuccess());
+    } catch (e) {
+      // Handle error
+      isUpload = false;
+
+      print('Error uploading image: $e');
+      emit(ImageUploadFailed());
+    }
+  }
+
+  Future<void> updateCategory({
+    required String id,
+    required String name,
+    required String image,
+  }) async {
+    isUpload = true;
+
+    emit(UpdateLoadingUserDataState());
+    firestore
+        .collection("categories")
+        .doc(id)
+        .update({'categoryName': name, "image": image}).then((value) {
+      isUpload = false;
+
+      emit(UpdateSuccessUserDataState());
+    }).catchError((handleError) {
+      isUpload = false;
+
+      emit(UpdateErrorUserDataState());
+    });
+  }
+
   Future<void> uploadImage({
     required String name,
     required String uid,
@@ -179,7 +237,7 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     emit(ImageUploadLoading());
     final ref = firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('catImage/${Uri.file(profileImage!.path).pathSegments.last}');
+        .child('users/${Uri.file(profileImage!.path).pathSegments.last}');
     await ref.putFile(profileImage!).then((p0) {
       p0.ref.getDownloadURL().then((value) {
         updateUser(
@@ -210,6 +268,8 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       emit(UpdateSuccessUserDataState());
       isUpload = false;
     }).catchError((error) {
+      isUpload = false;
+
       emit(UpdateErrorUserDataState());
     });
   }
@@ -273,6 +333,7 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
   dynamic value;
   int current = 0;
   UserModel? activeUserChat;
+
   void changeCurrent({
     required int index,
     String? productIdIN,
@@ -287,8 +348,6 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     value = valueIN;
     emit(ChangeCurrentState());
   }
-
-
 
   List<String> titles = [
     'Users',

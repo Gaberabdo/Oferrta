@@ -71,6 +71,17 @@ class FeedsCubit extends Cubit<FeedsState> {
     });
   }
 
+  Future<void> deleteCategory(String id) async {
+    emit(GetCategoryLoading());
+    fireStore.collection("categories").doc(id).delete().then((value) {
+      emit(GetCategoryDetailsSuccess());
+    }).catchError((handleError) {
+      emit(GetCategoryError());
+    });
+  }
+
+
+
   List<ProductModel> mostPopularModel = [];
   List<String> mostPopularIdes = [];
 
