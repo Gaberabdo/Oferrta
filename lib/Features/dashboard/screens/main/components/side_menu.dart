@@ -25,31 +25,31 @@ class SideMenu extends StatelessWidget {
             children: [
               DrawerHeader(
                 decoration: BoxDecoration(color: ColorStyle.primaryColor),
-                child: Image.network("assets/images/logo.png"),
+                child: Image.network("assets/images/offerta.png"),
               ),
               DrawerListTile(
-                title: "Users",
+                title: "  Users",
                 svgSrc: IconlyLight.user,
                 press: () {
                   cubit.changeCurrent(index: 0);
                 },
               ),
               DrawerListTile(
-                title: "Products",
-                svgSrc: Icons.category_outlined,
+                title: "  Products",
+                svgSrc: Icons.production_quantity_limits_outlined,
                 press: () {
                   cubit.changeCurrent(index: 1);
                 },
               ),
               DrawerListTile(
-                title: "Subscriptions",
+                title: "  Subscriptions",
                 svgSrc: Icons.subscriptions,
                 press: () {
                   cubit.changeCurrent(index: 4);
                 },
               ),
               DrawerListTile(
-                title: "Coupon",
+                title: "  Coupon",
                 svgSrc: Icons.discount,
                 press: () {
                   cubit.changeCurrent(index: 5);
