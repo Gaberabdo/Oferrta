@@ -12,8 +12,10 @@ class ProductModel {
   final dynamic price;
   final dynamic numberOfDay;
   final String? uId;
-   String? id;
-  final bool? fave;
+  final String? video;
+  String? id;
+  bool? fave;
+  dynamic? isOffer;
 
   ProductModel({
     this.view,
@@ -28,9 +30,11 @@ class ProductModel {
     this.location,
     this.details,
     this.price,
+    this.video,
     this.numberOfDay,
     this.uId,
     this.fave,
+    this.isOffer,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -40,10 +44,12 @@ class ProductModel {
       images: List<String>.from(json['images']),
       cat: json['cat'],
       lat: json['lat'],
+      video: json['video'] ?? '',
       lan: json['lan'],
       reasonOfOffer: json['reasonOfOffer'],
       description: json['description'],
       details: json['details'],
+      isOffer: json['isOffer'] ?? false,
       price: json['price'],
       location: json['location'],
       uId: json['uId'],
@@ -66,7 +72,9 @@ class ProductModel {
       'price': price,
       'location': location,
       'uId': uId,
+      'video': video,
       'fave': fave,
+      'isOffer': isOffer,
       'numberOfDay': numberOfDay,
     };
   }

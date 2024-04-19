@@ -194,13 +194,9 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
         name: name,
         image: imageUrl,
       );
-      isUpload = false;
-
       emit(ImageUploadSuccess());
     } catch (e) {
       // Handle error
-      isUpload = false;
-
       print('Error uploading image: $e');
       emit(ImageUploadFailed());
     }
