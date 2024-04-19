@@ -244,6 +244,9 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
+        Text('Delete User',style: TextStyle(
+          fontSize:12,
+        ),),
         Expanded(
           child: IconButton(
             onPressed: () {
@@ -259,6 +262,9 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
+        Text('Block User',style: TextStyle(
+          fontSize:12,
+        ),),
         Expanded(
           child: IconButton(
             onPressed: () {
@@ -283,6 +289,9 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
+        Text('Edit User',style: TextStyle(
+          fontSize:12,
+        ),),
         Expanded(
           child: IconButton(
             onPressed: () {
@@ -294,6 +303,9 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
+        Text('Chat User',style: TextStyle(
+          fontSize:12,
+        ),),
         Expanded(
           child: IconButton(
             onPressed: () {
@@ -391,6 +403,9 @@ class MyTable extends StatelessWidget {
             ),
           ),
         ),
+        Text('Temporary Block',style: TextStyle(
+          fontSize:12,
+        ),),
       ],
     );
   }

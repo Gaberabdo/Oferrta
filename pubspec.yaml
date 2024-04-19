@@ -51,6 +51,7 @@ dependencies:
   carousel_slider:
   permission_handler:
   geocoding:
+  hovering:
   #fire_base
 
 
