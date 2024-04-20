@@ -8,6 +8,11 @@ class GetCategorySuccess extends FeedsState {}
 class GetCategoryDetailsSuccess extends FeedsState {}
 class GetCategoryError extends FeedsState {}
 
+class DeleteProductLoading extends FeedsState {}
+class DeleteProductSuccess extends FeedsState {}
+class DeleteProductDetailsSuccess extends FeedsState {}
+class DeleteProductError extends FeedsState {}
+
 class GetMostPopularLoading extends FeedsState {}
 class GetMostPopularSuccess extends FeedsState {}
 class GetMostPopularError extends FeedsState {}

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
 import 'package:sell_4_u/Features/Home-feature/models/product_model.dart';
+import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dart';
 import 'package:sell_4_u/Features/Home-feature/view/screens/home/feeds_details.dart';
 import 'package:sell_4_u/Features/comment/controller/Commet_cubit/comment_cubit.dart';
 import 'package:sell_4_u/core/constant.dart';
@@ -494,6 +496,85 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                     flex: 1,
                     child: Column(
                       children: [
+                        Row(
+                          children:
+                          [
+                            IconButton(
+                              tooltip: 'Delete Product',
+                              onPressed: () async {
+                                AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.warning,
+                                    width: 400,
+                                    animType: AnimType.rightSlide,
+                                    title: 'Warning',
+                                    desc:
+                                    'Are You Sure To Delete This Product...?',
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {
+                                      cubit.deleteProduct(
+                                        id: productId);
+
+                                    }).show();
+                              },
+                              icon: const Icon(
+                                IconlyBold.delete,
+                                size: 25,
+                                color: Colors.red,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            IconButton(
+                              tooltip: 'Edit Product',
+                              onPressed: () async {
+                                AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.warning,
+                                    width: 400,
+                                    animType: AnimType.rightSlide,
+                                    title: 'Warning',
+                                    desc:
+                                    'Are You Sure To Edit This Product...?',
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {
+
+                                    }).show();
+                              },
+                              icon: const Icon(
+                                IconlyBold.edit,
+                                size: 25,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            IconButton(
+                              tooltip: 'Add Product',
+                              onPressed: () async {
+                                AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.warning,
+                                    width: 400,
+                                    animType: AnimType.rightSlide,
+                                    title: 'Warning',
+                                    desc:
+                                    'Go To Create Post Screen',
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {
+
+                                    }).show();
+                              },
+                              icon: const Icon(
+                                IconlyBold.plus,
+                                size: 25,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
+                        ),
                         Card(
                           elevation: 3,
                           shape: RoundedRectangleBorder(

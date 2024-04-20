@@ -82,6 +82,7 @@ class FeedsCubit extends Cubit<FeedsState> {
 
 
 
+
   List<ProductModel> mostPopularModel = [];
   List<String> mostPopularIdes = [];
 
@@ -99,6 +100,16 @@ class FeedsCubit extends Cubit<FeedsState> {
       emit(GetMostPopularError());
     });
   }
+
+  Future<void> deleteProduct({required String id}) async {
+    emit(DeleteProductLoading());
+    fireStore.collection("products").doc(id).delete().then((value) {
+      emit(DeleteProductDetailsSuccess());
+    }).catchError((handleError) {
+      emit(DeleteProductError());
+    });
+  }
+
 
   UserModel? userModel;
 
