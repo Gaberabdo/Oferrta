@@ -122,8 +122,8 @@ class BannerCatDash extends StatelessWidget {
                                                 'Are You Sure To Delete This category...?',
                                             btnCancelOnPress: () {},
                                             btnOkOnPress: () {
-                                              cubit.deleteCategory(cubit
-                                                  .catModelIdes[index]);
+                                              cubit.deleteCategory(
+                                                  cubit.catModelIdes[index]);
                                             }).show();
                                       },
                                       icon: const Icon(
@@ -141,17 +141,15 @@ class BannerCatDash extends StatelessWidget {
                                         showDialog(
                                           context: context,
                                           builder: (context) {
-
                                             return AlertDialog(
-                                                content: SizedBox(
-                                                  width: 400,
-                                                  height: 500,
-                                                  child: EditCategory(
-                                                    model: cubit.catModel[index],
-                                                    id: cubit.catModelIdes[index],
-                                                  ),
+                                              content: SizedBox(
+                                                width: 400,
+                                                height: 500,
+                                                child: EditCategory(
+                                                  model: cubit.catModel[index],
+                                                  id: cubit.catModelIdes[index],
                                                 ),
-
+                                              ),
                                             );
                                           },
                                         ).then((value) {
@@ -300,10 +298,16 @@ class BannerCatDash extends StatelessWidget {
                                             ),
                                             child: Image.network(
                                               cubit
-                                                  .getCategoryDetailsModel[
-                                                      index]
-                                                  .images!
-                                                  .first,
+                                                      .getCategoryDetailsModel[
+                                                          index]
+                                                      .images!
+                                                      .isEmpty
+                                                  ? "https://via.placeholder.com/700"
+                                                  : cubit
+                                                      .getCategoryDetailsModel[
+                                                          index]
+                                                      .images!
+                                                      .first,
                                               height: 190,
                                               fit: BoxFit.cover,
                                               width: double.infinity,

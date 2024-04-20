@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,11 +63,9 @@ class EditCategory extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: cubit.profileImage == null
-                              ? NetworkImage(
-                                  '${model.image}',
-                                ) as ImageProvider
-                              : FileImage(cubit.profileImage!),
+                          backgroundImage: NetworkImage(
+                            '${model.image}',
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -125,8 +125,9 @@ class EditCategory extends StatelessWidget {
                               image: model.image!,
                             );
                           } else {
-                            cubit.uploadCatIamge(
+                            cubit.uploadCatImage(
                               name: nameController.text,
+                              profileImage: cubit.profileImage!,
                               uid: id!,
                             );
                           }

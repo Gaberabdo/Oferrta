@@ -1,17 +1,21 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:sell_4_u/core/constant.dart';
+import 'package:sell_4_u/core/firebase_analytics.dart';
 
 import '../../../../../core/helper/component/component.dart';
 import '../../manger/block-user-cubit.dart';
 import '../screens/update-user-screen.dart';
+
 bool isPhoneNumber(String email) {
   // Assuming a phone number has more than 3 digits
   return email.replaceAll(RegExp(r'[^\d]'), '').length > 3;
 }
+
 class MyTable extends StatelessWidget {
   final List<UserModel> model;
   final BlockUserCubit cubit;
@@ -21,6 +25,7 @@ class MyTable extends StatelessWidget {
     required this.model,
     required this.cubit,
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -137,16 +142,20 @@ class MyTable extends StatelessWidget {
                       ),
                       DataCell(
                         Text(
-                          (model.email.toString().contains('@gmail.com') && !isPhoneNumber(model.email.toString()))
+                          (model.email.toString().contains('@gmail.com') &&
+                                  !isPhoneNumber(model.email.toString()))
                               ? model.email.toString()
-                              : model.email.toString().replaceAll('@gmail.com', ''),
+                              : model.email
+                                  .toString()
+                                  .replaceAll('@gmail.com', ''),
                           textAlign: TextAlign.center,
                           style: FontStyleThame.textStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
                           ),
                         ),
-                      ),                      DataCell(
+                      ),
+                      DataCell(
                         Text(
                           model.phone.toString(),
                           textAlign: TextAlign.center,

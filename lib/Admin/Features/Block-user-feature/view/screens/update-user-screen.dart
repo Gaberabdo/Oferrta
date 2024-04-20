@@ -56,14 +56,14 @@ class EditProfileAdmin extends StatelessWidget {
                   Center(
                     child: Stack(
                       children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundImage: cubit.profileImage == null
-                              ? NetworkImage(
-                            '${model.image}',
-                          ) as ImageProvider
-                              : FileImage(cubit.profileImage!),
-                        ),
+                        // CircleAvatar(
+                        //   radius: 50,
+                        //   backgroundImage: cubit.profileImage == null
+                        //       ? NetworkImage(
+                        //     '${model.image}',
+                        //   ) as ImageProvider
+                        //       : FileImage(cubit.profileImage!),
+                        // ),
                         Padding(
                           padding: const EdgeInsets.only(
                             bottom: 15,

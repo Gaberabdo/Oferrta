@@ -1,5 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:html';
+import 'dart:typed_data';
+import 'dart:html' as html;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -164,44 +166,63 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
   List<String> categoriesIdes = [];
 
   Future<void> pickImagesAdd() async {
-    final picker = ImagePicker();
-    final pickedImages = await picker.pickImage(source: ImageSource.gallery);
+    final FileUploadInputElement input = html.FileUploadInputElement();
+    input.accept = 'image/*'; // accept only image files
 
-    if (pickedImages != null) {
-      profileImage = File(pickedImages.path);
-      emit(ImageUploadSuccess());
-    } else {
-      emit(ImageUploadFailed());
-    }
+    // Trigger file picker dialog
+    input.click();
+
+    // Listen for changes in the file selection
+    input.onChange.listen((event) {
+      final fileList = input.files;
+      if (fileList!.isNotEmpty) {
+        final file = fileList[0];
+        profileImage = file;
+        emit(ImageUploadSuccess());
+      } else {
+        emit(ImageUploadFailed());
+      }
+    });
   }
 
-  Future<void> uploadCatIamge({
+  Future<void> uploadCatImage({
     required String name,
     required String uid,
+    required html.File profileImage,
   }) async {
     isUpload = true;
     emit(ImageUploadLoading());
     try {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       Reference storageReference =
-          FirebaseStorage.instance.ref().child('catImage/$fileName');
-      UploadTask uploadTask = storageReference.putFile(profileImage!);
-      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      FirebaseStorage.instance.ref().child('catImage/$fileName');
 
+      // Read the file as bytes
+      final reader = html.FileReader();
+      reader.readAsArrayBuffer(profileImage);
+      await reader.onLoad.first;
+      final buffer = reader.result as Uint8List;
+
+      // Convert bytes to Blob
+      final blob = html.Blob([buffer]);
+
+      UploadTask uploadTask = storageReference.putBlob(blob);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
       updateCategory(
         id: uid,
         name: name,
         image: imageUrl,
       );
+      isUpload = false;
       emit(ImageUploadSuccess());
     } catch (e) {
+      isUpload = false;
       // Handle error
       print('Error uploading image: $e');
       emit(ImageUploadFailed());
     }
   }
-
   Future<void> updateCategory({
     required String id,
     required String name,
@@ -231,20 +252,40 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
   }) async {
     isUpload = true;
     emit(ImageUploadLoading());
-    final ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('users/${Uri.file(profileImage!.path).pathSegments.last}');
-    await ref.putFile(profileImage!).then((p0) {
-      p0.ref.getDownloadURL().then((value) {
-        updateUser(
-          name: name,
-          uid: uid,
-          phone: phone,
-          image: value,
-        );
-        emit(ImageUploadSuccess());
-      });
-    });
+
+    try {
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference storageReference =
+      FirebaseStorage.instance.ref().child('users/$fileName');
+
+      // Read the file as bytes
+      final reader = html.FileReader();
+      reader.readAsArrayBuffer(profileImage!);
+      await reader.onLoad.first;
+      final buffer = reader.result as Uint8List;
+
+      // Convert bytes to Blob
+      final blob = html.Blob([buffer]);
+
+      UploadTask uploadTask = storageReference.putBlob(blob);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      updateUser(
+        name: name,
+        uid: uid,
+        phone: phone,
+        image: imageUrl,
+      );
+      isUpload = false;
+
+      emit(ImageUploadSuccess());
+
+    } on Exception catch (e) {
+      isUpload = false;
+      // Handle error
+      print('Error uploading image: $e');
+      emit(ImageUploadFailed());
+    }
   }
 
   Future<void> updateUser({
