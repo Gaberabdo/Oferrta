@@ -14,10 +14,7 @@ class CouponCubit extends Cubit<CouponStates> {
     required String name,
     required double price,
   }) {
-    var model = CouponModel(
-      name: name,
-      price: price,
-    );
+    var model = CouponModel(name: name, price: price, numOfUses: 0);
 
     FirebaseFirestore.instance
         .collection('Coupons')
@@ -58,6 +55,35 @@ class CouponCubit extends Cubit<CouponStates> {
         coupons.add(CouponModel.fromJson(data));
         print(coupons.length);
         print('lennnnnnnnnnthhhhhhhhhh');
+      }
+      emit(CouponGetScussesState());
+    }, onError: (e) {
+      print(e.toString());
+      emit(CouponGetErorrState());
+    });
+  }
+
+  List<CouponModel> useruses = [];
+
+  Future<void> getUserUses({
+    required String id,
+  }) async {
+    emit(CouponGetLoadinglState());
+    FirebaseFirestore.instance
+        .collection('Coupons')
+        .doc(id)
+        .collection('Users')
+        .snapshots()
+        .listen((snapshot) {
+      useruses = [];
+      snapshot.docs.forEach((element) {
+        print('eeeeeeeeeeeeelement${element.data()}');
+      });
+      for (var doc in snapshot.docs) {
+        var data = doc.data();
+        useruses.add(CouponModel.fromJson(data));
+        print(useruses.length);
+        print('lennnnnnnnnnthhhhhhhhhhuuuuuuuuuuuuuuuuu');
       }
       emit(CouponGetScussesState());
     }, onError: (e) {

@@ -1,13 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:sell_4_u/Admin/Coupon-Feature/view/user-uses-screen.dart';
 import 'package:sell_4_u/core/constant.dart';
 
 import '../../manger/cubit/coupon-cubit.dart';
 import '../../manger/models/coupon-model.dart';
 import '../edit-coupon.dart';
-
-
 
 class MyTableCoupon extends StatelessWidget {
   final List<CouponModel> model;
@@ -22,14 +21,16 @@ class MyTableCoupon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      // Wrap with SingleChildScrollView here
       scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Material(
-            color: Colors.white,
-            elevation: 3,
-            borderRadius: BorderRadius.circular(12.0),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Material(
+          color: Colors.white,
+          elevation: 3,
+          borderRadius: BorderRadius.circular(12.0),
+          child: SingleChildScrollView(
+            // Move SingleChildScrollView inside Material widget
             child: DataTable(
               headingRowHeight: 50,
               border: TableBorder.all(
@@ -61,9 +62,16 @@ class MyTableCoupon extends StatelessWidget {
                     ),
                   ),
                 ),
-
-
-
+                DataColumn(
+                  label: Text(
+                    'Number Of Uses',
+                    textAlign: TextAlign.center,
+                    style: FontStyleThame.textStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 DataColumn(
                   label: Padding(
                     padding: const EdgeInsetsDirectional.only(start: 50),
@@ -79,7 +87,7 @@ class MyTableCoupon extends StatelessWidget {
                 ),
               ],
               rows: model.map(
-                    (model) {
+                (model) {
                   return DataRow(
                     cells: [
                       DataCell(Text(
@@ -98,8 +106,14 @@ class MyTableCoupon extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                         ),
                       )),
-
-
+                      DataCell(Text(
+                        model.numOfUses.toString(),
+                        textAlign: TextAlign.center,
+                        style: FontStyleThame.textStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )),
                       DataCell(
                         buildAction(
                           context: context,
@@ -127,31 +141,6 @@ class MyTableCoupon extends StatelessWidget {
       children: [
         Expanded(
           child: IconButton(
-            onPressed: () async {
-              AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.warning,
-                  width: 400,
-                  animType: AnimType.rightSlide,
-                  title: 'Warning',
-                  desc: 'Are You Sure To Delete This Subscripation...?',
-                  btnCancelOnPress: () {},
-                  btnOkOnPress: () {
-                    print('iiiiiiiiiiiiiiiiiiiiiiiiiiid${model.id}');
-                    cubit.deleteCoupons(
-                     model.id!
-                    );
-                  }).show();
-            },
-            icon: const Icon(
-              IconlyBold.delete,
-              color: Colors.red,
-            ),
-          ),
-        ),
-
-        Expanded(
-          child: IconButton(
             onPressed: () {
               showDialog(
                 context: context,
@@ -174,8 +163,47 @@ class MyTableCoupon extends StatelessWidget {
             ),
           ),
         ),
+        Expanded(
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserUsesScreen(
+                    id: model.id!,
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.history,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        Expanded(
+          child: IconButton(
+            onPressed: () async {
+              AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.warning,
+                  width: 400,
+                  animType: AnimType.rightSlide,
+                  title: 'Warning',
+                  desc: 'Are You Sure To Delete This Coupon...?',
+                  btnCancelOnPress: () {},
+                  btnOkOnPress: () {
+                    print('iiiiiiiiiiiiiiiiiiiiiiiiiiid${model.id}');
+                    cubit.deleteCoupons(model.id!);
+                  }).show();
+            },
+            icon: const Icon(
+              IconlyBold.delete,
+              color: Colors.red,
+            ),
+          ),
+        ),
       ],
     );
   }
-
 }
