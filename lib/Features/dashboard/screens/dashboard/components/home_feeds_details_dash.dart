@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iconly/iconly.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
+import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
 import 'package:sell_4_u/Features/Home-feature/models/product_model.dart';
@@ -16,17 +18,22 @@ import '../../../../../core/helper/cache/cache_helper.dart';
 import '../../../../../core/responsive_screen.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../comment/view/screens/get_comment.dart';
+import '../../main/main_screen.dart';
 
 class HomeFeedsDetailsDash extends StatelessWidget {
   const HomeFeedsDetailsDash({
     super.key,
     required this.productId,
     required this.uid,
+    required this.catId,
     required this.value,
+    required this.catProId,
   });
 
   final String uid;
+  final String catId;
   final String productId;
+  final String catProId;
   final dynamic value;
 
   @override
@@ -134,7 +141,8 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                                                             CrossAxisAlignment
                                                                 .center,
                                                         children: [
-                                                          const Icon(Icons.image),
+                                                          const Icon(
+                                                              Icons.image),
                                                           Text(
                                                               '${index + 1}/${modelDetails.images!.length}')
                                                         ],
@@ -215,7 +223,8 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(12.0),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
@@ -262,7 +271,8 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(12.0),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Icon(
@@ -304,7 +314,8 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          modelDetails.reasonOfOffer ?? 'reason',
+                                          modelDetails.reasonOfOffer ??
+                                              'reason',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: FontStyleThame.textStyle(
@@ -428,13 +439,16 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                if (modelDetails.lan != null && modelDetails.lat != null)
+                                if (modelDetails.lan != null &&
+                                    modelDetails.lat != null)
                                   Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: SizedBox(
                                       height: 300,
                                       child: ClipRRect(
-                                        borderRadius: BorderRadiusDirectional.circular(12),
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                12),
                                         child: GoogleMap(
                                           mapType: MapType.hybrid,
                                           initialCameraPosition: CameraPosition(
@@ -455,16 +469,20 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                if (modelDetails.lan == null && modelDetails.lat == null)
+                                if (modelDetails.lan == null &&
+                                    modelDetails.lat == null)
                                   Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: SizedBox(
                                       height: 300,
                                       child: ClipRRect(
-                                        borderRadius: BorderRadiusDirectional.circular(12),
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                12),
                                         child: GoogleMap(
                                           mapType: MapType.hybrid,
-                                          initialCameraPosition: const CameraPosition(
+                                          initialCameraPosition:
+                                              const CameraPosition(
                                             zoom: 10,
                                             target: LatLng(
                                               30,
@@ -495,11 +513,15 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children:
-                          [
-                            IconButton(
+                        BlocConsumer<BlockUserCubit, BlockUserStates>(
+                          listener: (context, state) {
+                            // TODO: implement listener
+                          },
+                          builder: (context, state) {
+                            return IconButton(
                               tooltip: 'Delete Product',
                               onPressed: () async {
                                 AwesomeDialog(
@@ -509,12 +531,24 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                                     animType: AnimType.rightSlide,
                                     title: 'Warning',
                                     desc:
-                                    'Are You Sure To Delete This Product...?',
+                                        'Are You Sure To Delete This Product...?',
                                     btnCancelOnPress: () {},
                                     btnOkOnPress: () {
-                                      cubit.deleteProduct(
-                                        id: productId);
+                                      cubit
+                                          .deleteProduct(
+                                        id: productId,
+                                        catId: catId,
+                                        catProId: catProId,
+                                      )
+                                          .then((value) {
+                                        print('******************');
 
+                                        Future.delayed(Duration(seconds: 2),
+                                            () {
+                                          BlockUserCubit.get(context)
+                                              .changeCurrent(index: 1);
+                                        });
+                                      });
                                     }).show();
                               },
                               icon: const Icon(
@@ -522,58 +556,8 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                                 size: 25,
                                 color: Colors.red,
                               ),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            IconButton(
-                              tooltip: 'Edit Product',
-                              onPressed: () async {
-                                AwesomeDialog(
-                                    context: context,
-                                    dialogType: DialogType.warning,
-                                    width: 400,
-                                    animType: AnimType.rightSlide,
-                                    title: 'Warning',
-                                    desc:
-                                    'Are You Sure To Edit This Product...?',
-                                    btnCancelOnPress: () {},
-                                    btnOkOnPress: () {
-
-                                    }).show();
-                              },
-                              icon: const Icon(
-                                IconlyBold.edit,
-                                size: 25,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            IconButton(
-                              tooltip: 'Add Product',
-                              onPressed: () async {
-                                AwesomeDialog(
-                                    context: context,
-                                    dialogType: DialogType.warning,
-                                    width: 400,
-                                    animType: AnimType.rightSlide,
-                                    title: 'Warning',
-                                    desc:
-                                    'Go To Create Post Screen',
-                                    btnCancelOnPress: () {},
-                                    btnOkOnPress: () {
-
-                                    }).show();
-                              },
-                              icon: const Icon(
-                                IconlyBold.plus,
-                                size: 25,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
                         Card(
                           elevation: 3,

@@ -259,6 +259,31 @@ class BannerCatDash extends StatelessWidget {
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(12),
                                     onTap: () {
+                                      print('object');
+
+                                      print(
+                                        cubit.catModelDetailsIdes[index],
+                                      );
+                                      print(
+                                        cubit.getCategoryDetailsModel[index]
+                                            .view,
+                                      );
+                                      print(
+                                        cubit
+                                            .getCategoryDetailsModel[index]
+                                            .uId!,
+                                      );
+
+                                      print(
+                                        cubit
+                                            .getCategoryDetailsModel[index]
+                                            .uId,
+                                      );
+
+
+                                      print(
+                                        cubit.catModelDetailsIdes[index],
+                                      );
                                       cubit2.changeCurrent(
                                         index: 2,
                                         productIdIN:
@@ -269,6 +294,9 @@ class BannerCatDash extends StatelessWidget {
                                         uidOwnerIN: cubit
                                             .getCategoryDetailsModel[index]
                                             .uId!,
+                                        catIiiid: cubit.catModelIdes[index],
+                                        catProIdvvvv:
+                                            cubit.catModelDetailsIdes[index],
                                       );
                                       print('object');
                                     },

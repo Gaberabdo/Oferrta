@@ -195,7 +195,7 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     try {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       Reference storageReference =
-      FirebaseStorage.instance.ref().child('catImage/$fileName');
+          FirebaseStorage.instance.ref().child('catImage/$fileName');
 
       // Read the file as bytes
       final reader = html.FileReader();
@@ -223,6 +223,7 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       emit(ImageUploadFailed());
     }
   }
+
   Future<void> updateCategory({
     required String id,
     required String name,
@@ -256,7 +257,7 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     try {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       Reference storageReference =
-      FirebaseStorage.instance.ref().child('users/$fileName');
+          FirebaseStorage.instance.ref().child('users/$fileName');
 
       // Read the file as bytes
       final reader = html.FileReader();
@@ -279,7 +280,6 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       isUpload = false;
 
       emit(ImageUploadSuccess());
-
     } on Exception catch (e) {
       isUpload = false;
       // Handle error
@@ -367,14 +367,18 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
 
   String? productId;
   String? uidOwner;
+  String? catProId;
+  String? catId;
   dynamic value;
   int current = 0;
   UserModel? activeUserChat;
 
   void changeCurrent({
     required int index,
+    String? catIiiid,
     String? productIdIN,
     String? uidOwnerIN,
+    String? catProIdvvvv,
     UserModel? model,
     dynamic? valueIN,
   }) {
@@ -383,6 +387,8 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     productId = productIdIN;
     uidOwner = uidOwnerIN;
     value = valueIN;
+    catId = catIiiid;
+    catProId = catProIdvvvv;
     emit(ChangeCurrentState());
   }
 

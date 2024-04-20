@@ -80,9 +80,6 @@ class FeedsCubit extends Cubit<FeedsState> {
     });
   }
 
-
-
-
   List<ProductModel> mostPopularModel = [];
   List<String> mostPopularIdes = [];
 
@@ -101,15 +98,27 @@ class FeedsCubit extends Cubit<FeedsState> {
     });
   }
 
-  Future<void> deleteProduct({required String id}) async {
+  Future<void> deleteProduct({
+    required String id,
+    required String catId,
+    required String catProId,
+  }) async {
+
+    print(id);
+    print(catId);
     emit(DeleteProductLoading());
     fireStore.collection("products").doc(id).delete().then((value) {
+      fireStore.collection('categories').doc(catId).collection("products").doc(catProId).delete().then((value) {
+
+        emit(DeleteProductDetailsSuccess());
+      }).catchError((handleError) {
+        emit(DeleteProductError());
+      });
       emit(DeleteProductDetailsSuccess());
     }).catchError((handleError) {
       emit(DeleteProductError());
     });
   }
-
 
   UserModel? userModel;
 

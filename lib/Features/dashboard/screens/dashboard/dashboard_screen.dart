@@ -35,6 +35,8 @@ class DashboardScreen extends StatelessWidget {
             productId: cubit.productId ?? '',
             uid: cubit.uidOwner ?? '',
             value: cubit.value,
+            catId: cubit.catId ?? '',
+            catProId: cubit.catProId ?? '',
           ),
           ChatDetailsAdmin(
             model: cubit.activeUserChat ?? UserModel(),
