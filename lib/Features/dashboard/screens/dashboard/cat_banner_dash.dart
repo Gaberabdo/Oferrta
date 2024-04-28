@@ -7,6 +7,7 @@ import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-cub
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
+import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -47,6 +48,14 @@ class BannerCatDash extends StatelessWidget {
             body: SingleChildScrollView(
               child: Column(
                 children: [
+                  IconButton(
+                    tooltip: 'Add New Post',
+                      onPressed: ()
+                      {
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>CreatePost()));
+                      },
+                      icon: Icon(Icons.add_a_photo)
+                  ),
                   (cubit.catModel.isNotEmpty)
                       ? GridView.builder(
                           gridDelegate:
