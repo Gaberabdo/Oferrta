@@ -34,9 +34,9 @@
   "platform": "Platform", "notifications": "Notifications",   "notiTitle": "Please write your title...",  "notiBody": "Please write your body...",
    "sendNotif": "Send To All Users",  "lang": "Change Language.", "action": "Action","warn": "Warning","sureDelete": "Are You Sure To Delete ...?",
   "numOfDay": "Enter number of days","confirmBlock": "Confirm Block","currentLocation": "Please pressed on bottom to get current Location",
-  "catDescription": "Write Description of product","selectCat": "Choose category ",  "enterPrice": "Enter Price", "remove": "Remove", "addimage": "add image",
+  "catDescription": "Write Description of product",  "enterPrice": "Enter Price", "remove": "Remove", "addimage": "add image",
   "selectImage": "Please select at least one image", "numOfUses": "Number Of Uses ","newCoupon": "New Coupon",
   "submit": "Submit", "editCoupon": "Edit Coupon", "update": "Update","newSubscrip": "New Supscription","editSubscrip": "Edit Subscription","enterDiscount": "Enter Discount","disount": "Discount",
   "Price": "Price ",  "discount": "Discount","deleteCate": "Delete category","sureEditCate": "Are You Sure of this edit...?",
-  "editCate": "Edit Category"
+  "editCate": "Edit Category","selectCate": "Choose category "
 }

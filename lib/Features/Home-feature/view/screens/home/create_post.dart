@@ -355,8 +355,8 @@ class CreatePost extends StatelessWidget {
                             Icons.description,
                             size: 15,
                           ),
-                          hintText: S.of(context).descriptionAdd,
-                          validator: S.of(context).descriptionAdd,
+                          hintText: S.of(context).description,
+                          validator: S.of(context).description,
                           obscureText: false,
                           icon: false,
                           enabled: true,
@@ -527,7 +527,7 @@ class CatDropDown extends StatelessWidget {
               fontSize: 14,
               fontWeight: FontWeight.w400,
             ),
-            hintText: cubit.catValueString,
+            hintText:  S.of(context).selectCate,
             enabledBorder: InputBorder.none,
             errorStyle: FontStyleThame.textStyle(
               fontWeight: FontWeight.w500,
@@ -541,7 +541,7 @@ class CatDropDown extends StatelessWidget {
           ),
           validator: (test) {
             if (cubit.catController.text.isEmpty) {
-              return 'Please select a category';
+              return  S.of(context).selectCate;
             }
 
             return null;

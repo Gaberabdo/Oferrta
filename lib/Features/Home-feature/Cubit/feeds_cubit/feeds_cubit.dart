@@ -12,6 +12,7 @@ import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:sell_4_u/Features/Home-feature/models/category_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sell_4_u/Features/Home-feature/models/product_model.dart';
+import 'package:sell_4_u/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/constant.dart';
@@ -328,18 +329,18 @@ class FeedsCubit extends Cubit<FeedsState> {
     emit(ImageUploadFailed());
   }
 
-  String catValueString = 'Please select a category';
+ // String catValueString =  S.of(context).selectCate;
   String? catIdString;
 
   void catValueStringCreate({
     required String value,
     required int index,
   }) {
-    catValueString = value;
+    //catValueString = value;
     catController.text = value;
     catIdString = catModelIdes[index];
     print(catIdString);
-    print(catValueString);
+    //print(catValueString);
     print(catController.text);
     emit(ImageUploadFailed());
   }

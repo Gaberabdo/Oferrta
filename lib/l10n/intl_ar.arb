@@ -59,9 +59,9 @@
   "platform": "منصه", "notifications": "اشعارات", "notiTitle": "اكتب العنوان...",  "notiBody": "اكتب المحتوي....",
   "sendNotif": "ارسال الي الجميع", "lang": "تغيير اللغه", "action": "حدث", "warn": "تاكيد!","sureDelete": "هل انت متاكد من الازاله...؟",
   "numOfDay": "ادخل عدد الايام" , "confirmBlock": "تاكيد الحظر", "currentLocation": "برجاء الضغط علي الزرار لتحديد الموقع..",
-  "selectCat": "اختر القسم",  "enterprice": "اكتب سعر", "remove": "ازاله", "addimage": "اضف صوره", "selectImage": "الرجاء اختيار صوره علي الاقل",
+  "enterprice": "اكتب سعر", "remove": "ازاله", "addimage": "اضف صوره", "selectImage": "الرجاء اختيار صوره علي الاقل",
   "numOfUses": "مرات الاستخدام ", "newCoupon": "كوبون جديد ","submit": "تسجيل","editCoupon": "تعديل الكوبون ",
   "update": "تحديث","newSubscrip": "اشتراك جديد ","enterDiscount": "ادخل الخصم ","editSubscrip": "تعديل الاشتراك ","Price": "السعر ",
   "enterPrice": "ادخل السعر","discount": "خصم","deleteCate": "ازاله المجموعه","sureEditCate": "هل انت متاكد من التعديل...؟",
-  "editCate": "تعديل المجموعه"
+  "editCate": "تعديل المجموعه","selectCate": "اختر القسم"
 }

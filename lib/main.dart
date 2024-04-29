@@ -83,6 +83,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           var cubit = MainCubit.get(context);
           return MaterialApp(
+
             debugShowCheckedModeBanner: false,
             title: 'Flutter Admin Panel',
 

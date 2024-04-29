@@ -800,16 +800,6 @@ class S {
     );
   }
 
-  /// `Choose category `
-  String get selectCat {
-    return Intl.message(
-      'Choose category ',
-      name: 'selectCat',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Enter Price`
   String get enterPrice {
     return Intl.message(
@@ -985,6 +975,16 @@ class S {
     return Intl.message(
       'Edit Category',
       name: 'editCate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose category `
+  String get selectCate {
+    return Intl.message(
+      'Choose category ',
+      name: 'selectCate',
       desc: '',
       args: [],
     );

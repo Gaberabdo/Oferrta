@@ -105,7 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "resendOtp": MessageLookupByLibrary.simpleMessage("اعادة الارسال"),
         "search": MessageLookupByLibrary.simpleMessage("البحث اي شئ"),
         "seeAll": MessageLookupByLibrary.simpleMessage("اظهار الكل"),
-        "selectCat": MessageLookupByLibrary.simpleMessage("اختر القسم"),
+        "selectCate": MessageLookupByLibrary.simpleMessage("اختر القسم"),
         "selectImage": MessageLookupByLibrary.simpleMessage(
             "الرجاء اختيار صوره علي الاقل"),
         "sendNotif": MessageLookupByLibrary.simpleMessage("ارسال الي الجميع"),

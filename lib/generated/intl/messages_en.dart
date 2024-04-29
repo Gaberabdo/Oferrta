@@ -114,7 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "resendOtp": MessageLookupByLibrary.simpleMessage(" Resend Otp"),
         "search": MessageLookupByLibrary.simpleMessage("Search for anything"),
         "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
-        "selectCat": MessageLookupByLibrary.simpleMessage("Choose category "),
+        "selectCate": MessageLookupByLibrary.simpleMessage("Choose category "),
         "selectImage": MessageLookupByLibrary.simpleMessage(
             "Please select at least one image"),
         "sendNotif": MessageLookupByLibrary.simpleMessage("Send To All Users"),
