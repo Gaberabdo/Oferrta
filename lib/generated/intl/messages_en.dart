@@ -28,39 +28,57 @@ class MessageLookup extends MessageLookupByLibrary {
         "Or": MessageLookupByLibrary.simpleMessage("OR"),
         "Password": MessageLookupByLibrary.simpleMessage("Password"),
         "Phone": MessageLookupByLibrary.simpleMessage("Phone"),
+        "Price": MessageLookupByLibrary.simpleMessage("Price "),
         "account": MessageLookupByLibrary.simpleMessage("Account"),
+        "action": MessageLookupByLibrary.simpleMessage("Action"),
+        "addimage": MessageLookupByLibrary.simpleMessage("add image"),
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("Already have an account"),
         "android": MessageLookupByLibrary.simpleMessage("Android"),
         "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
         "block": MessageLookupByLibrary.simpleMessage("Block User"),
         "callMe": MessageLookupByLibrary.simpleMessage("Call now"),
+        "catDescription": MessageLookupByLibrary.simpleMessage(
+            "Write Description of product"),
         "catDetails": MessageLookupByLibrary.simpleMessage("Category details"),
         "categories": MessageLookupByLibrary.simpleMessage("Categories"),
         "chatwithUser": MessageLookupByLibrary.simpleMessage("Chat With User"),
         "commercials": MessageLookupByLibrary.simpleMessage("Commercials"),
         "completeSignUp":
             MessageLookupByLibrary.simpleMessage("Complete Sign Up"),
+        "confirmBlock": MessageLookupByLibrary.simpleMessage("Confirm Block"),
         "continueB": MessageLookupByLibrary.simpleMessage("Continue Browsing"),
-        "coupon": MessageLookupByLibrary.simpleMessage("Coupon"),
+        "coupon": MessageLookupByLibrary.simpleMessage(" Coupon"),
         "createPost": MessageLookupByLibrary.simpleMessage(" Create Ad"),
+        "currentLocation": MessageLookupByLibrary.simpleMessage(
+            "Please pressed on bottom to get current Location"),
+        "deleteCate": MessageLookupByLibrary.simpleMessage("Delete category"),
         "deleteuser": MessageLookupByLibrary.simpleMessage("Delete User"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "descriptionAdd": MessageLookupByLibrary.simpleMessage(
             "Please write your description..."),
         "details": MessageLookupByLibrary.simpleMessage(
             "Please write your details..."),
+        "discount": MessageLookupByLibrary.simpleMessage("Discount"),
+        "disount": MessageLookupByLibrary.simpleMessage("Discount"),
         "donthave":
             MessageLookupByLibrary.simpleMessage("Don\\\'t have an accounat?"),
+        "editCate": MessageLookupByLibrary.simpleMessage("Edit Category"),
+        "editCoupon": MessageLookupByLibrary.simpleMessage("Edit Coupon"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
+        "editSubscrip":
+            MessageLookupByLibrary.simpleMessage("Edit Subscription"),
         "edit_profile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
         "edituser": MessageLookupByLibrary.simpleMessage("Edit User"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
+        "enterDiscount": MessageLookupByLibrary.simpleMessage("Enter Discount"),
+        "enterPrice": MessageLookupByLibrary.simpleMessage("Enter Price"),
         "forgetPassword":
             MessageLookupByLibrary.simpleMessage("Forget Password"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "homeWelcome": MessageLookupByLibrary.simpleMessage("Welcome"),
         "image": MessageLookupByLibrary.simpleMessage("Image"),
+        "lang": MessageLookupByLibrary.simpleMessage("Change Language."),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "mostP": MessageLookupByLibrary.simpleMessage("Most Popular"),
@@ -68,7 +86,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_favorites": MessageLookupByLibrary.simpleMessage("My Favorites"),
         "my_listings": MessageLookupByLibrary.simpleMessage("My Listings"),
         "nearYou": MessageLookupByLibrary.simpleMessage("Near you"),
+        "newCoupon": MessageLookupByLibrary.simpleMessage("New Coupon"),
+        "newSubscrip": MessageLookupByLibrary.simpleMessage("New Supscription"),
+        "notiBody":
+            MessageLookupByLibrary.simpleMessage("Please write your body..."),
+        "notiTitle":
+            MessageLookupByLibrary.simpleMessage("Please write your title..."),
         "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+        "numOfDay":
+            MessageLookupByLibrary.simpleMessage("Enter number of days"),
+        "numOfUses": MessageLookupByLibrary.simpleMessage("Number Of Uses "),
         "platform": MessageLookupByLibrary.simpleMessage("Platform"),
         "pleaseEmail": MessageLookupByLibrary.simpleMessage(
             "please enter your email address"),
@@ -80,12 +107,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("please enter your phone"),
         "postAd": MessageLookupByLibrary.simpleMessage("Post an Ad"),
         "post_an_ad": MessageLookupByLibrary.simpleMessage("Post an Ad"),
-        "products": MessageLookupByLibrary.simpleMessage("Products"),
+        "products": MessageLookupByLibrary.simpleMessage(" Products"),
         "reasonAdd": MessageLookupByLibrary.simpleMessage(
             "Please write reason to offer..."),
+        "remove": MessageLookupByLibrary.simpleMessage("Remove"),
         "resendOtp": MessageLookupByLibrary.simpleMessage(" Resend Otp"),
         "search": MessageLookupByLibrary.simpleMessage("Search for anything"),
         "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
+        "selectCat": MessageLookupByLibrary.simpleMessage("Choose category "),
+        "selectImage": MessageLookupByLibrary.simpleMessage(
+            "Please select at least one image"),
+        "sendNotif": MessageLookupByLibrary.simpleMessage("Send To All Users"),
         "setting": MessageLookupByLibrary.simpleMessage("Settings"),
         "sign": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign in"),
@@ -93,12 +125,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sign in With Facebook"),
         "signWithgoogle":
             MessageLookupByLibrary.simpleMessage("Sign in With Google"),
-        "subscriptions": MessageLookupByLibrary.simpleMessage("Subscriptions"),
+        "submit": MessageLookupByLibrary.simpleMessage("Submit"),
+        "subscriptions": MessageLookupByLibrary.simpleMessage(" Subscriptions"),
+        "sureDelete":
+            MessageLookupByLibrary.simpleMessage("Are You Sure To Delete ...?"),
+        "sureEditCate": MessageLookupByLibrary.simpleMessage(
+            "Are You Sure of this edit...?"),
         "temporaryBlock":
             MessageLookupByLibrary.simpleMessage("Temporary Block"),
         "unblock": MessageLookupByLibrary.simpleMessage(" Un Block"),
-        "users": MessageLookupByLibrary.simpleMessage("Users"),
+        "update": MessageLookupByLibrary.simpleMessage("Update"),
+        "users": MessageLookupByLibrary.simpleMessage(" Users"),
         "verfyEmail": MessageLookupByLibrary.simpleMessage(" Verify Phone"),
+        "warn": MessageLookupByLibrary.simpleMessage("Warning"),
         "whatsapp": MessageLookupByLibrary.simpleMessage("What\'s app")
       };
 }

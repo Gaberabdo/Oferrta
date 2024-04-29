@@ -39,7 +39,7 @@ class EditScubscripationAdmin extends StatelessWidget {
               centerTitle: true,
               automaticallyImplyLeading: false,
               title: Text(
-                'Edit Subscripation',
+                S.of(context).editSubscrip,
                 style: FontStyleThame.textStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
@@ -59,7 +59,7 @@ class EditScubscripationAdmin extends StatelessWidget {
                         Icons.person,
                         size: 15,
                       ),
-                      hintText: 'Please write  name',
+                      hintText:  S.of(context).pleaseName,
                       validator: '',
                       obscureText: false,
                       icon: false,
@@ -78,7 +78,7 @@ class EditScubscripationAdmin extends StatelessWidget {
                         Icons.price_change,
                         size: 15,
                       ),
-                      hintText: 'Please write price',
+                      hintText:  S.of(context).enterPrice,
                       validator: '',
                       obscureText: false,
                       icon: false,
@@ -97,7 +97,7 @@ class EditScubscripationAdmin extends StatelessWidget {
                         Icons.discount,
                         size: 15,
                       ),
-                      hintText: 'Please write price',
+                      hintText: S.of(context).enterPrice,
                       validator: '',
                       obscureText: false,
                       icon: false,
@@ -124,7 +124,7 @@ class EditScubscripationAdmin extends StatelessWidget {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'Update',
+                        S.of(context).update,
                         style: FontStyleThame.textStyle(
                           fontSize: 16,
                           fontColor: Colors.white,

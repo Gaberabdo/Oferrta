@@ -52,7 +52,7 @@ class MyTable extends StatelessWidget {
               columns: [
                 DataColumn(
                   label: Text(
-                    'Name',
+                    S.of(context).Name,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -62,7 +62,7 @@ class MyTable extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'Image',
+                    S.of(context).image,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -72,7 +72,7 @@ class MyTable extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'Email',
+                    S.of(context).Email,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -82,7 +82,7 @@ class MyTable extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'Phone',
+                    S.of(context).Phone,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -92,7 +92,7 @@ class MyTable extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'Blocked',
+                    S.of(context).block,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -102,7 +102,7 @@ class MyTable extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'Platform',
+                    S.of(context).platform,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -114,7 +114,7 @@ class MyTable extends StatelessWidget {
                   label: Padding(
                     padding: const EdgeInsetsDirectional.only(start: 50),
                     child: Text(
-                      'Action',
+                      S.of(context).action,
                       textAlign: TextAlign.center,
                       style: FontStyleThame.textStyle(
                         fontSize: 14,
@@ -241,15 +241,15 @@ class MyTable extends StatelessWidget {
       children: [
         Expanded(
           child: IconButton(
-            tooltip: 'Delete user',
+            tooltip: S.of(context).deleteuser,
             onPressed: () async {
               AwesomeDialog(
                   context: context,
                   dialogType: DialogType.warning,
                   width: 400,
                   animType: AnimType.rightSlide,
-                  title: 'Warning',
-                  desc: 'Are You Sure To Delete This User...?',
+                  title: S.of(context).warn,
+                  desc: S.of(context).sureDelete,
                   btnCancelOnPress: () {},
                   btnOkOnPress: () {
                     cubit.deleteUser(
@@ -308,7 +308,7 @@ class MyTable extends StatelessWidget {
         ),
         Expanded(
           child: IconButton(
-            tooltip: 'Chat with user',
+            tooltip: S.of(context).chatwithUser,
             onPressed: () {
               cubit.changeCurrent(index: 3, model: model);
             },
@@ -320,7 +320,7 @@ class MyTable extends StatelessWidget {
         ),
         Expanded(
           child: IconButton(
-            tooltip: 'Temporary block',
+            tooltip:S.of(context).temporaryBlock,
             onPressed: () {
               showDialog(
                 context: context,
@@ -329,7 +329,7 @@ class MyTable extends StatelessWidget {
                     title: Row(
                       children: [
                         Text(
-                          'Temporary block',
+                          S.of(context).temporaryBlock,
                           style: FontStyleThame.textStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -360,7 +360,7 @@ class MyTable extends StatelessWidget {
                                   Icons.title,
                                   size: 15,
                                 ),
-                                hintText: 'Enter number of days',
+                                hintText: S.of(context).numOfDay,
                                 validator: '',
                                 obscureText: false,
                                 icon: false,
@@ -388,7 +388,7 @@ class MyTable extends StatelessWidget {
                                     Navigator.pop(context);
                                   },
                                   child: Text(
-                                    'Confirm block',
+                                    S.of(context).confirmBlock,
                                     style: FontStyleThame.textStyle(
                                       fontSize: 16,
                                       fontColor: Colors.white,

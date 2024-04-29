@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-state.dart';
 import 'package:sell_4_u/core/constant.dart';
+import 'package:sell_4_u/generated/l10n.dart';
 
 import '../../../../../Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
 
@@ -28,28 +29,28 @@ class SideMenu extends StatelessWidget {
                 child: Image.network("assets/images/offerta.png"),
               ),
               DrawerListTile(
-                title: "  Users",
+                title: S.of(context).users,
                 svgSrc: IconlyLight.user,
                 press: () {
                   cubit.changeCurrent(index: 0);
                 },
               ),
               DrawerListTile(
-                title: "  Products",
+                title: S.of(context).products,
                 svgSrc: Icons.production_quantity_limits_outlined,
                 press: () {
                   cubit.changeCurrent(index: 1);
                 },
               ),
               DrawerListTile(
-                title: "  Subscriptions",
+                title: S.of(context).subscriptions,
                 svgSrc: Icons.subscriptions,
                 press: () {
                   cubit.changeCurrent(index: 4);
                 },
               ),
               DrawerListTile(
-                title: "  Coupon",
+                title:S.of(context).coupon,
                 svgSrc: Icons.discount,
                 press: () {
                   cubit.changeCurrent(index: 5);

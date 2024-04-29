@@ -1,19 +1,19 @@
 import 'dart:convert';
-
+import 'dart:html';
+import 'dart:typed_data';
+import 'dart:html' as html;
 import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:sell_4_u/Features/Home-feature/models/category_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sell_4_u/Features/Home-feature/models/product_model.dart';
-import 'package:sell_4_u/Features/Home-feature/view/screens/home/feeds_screen.dart';
-import 'package:sell_4_u/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import '../../../../core/constant.dart';
 import '../../../../core/helper/cache/cache_helper.dart';
 import 'feeds_state.dart';
@@ -103,13 +103,17 @@ class FeedsCubit extends Cubit<FeedsState> {
     required String catId,
     required String catProId,
   }) async {
-
     print(id);
     print(catId);
     emit(DeleteProductLoading());
     fireStore.collection("products").doc(id).delete().then((value) {
-      fireStore.collection('categories').doc(catId).collection("products").doc(catProId).delete().then((value) {
-
+      fireStore
+          .collection('categories')
+          .doc(catId)
+          .collection("products")
+          .doc(catProId)
+          .delete()
+          .then((value) {
         emit(DeleteProductDetailsSuccess());
       }).catchError((handleError) {
         emit(DeleteProductError());
@@ -168,28 +172,43 @@ class FeedsCubit extends Cubit<FeedsState> {
   List<String> postListOfImage = [];
 
   Future<void> pickImages() async {
-    final picker = ImagePicker();
-    final pickedImages = await picker.pickMultiImage();
+    final FileUploadInputElement input = html.FileUploadInputElement();
+    input.accept = 'image/*'; // accept only image files
 
-    if (pickedImages.isNotEmpty) {
-      imageController.text = '';
-      imageList = pickedImages.map((image) => File(image.path)).toList();
-      emit(ImageUploadSuccess());
-    } else {
-      emit(ImageUploadFailed());
-    }
+    // Trigger file picker dialog
+    input.click();
+
+    // Listen for changes in the file selection
+    input.onChange.listen((event) {
+      final fileList = input.files;
+      if (fileList!.isNotEmpty) {
+        final file = fileList[0];
+        imageList.add(file);
+        emit(ImageUploadSuccess());
+      } else {
+        emit(ImageUploadFailed());
+      }
+    });
   }
 
   Future<void> pickImagesAdd() async {
-    final picker = ImagePicker();
-    final pickedImages = await picker.pickImage(source: ImageSource.gallery);
+    final FileUploadInputElement input = html.FileUploadInputElement();
+    input.accept = 'image/*'; // accept only image files
 
-    if (pickedImages != null) {
-      imageList.add(File(pickedImages.path));
-      emit(ImageUploadSuccess());
-    } else {
-      emit(ImageUploadFailed());
-    }
+    // Trigger file picker dialog
+    input.click();
+
+    // Listen for changes in the file selection
+    input.onChange.listen((event) {
+      final fileList = input.files;
+      if (fileList!.isNotEmpty) {
+        final file = fileList[0];
+        imageList.add(file);
+        emit(ImageUploadSuccess());
+      } else {
+        emit(ImageUploadFailed());
+      }
+    });
   }
 
   Future<void> uploadImages({
@@ -201,17 +220,30 @@ class FeedsCubit extends Cubit<FeedsState> {
     List<File> imagesToRemove = [];
 
     for (var image in imageList) {
-      final ref = firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child('catImage/${Uri.file(image.path).pathSegments.last}');
-      await ref.putFile(image).then((p0) {
-        p0.ref.getDownloadURL().then((value) {
-          print(value);
-          postListOfImage.add(value);
-          print(postListOfImage);
-          emit(ImageUploadToFireSuccess());
-        });
-      });
+      try {
+        String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+        Reference storageReference =
+            FirebaseStorage.instance.ref().child('product/$fileName');
+
+        // Read the file as bytes
+        final reader = html.FileReader();
+        reader.readAsArrayBuffer(image);
+        await reader.onLoad.first;
+        final buffer = reader.result as Uint8List;
+
+        // Convert bytes to Blob
+        final blob = html.Blob([buffer]);
+
+        UploadTask uploadTask = storageReference.putBlob(blob);
+        TaskSnapshot taskSnapshot = await uploadTask;
+        String imageUrl = await taskSnapshot.ref.getDownloadURL();
+        postListOfImage.add(imageUrl);
+        emit(ImageUploadToFireSuccess());
+      } catch (e) {
+        print('Error uploading image: $e');
+        emit(ImageRemovedFailed());
+      }
       imagesToRemove.add(image);
     }
 
@@ -329,32 +361,33 @@ class FeedsCubit extends Cubit<FeedsState> {
       latitude = position.latitude;
       longitude = position.longitude;
       print('${currentPosition}currentPosition');
+      currentAddress = position.toString();
+      locationController.text = currentAddress!;
+      getAddressFromLocation(position);
       emit(GetLocationSuccess());
-
-      getAddressFromLatLng(currentPosition!);
     }).catchError((e) {
       debugPrint(e);
       emit(GetLocationError());
     });
   }
 
-  Future<void> getAddressFromLatLng(Position position) async {
-    emit(GetLocationLoading());
+  Future<String> getAddressFromLocation(Position position) async {
+    try {
+      List<Location> locations = await locationFromAddress(
+        '${position.latitude}, ${position.longitude}',
+      );
 
-    await placemarkFromCoordinates(
-            currentPosition!.latitude, currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      currentAddress = place.locality;
-      locationController.text = place.locality!;
-      emit(GetLocationSuccess());
-    }).catchError((e) {
-      emit(GetLocationError());
-
-      debugPrint(e);
-    });
+      if (locations.isNotEmpty) {
+        Location firstLocation = locations.first;
+        return '${firstLocation.latitude}, ${firstLocation.longitude}, ${firstLocation.timestamp}';
+      } else {
+        return 'Address not found';
+      }
+    } catch (e) {
+      print('Error fetching address: $e');
+      return 'Error fetching address';
+    }
   }
-
   Future<bool> handleLocationPermission(context) async {
     emit(GetLocationLoading());
     bool serviceEnabled;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Admin/Coupon-Feature/view/user-uses-screen.dart';
 import 'package:sell_4_u/core/constant.dart';
+import 'package:sell_4_u/generated/l10n.dart';
 
 import '../../manger/cubit/coupon-cubit.dart';
 import '../../manger/models/coupon-model.dart';
@@ -44,7 +45,7 @@ class MyTableCoupon extends StatelessWidget {
               columns: [
                 DataColumn(
                   label: Text(
-                    'Name',
+                    S.of(context).Name,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -54,7 +55,7 @@ class MyTableCoupon extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'Price',
+                    S.of(context).Price,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -64,7 +65,7 @@ class MyTableCoupon extends StatelessWidget {
                 ),
                 DataColumn(
                   label: Text(
-                    'Number Of Uses',
+                    S.of(context).numOfUses,
                     textAlign: TextAlign.center,
                     style: FontStyleThame.textStyle(
                       fontSize: 14,
@@ -76,7 +77,7 @@ class MyTableCoupon extends StatelessWidget {
                   label: Padding(
                     padding: const EdgeInsetsDirectional.only(start: 50),
                     child: Text(
-                      'Action',
+                      S.of(context).action,
                       textAlign: TextAlign.center,
                       style: FontStyleThame.textStyle(
                         fontSize: 14,
@@ -189,8 +190,8 @@ class MyTableCoupon extends StatelessWidget {
                   dialogType: DialogType.warning,
                   width: 400,
                   animType: AnimType.rightSlide,
-                  title: 'Warning',
-                  desc: 'Are You Sure To Delete This Coupon...?',
+                  title: S.of(context).warn,
+                  desc:  S.of(context).sureDelete,
                   btnCancelOnPress: () {},
                   btnOkOnPress: () {
                     print('iiiiiiiiiiiiiiiiiiiiiiiiiiid${model.id}');

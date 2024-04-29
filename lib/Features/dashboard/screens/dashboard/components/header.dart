@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-cubit.dart';
+import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dart';
 import 'package:sell_4_u/Features/dashboard/controllers/MenuAppController.dart';
 import 'package:sell_4_u/Features/dashboard/responsive.dart';
 import 'package:sell_4_u/core/constant.dart';
@@ -88,7 +89,7 @@ class ProfileCard extends StatelessWidget {
                   ),
                   SizedBox(width: 5),
                   PopupMenuButton<int>(
-                    tooltip: 'Change Language',
+                    tooltip: S.of(context).lang,
                     onCanceled: () {
                       Navigator.of(context);
                     },
@@ -144,6 +145,33 @@ class SearchField extends StatelessWidget {
       children: [
         CircleAvatar(
           child: IconButton(
+            tooltip: S.of(context).createPost,
+            icon: const Icon(
+              Icons.upload,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: SizedBox(
+                      width: Responsive.isMobile(context)
+                          ? MediaQuery.sizeOf(context).width
+                          : 777,
+                      height: 650,
+                      child: CreatePost(),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+        SizedBox(
+          width: defaultPadding,
+        ),
+        CircleAvatar(
+          child: IconButton(
             icon: const Icon(
               Icons.notification_add,
             ),
@@ -155,7 +183,7 @@ class SearchField extends StatelessWidget {
                     title: Row(
                       children: [
                         Text(
-                          'Send notification',
+                          S.of(context).notifications,
                           style: FontStyleThame.textStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -185,7 +213,7 @@ class SearchField extends StatelessWidget {
                                   Icons.title,
                                   size: 15,
                                 ),
-                                hintText: 'Please write your title',
+                                hintText: S.of(context).notiTitle,
                                 validator: '',
                                 obscureText: false,
                                 icon: false,
@@ -204,7 +232,7 @@ class SearchField extends StatelessWidget {
                                   Icons.bolt,
                                   size: 15,
                                 ),
-                                hintText: 'Please write your body',
+                                hintText:S.of(context).notiBody,
                                 validator: '',
                                 obscureText: false,
                                 icon: false,
@@ -234,7 +262,7 @@ class SearchField extends StatelessWidget {
                                     });
                                   },
                                   child: Text(
-                                    'Send notification for all users',
+                                    S.of(context).sendNotif,
                                     style: FontStyleThame.textStyle(
                                       fontSize: 16,
                                       fontColor: Colors.white,
@@ -270,8 +298,8 @@ class SearchField extends StatelessWidget {
                 cubit.filteredUser.clear();
               }
             },
-            decoration: const InputDecoration(
-              hintText: "Search",
+            decoration:  InputDecoration(
+              hintText: S.of(context).search,
               // fillColor: secondaryColor,
               filled: true,
               border: OutlineInputBorder(

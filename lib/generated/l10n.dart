@@ -600,10 +600,10 @@ class S {
     );
   }
 
-  /// `Users`
+  /// ` Users`
   String get users {
     return Intl.message(
-      'Users',
+      ' Users',
       name: 'users',
       desc: '',
       args: [],
@@ -620,10 +620,10 @@ class S {
     );
   }
 
-  /// `Products`
+  /// ` Products`
   String get products {
     return Intl.message(
-      'Products',
+      ' Products',
       name: 'products',
       desc: '',
       args: [],
@@ -640,10 +640,10 @@ class S {
     );
   }
 
-  /// `Subscriptions`
+  /// ` Subscriptions`
   String get subscriptions {
     return Intl.message(
-      'Subscriptions',
+      ' Subscriptions',
       name: 'subscriptions',
       desc: '',
       args: [],
@@ -660,10 +660,10 @@ class S {
     );
   }
 
-  /// `Coupon`
+  /// ` Coupon`
   String get coupon {
     return Intl.message(
-      'Coupon',
+      ' Coupon',
       name: 'coupon',
       desc: '',
       args: [],
@@ -685,6 +685,306 @@ class S {
     return Intl.message(
       'Notifications',
       name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please write your title...`
+  String get notiTitle {
+    return Intl.message(
+      'Please write your title...',
+      name: 'notiTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please write your body...`
+  String get notiBody {
+    return Intl.message(
+      'Please write your body...',
+      name: 'notiBody',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send To All Users`
+  String get sendNotif {
+    return Intl.message(
+      'Send To All Users',
+      name: 'sendNotif',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Language.`
+  String get lang {
+    return Intl.message(
+      'Change Language.',
+      name: 'lang',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Action`
+  String get action {
+    return Intl.message(
+      'Action',
+      name: 'action',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Warning`
+  String get warn {
+    return Intl.message(
+      'Warning',
+      name: 'warn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are You Sure To Delete ...?`
+  String get sureDelete {
+    return Intl.message(
+      'Are You Sure To Delete ...?',
+      name: 'sureDelete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter number of days`
+  String get numOfDay {
+    return Intl.message(
+      'Enter number of days',
+      name: 'numOfDay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Block`
+  String get confirmBlock {
+    return Intl.message(
+      'Confirm Block',
+      name: 'confirmBlock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please pressed on bottom to get current Location`
+  String get currentLocation {
+    return Intl.message(
+      'Please pressed on bottom to get current Location',
+      name: 'currentLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write Description of product`
+  String get catDescription {
+    return Intl.message(
+      'Write Description of product',
+      name: 'catDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose category `
+  String get selectCat {
+    return Intl.message(
+      'Choose category ',
+      name: 'selectCat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Price`
+  String get enterPrice {
+    return Intl.message(
+      'Enter Price',
+      name: 'enterPrice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove`
+  String get remove {
+    return Intl.message(
+      'Remove',
+      name: 'remove',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `add image`
+  String get addimage {
+    return Intl.message(
+      'add image',
+      name: 'addimage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select at least one image`
+  String get selectImage {
+    return Intl.message(
+      'Please select at least one image',
+      name: 'selectImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Number Of Uses `
+  String get numOfUses {
+    return Intl.message(
+      'Number Of Uses ',
+      name: 'numOfUses',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Coupon`
+  String get newCoupon {
+    return Intl.message(
+      'New Coupon',
+      name: 'newCoupon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get submit {
+    return Intl.message(
+      'Submit',
+      name: 'submit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Coupon`
+  String get editCoupon {
+    return Intl.message(
+      'Edit Coupon',
+      name: 'editCoupon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get update {
+    return Intl.message(
+      'Update',
+      name: 'update',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Supscription`
+  String get newSubscrip {
+    return Intl.message(
+      'New Supscription',
+      name: 'newSubscrip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Subscription`
+  String get editSubscrip {
+    return Intl.message(
+      'Edit Subscription',
+      name: 'editSubscrip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter Discount`
+  String get enterDiscount {
+    return Intl.message(
+      'Enter Discount',
+      name: 'enterDiscount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discount`
+  String get disount {
+    return Intl.message(
+      'Discount',
+      name: 'disount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price `
+  String get Price {
+    return Intl.message(
+      'Price ',
+      name: 'Price',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discount`
+  String get discount {
+    return Intl.message(
+      'Discount',
+      name: 'discount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete category`
+  String get deleteCate {
+    return Intl.message(
+      'Delete category',
+      name: 'deleteCate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are You Sure of this edit...?`
+  String get sureEditCate {
+    return Intl.message(
+      'Are You Sure of this edit...?',
+      name: 'sureEditCate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Category`
+  String get editCate {
+    return Intl.message(
+      'Edit Category',
+      name: 'editCate',
       desc: '',
       args: [],
     );

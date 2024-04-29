@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sell_4_u/Admin/Features/Subscriptions-Feature/manger/cubit/subscripation-cubit.dart';
 import 'package:sell_4_u/Admin/Features/Subscriptions-Feature/manger/cubit/subscripation-states.dart';
 import 'package:sell_4_u/Admin/Features/Subscriptions-Feature/view/widget/tabel-widget.dart';
+import 'package:sell_4_u/generated/l10n.dart';
 
 class SubscripationScreen extends StatelessWidget {
   const SubscripationScreen({Key? key});
@@ -51,7 +52,7 @@ class SubscripationScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(' New Subscripation'),
+          title: Text( S.of(context).newSubscrip,),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -61,13 +62,13 @@ class SubscripationScreen extends StatelessWidget {
                   obscureText: false,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Enter name';
+                      return  S.of(context).pleaseName;
                     }
                     return null;
                   },
                   keyboardAppearance: Brightness.dark,
                   decoration: InputDecoration(
-                    labelText: 'Name',
+                    labelText: S.of(context).Name,
                     labelStyle: GoogleFonts.tajawal(
                       fontSize: 20,
                       color: Colors.black,
@@ -89,13 +90,13 @@ class SubscripationScreen extends StatelessWidget {
                   obscureText: false,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Enter Price';
+                      return  S.of(context).Price;
                     }
                     return null;
                   },
                   keyboardAppearance: Brightness.dark,
                   decoration: InputDecoration(
-                    labelText: 'Price',
+                    labelText: S.of(context).Price,
                     labelStyle: GoogleFonts.tajawal(
                       fontSize: 20,
                       color: Colors.black,
@@ -117,13 +118,13 @@ class SubscripationScreen extends StatelessWidget {
                   obscureText: false,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Enter discount';
+                      return  S.of(context).enterDiscount;
                     }
                     return null;
                   },
                   keyboardAppearance: Brightness.dark,
                   decoration: InputDecoration(
-                    labelText: 'DisCount',
+                    labelText:  S.of(context).disount,
                     labelStyle: GoogleFonts.tajawal(
                       fontSize: 20,
                       color: Colors.black,
@@ -159,7 +160,7 @@ class SubscripationScreen extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 child: Text(
-                  'Submit',
+                  S.of(context).submit,
                   style: GoogleFonts.tajawal(color: Colors.white, fontSize: 16),
                 ),
               ),

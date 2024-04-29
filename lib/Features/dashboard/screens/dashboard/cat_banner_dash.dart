@@ -9,6 +9,7 @@ import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dar
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
 import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dart';
 import 'package:sell_4_u/core/constant.dart';
+import 'package:sell_4_u/generated/l10n.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../Home-feature/view/screens/home/feeds_details.dart';
@@ -48,14 +49,6 @@ class BannerCatDash extends StatelessWidget {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  IconButton(
-                    tooltip: 'Add New Post',
-                      onPressed: ()
-                      {
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>CreatePost()));
-                      },
-                      icon: Icon(Icons.add_a_photo)
-                  ),
                   (cubit.catModel.isNotEmpty)
                       ? GridView.builder(
                           gridDelegate:
@@ -119,16 +112,16 @@ class BannerCatDash extends StatelessWidget {
                                     ),
                                     const Spacer(),
                                     IconButton(
-                                      tooltip: 'Delete category',
+                                      tooltip:  S.of(context).deleteCate,
                                       onPressed: () async {
                                         AwesomeDialog(
                                             context: context,
                                             dialogType: DialogType.warning,
                                             width: 400,
                                             animType: AnimType.rightSlide,
-                                            title: 'Warning',
+                                            title: S.of(context).warn,
                                             desc:
-                                                'Are You Sure To Delete This category...?',
+                                            S.of(context).sureDelete,
                                             btnCancelOnPress: () {},
                                             btnOkOnPress: () {
                                               cubit.deleteCategory(
@@ -145,7 +138,7 @@ class BannerCatDash extends StatelessWidget {
                                       width: 4,
                                     ),
                                     IconButton(
-                                      tooltip: 'Edit category',
+                                      tooltip:  S.of(context).editCate,
                                       onPressed: () {
                                         showDialog(
                                           context: context,

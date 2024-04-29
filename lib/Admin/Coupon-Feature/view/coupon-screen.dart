@@ -54,7 +54,7 @@ class CouponScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(' New Coupon'),
+          title: Text( S.of(context).newCoupon,),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -64,13 +64,13 @@ class CouponScreen extends StatelessWidget {
                   obscureText: false,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Enter name';
+                      return  S.of(context).Name;
                     }
                     return null;
                   },
                   keyboardAppearance: Brightness.dark,
                   decoration: InputDecoration(
-                    labelText: 'Name',
+                    labelText:  S.of(context).Name,
                     labelStyle: GoogleFonts.tajawal(
                       fontSize: 20,
                       color: Colors.black,
@@ -92,13 +92,13 @@ class CouponScreen extends StatelessWidget {
                   obscureText: false,
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Enter Price';
+                      return  S.of(context).enterPrice;
                     }
                     return null;
                   },
                   keyboardAppearance: Brightness.dark,
                   decoration: InputDecoration(
-                    labelText: 'Price',
+                    labelText: S.of(context).enterPrice,
                     labelStyle: GoogleFonts.tajawal(
                       fontSize: 20,
                       color: Colors.black,
@@ -132,7 +132,7 @@ class CouponScreen extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 child: Text(
-                  'Submit',
+                  S.of(context).submit,
                   style: GoogleFonts.tajawal(color: Colors.white, fontSize: 16),
                 ),
               ),

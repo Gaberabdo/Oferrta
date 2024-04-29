@@ -47,7 +47,7 @@ class EditCouponAdmin extends StatelessWidget {
               centerTitle: true,
               automaticallyImplyLeading: false,
               title: Text(
-                'Edit Coupon',
+                S.of(context).editCoupon,
                 style: FontStyleThame.textStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
@@ -70,7 +70,7 @@ class EditCouponAdmin extends StatelessWidget {
                         Icons.person,
                         size: 15,
                       ),
-                      hintText: 'Please write  name',
+                      hintText:  S.of(context).pleaseName,
                       validator: '',
                       obscureText: false,
                       icon: false,
@@ -89,7 +89,7 @@ class EditCouponAdmin extends StatelessWidget {
                         Icons.price_change,
                         size: 15,
                       ),
-                      hintText: 'Please write price',
+                      hintText:  S.of(context).enterPrice,
                       validator: '',
                       obscureText: false,
                       icon: false,
@@ -113,7 +113,7 @@ cubit.updateCoupons(subscriptionId: model.id!, name: nameController.text, price:
 Navigator.pop(context);
                       },
                       child: Text(
-                        'Update',
+                        S.of(context).update,
                         style: FontStyleThame.textStyle(
                           fontSize: 16,
                           fontColor: Colors.white,
