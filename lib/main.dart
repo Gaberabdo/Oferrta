@@ -94,7 +94,9 @@ class MyApp extends StatelessWidget {
               ],
               child: MainScreen(),
             ),
-            locale:Locale("en"),
+            locale: cubit.language == 'en'
+          ? const Locale('en')
+              : const Locale('ar'),
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,

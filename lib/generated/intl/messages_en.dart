@@ -31,16 +31,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "account": MessageLookupByLibrary.simpleMessage("Account"),
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("Already have an account"),
+        "android": MessageLookupByLibrary.simpleMessage("Android"),
         "arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
         "block": MessageLookupByLibrary.simpleMessage("Block User"),
         "callMe": MessageLookupByLibrary.simpleMessage("Call now"),
         "catDetails": MessageLookupByLibrary.simpleMessage("Category details"),
         "categories": MessageLookupByLibrary.simpleMessage("Categories"),
+        "chatwithUser": MessageLookupByLibrary.simpleMessage("Chat With User"),
         "commercials": MessageLookupByLibrary.simpleMessage("Commercials"),
         "completeSignUp":
             MessageLookupByLibrary.simpleMessage("Complete Sign Up"),
         "continueB": MessageLookupByLibrary.simpleMessage("Continue Browsing"),
+        "coupon": MessageLookupByLibrary.simpleMessage("Coupon"),
         "createPost": MessageLookupByLibrary.simpleMessage(" Create Ad"),
+        "deleteuser": MessageLookupByLibrary.simpleMessage("Delete User"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "descriptionAdd": MessageLookupByLibrary.simpleMessage(
             "Please write your description..."),
@@ -50,11 +54,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Don\\\'t have an accounat?"),
         "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
         "edit_profile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
+        "edituser": MessageLookupByLibrary.simpleMessage("Edit User"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "forgetPassword":
             MessageLookupByLibrary.simpleMessage("Forget Password"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "homeWelcome": MessageLookupByLibrary.simpleMessage("Welcome"),
+        "image": MessageLookupByLibrary.simpleMessage("Image"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "mostP": MessageLookupByLibrary.simpleMessage("Most Popular"),
@@ -62,6 +68,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_favorites": MessageLookupByLibrary.simpleMessage("My Favorites"),
         "my_listings": MessageLookupByLibrary.simpleMessage("My Listings"),
         "nearYou": MessageLookupByLibrary.simpleMessage("Near you"),
+        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+        "platform": MessageLookupByLibrary.simpleMessage("Platform"),
         "pleaseEmail": MessageLookupByLibrary.simpleMessage(
             "please enter your email address"),
         "pleaseName":
@@ -72,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("please enter your phone"),
         "postAd": MessageLookupByLibrary.simpleMessage("Post an Ad"),
         "post_an_ad": MessageLookupByLibrary.simpleMessage("Post an Ad"),
+        "products": MessageLookupByLibrary.simpleMessage("Products"),
         "reasonAdd": MessageLookupByLibrary.simpleMessage(
             "Please write reason to offer..."),
         "resendOtp": MessageLookupByLibrary.simpleMessage(" Resend Otp"),
@@ -84,7 +93,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sign in With Facebook"),
         "signWithgoogle":
             MessageLookupByLibrary.simpleMessage("Sign in With Google"),
+        "subscriptions": MessageLookupByLibrary.simpleMessage("Subscriptions"),
+        "temporaryBlock":
+            MessageLookupByLibrary.simpleMessage("Temporary Block"),
         "unblock": MessageLookupByLibrary.simpleMessage(" Un Block"),
+        "users": MessageLookupByLibrary.simpleMessage("Users"),
         "verfyEmail": MessageLookupByLibrary.simpleMessage(" Verify Phone"),
         "whatsapp": MessageLookupByLibrary.simpleMessage("What\'s app")
       };

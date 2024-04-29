@@ -6,6 +6,7 @@ import 'package:iconly/iconly.dart';
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:sell_4_u/core/firebase_analytics.dart';
+import 'package:sell_4_u/generated/l10n.dart';
 
 import '../../../../../core/helper/component/component.dart';
 import '../../manger/block-user-cubit.dart';
@@ -264,7 +265,7 @@ class MyTable extends StatelessWidget {
         ),
         Expanded(
           child: IconButton(
-            tooltip: 'Block user',
+            tooltip:  S.of(context).block,
             onPressed: () {
               if (model.blocked == true) {
                 cubit.unblock(model.uId!);
@@ -282,7 +283,7 @@ class MyTable extends StatelessWidget {
         ),
         Expanded(
           child: IconButton(
-            tooltip: 'Edit user',
+            tooltip:S.of(context).edituser,
             onPressed: () {
               showDialog(
                 context: context,

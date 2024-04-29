@@ -31,15 +31,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "account": MessageLookupByLibrary.simpleMessage("حسابي"),
         "alreadyHaveAccount":
             MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل"),
+        "android": MessageLookupByLibrary.simpleMessage("اندرويد"),
         "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
         "block": MessageLookupByLibrary.simpleMessage("بلوك"),
         "callMe": MessageLookupByLibrary.simpleMessage("أتصل الان"),
         "catDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المنتجات"),
         "categories": MessageLookupByLibrary.simpleMessage("فئات"),
+        "chatwithUser":
+            MessageLookupByLibrary.simpleMessage("تحدث مع المستخدم"),
         "commercials": MessageLookupByLibrary.simpleMessage("تجاري"),
         "completeSignUp": MessageLookupByLibrary.simpleMessage("اكمال التسجيل"),
         "continueB": MessageLookupByLibrary.simpleMessage("اكمل تصفح"),
+        "coupon": MessageLookupByLibrary.simpleMessage("كوبون"),
         "createPost": MessageLookupByLibrary.simpleMessage(" انشاء الاعلان"),
+        "deleteuser": MessageLookupByLibrary.simpleMessage("مسح مستخدم"),
         "description": MessageLookupByLibrary.simpleMessage("الوصف"),
         "details": MessageLookupByLibrary.simpleMessage("أضف بياناتك"),
         "donthave": MessageLookupByLibrary.simpleMessage("ليس لديك حساب??"),
@@ -47,11 +52,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
         "edit_profile":
             MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
+        "edituser": MessageLookupByLibrary.simpleMessage("تعديل مستخدم"),
         "english": MessageLookupByLibrary.simpleMessage("الإنجليزية"),
         "forgetPassword":
             MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور"),
         "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
         "homeWelcome": MessageLookupByLibrary.simpleMessage("مرحبا بك"),
+        "image": MessageLookupByLibrary.simpleMessage("صوره"),
         "language": MessageLookupByLibrary.simpleMessage("اللغة"),
         "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "mostP": MessageLookupByLibrary.simpleMessage("الأكثر شعبية"),
@@ -59,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "my_favorites": MessageLookupByLibrary.simpleMessage("المفضلة لدي"),
         "my_listings": MessageLookupByLibrary.simpleMessage("قائمة إعلاناتي"),
         "nearYou": MessageLookupByLibrary.simpleMessage("بالقرب منك"),
+        "notifications": MessageLookupByLibrary.simpleMessage("اشعارات"),
+        "platform": MessageLookupByLibrary.simpleMessage("منصه"),
         "pleaseEmail":
             MessageLookupByLibrary.simpleMessage("من فضلك ادخل ايميلك"),
         "pleaseName": MessageLookupByLibrary.simpleMessage("من فضلك ادخل اسمك"),
@@ -68,6 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("من فضلك ادخل تليفونك"),
         "postAd": MessageLookupByLibrary.simpleMessage("انشر إعلانا"),
         "post_an_ad": MessageLookupByLibrary.simpleMessage("أضف إعلانات"),
+        "products": MessageLookupByLibrary.simpleMessage("منتجات"),
         "reasonAdd":
             MessageLookupByLibrary.simpleMessage("الرجاء كتابة سبب العرض..."),
         "resendOtp": MessageLookupByLibrary.simpleMessage("اعادة الارسال"),
@@ -80,7 +90,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "تسجيل الدخول بأستخدام فيس بوك "),
         "signWithgoogle":
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول بأستخدام جوجل "),
+        "subscriptions": MessageLookupByLibrary.simpleMessage("الاشتراكات"),
+        "temporaryBlock": MessageLookupByLibrary.simpleMessage("حظر مؤقت"),
         "unblock": MessageLookupByLibrary.simpleMessage("رفع البلوك"),
+        "users": MessageLookupByLibrary.simpleMessage("مستخدمين"),
         "verfyEmail": MessageLookupByLibrary.simpleMessage("تفعيل التليفون"),
         "whatsapp": MessageLookupByLibrary.simpleMessage("واتس اب")
       };

@@ -49,5 +49,11 @@
   "post_an_ad": "أضف إعلانات",
   "account": "حسابي",
   "block": "بلوك",
-  "unblock": "رفع البلوك"
+  "unblock": "رفع البلوك",
+  "image": "صوره", "android": "اندرويد",
+  "deleteuser": "مسح مستخدم",  "users": "مستخدمين",
+  "edituser": "تعديل مستخدم","products": "منتجات",
+  "chatwithUser": "تحدث مع المستخدم","subscriptions": "الاشتراكات",
+  "temporaryBlock": "حظر مؤقت", "coupon": "كوبون",
+  "platform": "منصه", "notifications": "اشعارات"
 }

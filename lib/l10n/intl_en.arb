@@ -25,5 +25,11 @@
   "home": "Home",  "commercials": "Commercials",
   "post_an_ad": "Post an Ad",  "account": "Account",
   "block": "Block User",
-  "unblock": " Un Block"
+  "unblock": " Un Block",
+  "image": "Image", "android": "Android",
+  "deleteuser": "Delete User",  "users": "Users",
+  "edituser": "Edit User","products": "Products",
+  "chatwithUser": "Chat With User","subscriptions": "Subscriptions",
+  "temporaryBlock": "Temporary Block", "coupon": "Coupon",
+  "platform": "Platform", "notifications": "Notifications"
 }

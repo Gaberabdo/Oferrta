@@ -5,6 +5,8 @@ import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-cub
 import 'package:sell_4_u/Features/dashboard/controllers/MenuAppController.dart';
 import 'package:sell_4_u/Features/dashboard/responsive.dart';
 import 'package:sell_4_u/core/constant.dart';
+import 'package:sell_4_u/core/helper/main/cubit/main_cubit.dart';
+import 'package:sell_4_u/generated/l10n.dart';
 
 import '../../../../../core/helper/component/component.dart';
 import '../../../../Auth-feature/manger/model/user_model.dart';
@@ -75,7 +77,51 @@ class ProfileCard extends StatelessWidget {
           if (!Responsive.isMobile(context))
             Padding(
               padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child: Text(cubit.activeUser.name ?? 'Admin account'),
+              child:Row(
+                children: [
+                  const Icon(
+                    Icons.language,
+                    size: 22,
+                  ),
+                  const SizedBox(
+                    width: 7,
+                  ),
+                  SizedBox(width: 5),
+                  PopupMenuButton<int>(
+                    tooltip: 'Change Language',
+                    onCanceled: () {
+                      Navigator.of(context);
+                    },
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          value: 1,
+                          onTap: () {
+                            MainCubit.get(context)
+                                .changeAppLang(
+                                langMode: 'en');
+                          },
+                          child: Text(
+                            S.of(context).english,
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 2,
+                          onTap: () {
+                            MainCubit.get(context)
+                                .changeAppLang(
+                                langMode: 'ar');
+                          },
+                          child: Text(
+                            S.of(context).arabic,
+                          ),
+                        ),
+                      ];
+                    },
+                    child: const Icon(Icons.more_horiz),
+                  ),
+                ],
+              ),
             ),
         ],
       ),

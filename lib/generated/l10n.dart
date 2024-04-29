@@ -569,6 +569,126 @@ class S {
       args: [],
     );
   }
+
+  /// `Image`
+  String get image {
+    return Intl.message(
+      'Image',
+      name: 'image',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Android`
+  String get android {
+    return Intl.message(
+      'Android',
+      name: 'android',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete User`
+  String get deleteuser {
+    return Intl.message(
+      'Delete User',
+      name: 'deleteuser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Users`
+  String get users {
+    return Intl.message(
+      'Users',
+      name: 'users',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit User`
+  String get edituser {
+    return Intl.message(
+      'Edit User',
+      name: 'edituser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Products`
+  String get products {
+    return Intl.message(
+      'Products',
+      name: 'products',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat With User`
+  String get chatwithUser {
+    return Intl.message(
+      'Chat With User',
+      name: 'chatwithUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subscriptions`
+  String get subscriptions {
+    return Intl.message(
+      'Subscriptions',
+      name: 'subscriptions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Temporary Block`
+  String get temporaryBlock {
+    return Intl.message(
+      'Temporary Block',
+      name: 'temporaryBlock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coupon`
+  String get coupon {
+    return Intl.message(
+      'Coupon',
+      name: 'coupon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Platform`
+  String get platform {
+    return Intl.message(
+      'Platform',
+      name: 'platform',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
