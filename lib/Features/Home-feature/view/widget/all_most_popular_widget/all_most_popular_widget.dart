@@ -35,7 +35,7 @@ class MostPopular extends StatelessWidget {
             child: ClipRRect(
               borderRadius:  BorderRadius.circular(12),
               child: Image(
-                height: 139,
+                height: 135,
                 width: double.infinity,
                 fit: BoxFit.fill,
                 image: NetworkImage(

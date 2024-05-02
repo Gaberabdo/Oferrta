@@ -13,6 +13,8 @@ import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-sta
 import 'package:sell_4_u/Features/Auth-feature/manger/model/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as path;
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../../../../core/constant.dart';
 
@@ -178,6 +180,8 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
       if (fileList!.isNotEmpty) {
         final file = fileList[0];
         profileImage = file;
+
+
         emit(ImageUploadSuccess());
       } else {
         emit(ImageUploadFailed());
@@ -224,6 +228,40 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
     }
   }
 
+  Future<void> addCatImage({
+    required String name,
+    required html.File profileImage,
+  }) async {
+    isUpload = true;
+    emit(ImageUploadLoading());
+    try {
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference storageReference =
+      FirebaseStorage.instance.ref().child('catImage/$fileName');
+
+      final reader = html.FileReader();
+      reader.readAsArrayBuffer(profileImage);
+      await reader.onLoad.first;
+      final buffer = reader.result as Uint8List;
+
+      final blob = html.Blob([buffer]);
+
+      UploadTask uploadTask = storageReference.putBlob(blob);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+      addCat(
+        name: name,
+        image: imageUrl,
+      );
+      isUpload = false;
+      emit(ImageUploadSuccess());
+    } catch (e) {
+      isUpload = false;
+      // Handle error
+      print('Error uploading image: $e');
+      emit(ImageUploadFailed());
+    }
+  }
   Future<void> updateCategory({
     required String id,
     required String name,
@@ -236,6 +274,28 @@ class BlockUserCubit extends Cubit<BlockUserStates> {
         .collection("categories")
         .doc(id)
         .update({'categoryName': name, "image": image}).then((value) {
+      isUpload = false;
+
+      emit(UpdateSuccessUserDataState());
+    }).catchError((handleError) {
+      isUpload = false;
+
+      emit(UpdateErrorUserDataState());
+    });
+  }
+
+  Future<void> addCat({
+    required String name,
+    required String image,
+  }) async {
+    isUpload = true;
+
+    emit(UpdateLoadingUserDataState());
+    firestore.collection("categories").add({
+      'categoryName': name,
+      "image": image,
+      'subCat': false
+    }).then((value) {
       isUpload = false;
 
       emit(UpdateSuccessUserDataState());

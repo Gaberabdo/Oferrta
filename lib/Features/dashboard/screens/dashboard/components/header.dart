@@ -75,55 +75,38 @@ class ProfileCard extends StatelessWidget {
             Icons.person,
             size: 35,
           ),
-          if (!Responsive.isMobile(context))
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-              child:Row(
-                children: [
-                  const Icon(
-                    Icons.language,
-                    size: 22,
-                  ),
-                  const SizedBox(
-                    width: 7,
-                  ),
-                  SizedBox(width: 5),
-                  PopupMenuButton<int>(
-                    tooltip: S.of(context).lang,
-                    onCanceled: () {
-                      Navigator.of(context);
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+            child: PopupMenuButton<int>(
+              tooltip: S.of(context).lang,
+              onCanceled: () {
+                Navigator.of(context);
+              },
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    value: 1,
+                    onTap: () {
+                      MainCubit.get(context).changeAppLang(langMode: 'en');
                     },
-                    itemBuilder: (context) {
-                      return [
-                        PopupMenuItem(
-                          value: 1,
-                          onTap: () {
-                            MainCubit.get(context)
-                                .changeAppLang(
-                                langMode: 'en');
-                          },
-                          child: Text(
-                            S.of(context).english,
-                          ),
-                        ),
-                        PopupMenuItem(
-                          value: 2,
-                          onTap: () {
-                            MainCubit.get(context)
-                                .changeAppLang(
-                                langMode: 'ar');
-                          },
-                          child: Text(
-                            S.of(context).arabic,
-                          ),
-                        ),
-                      ];
-                    },
-                    child: const Icon(Icons.more_horiz),
+                    child: Text(
+                      S.of(context).english,
+                    ),
                   ),
-                ],
-              ),
+                  PopupMenuItem(
+                    value: 2,
+                    onTap: () {
+                      MainCubit.get(context).changeAppLang(langMode: 'ar');
+                    },
+                    child: Text(
+                      S.of(context).arabic,
+                    ),
+                  ),
+                ];
+              },
+              child: const Icon(Icons.language),
             ),
+          ),
         ],
       ),
     );
@@ -232,7 +215,7 @@ class SearchField extends StatelessWidget {
                                   Icons.bolt,
                                   size: 15,
                                 ),
-                                hintText:S.of(context).notiBody,
+                                hintText: S.of(context).notiBody,
                                 validator: '',
                                 obscureText: false,
                                 icon: false,
@@ -298,7 +281,7 @@ class SearchField extends StatelessWidget {
                 cubit.filteredUser.clear();
               }
             },
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
               hintText: S.of(context).search,
               // fillColor: secondaryColor,
               filled: true,

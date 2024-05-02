@@ -8,6 +8,7 @@ import 'package:sell_4_u/Admin/Features/Block-user-feature/manger/block-user-sta
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_cubit.dart';
 import 'package:sell_4_u/Features/Home-feature/Cubit/feeds_cubit/feeds_state.dart';
 import 'package:sell_4_u/Features/Home-feature/view/screens/home/create_post.dart';
+import 'package:sell_4_u/Features/dashboard/screens/dashboard/add_cat.dart';
 import 'package:sell_4_u/core/constant.dart';
 import 'package:sell_4_u/generated/l10n.dart';
 import 'package:shimmer/shimmer.dart';
@@ -112,7 +113,7 @@ class BannerCatDash extends StatelessWidget {
                                     ),
                                     const Spacer(),
                                     IconButton(
-                                      tooltip:  S.of(context).deleteCate,
+                                      tooltip: S.of(context).deleteCate,
                                       onPressed: () async {
                                         AwesomeDialog(
                                             context: context,
@@ -120,12 +121,15 @@ class BannerCatDash extends StatelessWidget {
                                             width: 400,
                                             animType: AnimType.rightSlide,
                                             title: S.of(context).warn,
-                                            desc:
-                                            S.of(context).sureDelete,
+                                            desc: S.of(context).sureDelete,
                                             btnCancelOnPress: () {},
                                             btnOkOnPress: () {
-                                              cubit.deleteCategory(
-                                                  cubit.catModelIdes[index]);
+                                              cubit
+                                                  .deleteCategory(
+                                                      cubit.catModelIdes[index])
+                                                  .then((value) {
+                                                cubit.getCategory();
+                                              });
                                             }).show();
                                       },
                                       icon: const Icon(
@@ -138,7 +142,7 @@ class BannerCatDash extends StatelessWidget {
                                       width: 4,
                                     ),
                                     IconButton(
-                                      tooltip:  S.of(context).editCate,
+                                      tooltip: S.of(context).editCate,
                                       onPressed: () {
                                         showDialog(
                                           context: context,
@@ -271,17 +275,14 @@ class BannerCatDash extends StatelessWidget {
                                             .view,
                                       );
                                       print(
-                                        cubit
-                                            .getCategoryDetailsModel[index]
+                                        cubit.getCategoryDetailsModel[index]
                                             .uId!,
                                       );
 
                                       print(
                                         cubit
-                                            .getCategoryDetailsModel[index]
-                                            .uId,
+                                            .getCategoryDetailsModel[index].uId,
                                       );
-
 
                                       print(
                                         cubit.catModelDetailsIdes[index],
@@ -435,6 +436,29 @@ class BannerCatDash extends StatelessWidget {
                               ),
                             ),
                 ],
+              ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      content: SizedBox(
+                        width: 400,
+                        height: 500,
+                        child: AddCategory(),
+                      ),
+                    );
+                  },
+                ).then((value) {
+                  cubit.getCategory();
+                });
+              },
+              backgroundColor: ColorStyle.primaryColor,
+              child: const Icon(
+                IconlyLight.plus,
+                color: Colors.white,
               ),
             ),
           );
