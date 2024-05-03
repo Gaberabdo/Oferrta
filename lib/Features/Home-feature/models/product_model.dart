@@ -1,6 +1,7 @@
 class ProductModel {
   final int? view;
   final String? time;
+  final String? title;
   final List<String>? images;
   final String? cat;
   final double? lat;
@@ -35,6 +36,7 @@ class ProductModel {
     this.uId,
     this.fave,
     this.isOffer,
+    this.title,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -45,8 +47,10 @@ class ProductModel {
       cat: json['cat'],
       lat: json['lat'],
       video: json['video'] ?? '',
+      title: json['title'],
       lan: json['lan'],
-      reasonOfOffer: json['reasonOfOffer'],
+      reasonOfOffer:
+      json['reasonOfOffer'],
       description: json['description'],
       details: json['details'],
       isOffer: json['isOffer'] ?? false,
@@ -76,12 +80,13 @@ class ProductModel {
       'fave': fave,
       'isOffer': isOffer,
       'numberOfDay': numberOfDay,
+      'title': title,
     };
   }
 
   static List<ProductModel> dummyData = List.generate(
     10,
-    (index) {
+        (index) {
       return ProductModel(
         view: 1000 + index,
         time: 'Thu Mar ${index + 1} 2024 15:30:00 GMT+0530 (IST)',

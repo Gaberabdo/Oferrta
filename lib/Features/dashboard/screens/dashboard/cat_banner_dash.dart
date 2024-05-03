@@ -364,10 +364,7 @@ class BannerCatDash extends StatelessWidget {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    cubit
-                                                        .getCategoryDetailsModel[
-                                                            index]
-                                                        .location!,
+                                                    cubit.getCategoryDetailsModel[index].location!,
                                                     maxLines: 1,
                                                     overflow:
                                                         TextOverflow.ellipsis,

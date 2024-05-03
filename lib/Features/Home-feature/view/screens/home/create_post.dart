@@ -33,6 +33,7 @@ class CreatePost extends StatelessWidget {
               cubit.catController,
               cubit.locationController,
               cubit.priceController,
+              cubit.titleController,
             ];
 
             for (var controller in controllers) {
@@ -291,6 +292,27 @@ class CreatePost extends StatelessWidget {
                         height: 60,
                         child: TextFormWidget(
                           maxLines: 2,
+                          keyboardType:
+                          TextInputType.text,
+                          emailController: cubit.titleController,
+                          prefixIcon: const Icon(
+                            Icons.title,
+                            size: 15,
+                          ),
+                          hintText: 'Please write your Name of product',
+                          validator: 'Please write your Name of product',
+                          obscureText: false,
+                          icon: false,
+                          enabled: true,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 60,
+                        child: TextFormWidget(
+                          maxLines: 2,
                           emailController: cubit.reasonController,
                           prefixIcon: const Icon(
                             Icons.access_time_filled,
@@ -325,6 +347,7 @@ class CreatePost extends StatelessWidget {
                         ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(

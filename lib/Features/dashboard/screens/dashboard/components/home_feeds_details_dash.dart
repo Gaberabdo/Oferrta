@@ -209,16 +209,32 @@ class HomeFeedsDetailsDash extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Text(
-                                    modelDetails.cat ?? 'category',
-                                    style: FontStyleThame.textStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.normal,
-                                      fontColor: Colors.black,
-                                    ),
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  modelDetails.title ?? 'Name of product',
+                                  style: FontStyleThame.textStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.normal,
                                   ),
+                                ),
+                                ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Text(
+                                          modelDetails.cat ?? 'Category',
+                                          style: FontStyleThame.textStyle(
+                                            fontSize: 20,
+
+                                            fontColor: Colors.blue,
+
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(12.0),
